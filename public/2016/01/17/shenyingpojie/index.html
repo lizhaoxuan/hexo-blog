@@ -1,0 +1,851 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="开发经验," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="android真的被玩坏了，android界有一场永远停不下来的攻防战，攻和防都流氓
+背景  做为用户，你肯定抱怨过手机上有太多杀不死的应用浪费你的内存，浪费内存就算了，他们还跑你的流量。OK，为了提供更好的用户体验，以MIUI为首的神隐模式（因为我只知道MIUI的叫神隐……就先以他为首吧，有了解谁先出的快告诉我），各个系统厂商都推出自己的XX模式。
+  在手机息屏后，未加入白名单的应用将会被禁止">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小米神隐模式破解（反系统息屏后网络中断）">
+<meta property="og:url" content="http://lizhaoxuan.github.io/2016/01/17/shenyingpojie/index.html">
+<meta property="og:site_name" content="暴打小女孩-Blog">
+<meta property="og:description" content="android真的被玩坏了，android界有一场永远停不下来的攻防战，攻和防都流氓
+背景  做为用户，你肯定抱怨过手机上有太多杀不死的应用浪费你的内存，浪费内存就算了，他们还跑你的流量。OK，为了提供更好的用户体验，以MIUI为首的神隐模式（因为我只知道MIUI的叫神隐……就先以他为首吧，有了解谁先出的快告诉我），各个系统厂商都推出自己的XX模式。
+  在手机息屏后，未加入白名单的应用将会被禁止">
+<meta property="og:updated_time" content="2016-08-09T06:50:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="小米神隐模式破解（反系统息屏后网络中断）">
+<meta name="twitter:description" content="android真的被玩坏了，android界有一场永远停不下来的攻防战，攻和防都流氓
+背景  做为用户，你肯定抱怨过手机上有太多杀不死的应用浪费你的内存，浪费内存就算了，他们还跑你的流量。OK，为了提供更好的用户体验，以MIUI为首的神隐模式（因为我只知道MIUI的叫神隐……就先以他为首吧，有了解谁先出的快告诉我），各个系统厂商都推出自己的XX模式。
+  在手机息屏后，未加入白名单的应用将会被禁止">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/01/17/shenyingpojie/"/>
+
+  <title> 小米神隐模式破解（反系统息屏后网络中断） | 暴打小女孩-Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?56e0f8da7e01da926bfb931472e9a26d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暴打小女孩-Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/lizhaoxuan" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            Github
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                小米神隐模式破解（反系统息屏后网络中断）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-17T16:20:58+08:00" content="2016-01-17">
+              2016-01-17
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/17/shenyingpojie/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/17/shenyingpojie/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/01/17/shenyingpojie/" class="leancloud_visitors" data-flag-title="小米神隐模式破解（反系统息屏后网络中断）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><em>android真的被玩坏了，android界有一场永远停不下来的攻防战，攻和防都流氓</em></p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>  做为用户，你肯定抱怨过手机上有太多杀不死的应用浪费你的内存，浪费内存就算了，他们还跑你的流量。OK，为了提供更好的用户体验，以MIUI为首的神隐模式（因为我只知道MIUI的叫神隐……就先以他为首吧，有了解谁先出的快告诉我），各个系统厂商都推出自己的XX模式。</p>
+<p>  在手机息屏后，未加入白名单的应用将会被禁止访问网络。</p>
+<p>  嗯……这个做的好！用户这回开心了呀:-D。（虽然好像有人抱怨神隐有Bug）。</p>
+<p>  可是开发者哭了啊，老板一定要让我完成这个需求啊，隔段时间上传或获取个数据呀，你给我断网了我咋办？系统级屏蔽的啊这是，我没法搞了啊……联系运营产品公关还有各种大BOSS!</p>
+  <a id="more"></a>
+<p>  “我们联系下MIUI官方，把我们默认加白名单行不行？”    </p>
+<p>  “先不说MIUI给不给，除了MIUI还有别家系统啊，而且谁都联系都能加白名单，这模式还有啥用”</p>
+<p>  “让设计做引导页”</p>
+<p>  “系统真的是太多了啊……同一个系统不同版本还有差别啊……”</p>
+<p>  （题外话，话说360电脑版，打开USB调试的引导页真心很屌啊，大部分手机不同型号好像都做了。）</p>
+<p> <strong>完了，你说怎么办吧？</strong></p>
+<p> <strong>注：息屏后不能访问网络的实质是，系统休眠后，应用唤醒无法访问网络，所以用轮询执行任务的，是不会出现这种现象的，因为轮询不会让系统休眠，似乎问题解决了是吗？哼哼，你就等着被用户卸载吧，电量哗哗往下掉啊！</strong></p>
+<p> <strong>所以我们这里讨论的是，使用alarmManager做定时任务的情况</strong></p>
+<h3 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h3><h4 id="方案1"><a href="#方案1" class="headerlink" title="方案1"></a>方案1</h4><p>提到息屏后访问不了网络，你第一个想到肯定是系统休眠了，这个简单啊，唤醒不就好了么。PowerManager有个啥属性来着？用这个就可以了！！</p>
+<p>额~既然这么简单，那还叫问题吗？</p>
+<p>事实是，系统是唤醒了，但是网络就是被中断了，同时被中断的还有GPS，还有什么被禁止的就不清楚了，感兴趣的自己试一下。</p>
+<h4 id="方案2"><a href="#方案2" class="headerlink" title="方案2"></a>方案2</h4><p>OK，默默的“偷”流量是不行了，我们回归本源想想，问题是息屏后~息屏后~息屏后~诶？同时，leader还提供了一个信息，息屏后收不到推送，但是点亮后，推送都过来了。那我们亮屏了试试？</p>
+<p>1 ： 时刻关注Log日志，在网络请求失败后，我们手动点亮屏幕。结果是： 请求成功了~原来问题在这里。</p>
+<p>2 ： 可是手动点亮屏幕不是我们的需求啊，怎么才能自动点亮呢？前段时间做新通知点亮屏幕了，用这个试试。try catch 里，当访问失败进入catch时，我们点亮屏幕并重新请求。<br>    点亮代码是这个：</p>
+<pre><code>    PowerManager pm = (PowerManager) AliveApplication.getContext().getSystemService(
+            AliveApplication.getContext().POWER_SERVICE);
+    PowerManager.WakeLock mWakelock = pm.newWakeLock(
+            PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, &quot;target&quot;);
+    mWakelock.acquire();
+    mWakelock.release();
+
+    //记得权限
+    &lt;uses-permission android:name=&quot;android.permission.WAKE_LOCK&quot;/&gt;
+
+没错，还是PowerManager ，但换了一个参数：
+
+    PowerManager.SCREEN_DIM_WAKE_LOCK
+
+奇迹发生了，点亮屏幕后，网络请求成功了。看来这条路没错,要是可以在用户不知情的情况下做就好了，PowerManager还有好几个参数，我们换别的试试？
+</code></pre><p>3 ： PowerManager的几个参数及解释：</p>
+<pre><code>    //保持CPU 运转，屏幕和键盘灯有可能是关闭的。
+    PARTIAL_WAKE_LOCK
+    //保持CPU 运转，允许保持屏幕显示但有可能是灰的，允许关闭键盘灯
+    SCREEN_DIM_WAKE_LOCK
+    //保持CPU 运转，允许保持屏幕高亮显示，允许关闭键盘灯
+    SCREEN_BRIGHT_WAKE_LOCK
+    //保持CPU 运转，保持屏幕高亮显示，键盘灯也保持亮度
+    FULL_WAKE_LOCK
+    /**
+      * 正常唤醒锁实际上并不打开照明。相反，一旦打开他们会一直仍然保持(例如来世user的activity)。
+      * 当获得wakelock，这个标志会使屏幕或/和键盘立即打开。
+      * 一个典型的使用就是可以立即看到那些对用户重要的通知。
+      */
+    ACQUIRE_CAUSES_WAKEUP
+    /**
+      * 设置了这个标志，当wakelock释放时用户activity计时器会被重置，导致照明持续一段时间。
+      * 如果你在wacklock条件中循环，这个可以用来减少闪烁
+     */
+    ON_AFTER_RELEASE
+
+结果是令人失望的，似乎只有在屏幕点亮后网络才能恢复。再换个思路试试。
+</code></pre><p>4 ： 监听屏幕点亮与关闭广播，在点亮前，先将屏幕亮度调到0，息屏后，再恢复正常。似乎很可行啊！！</p>
+<p>最后的结果失败的，所以这里也不放调节屏幕亮度的代码了。 </p>
+<p>一个有趣的现象，不知道是系统差别还是Android版本差别。</p>
+<p>魅族5.0上，可以实现亮度为0点亮，但是息屏后亮度恢复，屏幕又一下亮了。</p>
+<p>酷派 4.1 上，点亮屏幕和调整屏幕亮度没有关系，点亮后依然以之前设置亮度为准。</p>
+<p>暂时只测试了这两款机器。</p>
+<p>到这里，基本上就已经放弃“暗”的方案了。只能“明”着来了。那这样就要考虑用户体验了</p>
+<h3 id="保证用户体验下的解决方案"><a href="#保证用户体验下的解决方案" class="headerlink" title="保证用户体验下的解决方案"></a>保证用户体验下的解决方案</h3><ul>
+<li><p>1.监听网络请求失败后做点亮准备。注意是<strong>“准备“</strong>”，并不是失败后立马点亮，这个太吓人了，手机放那了不停闪来闪去。</p>
+</li>
+<li><p>2.准备后，先做请求积累，当到一个<strong>临界值</strong>时，临界值依具体业务需求而定，依然无法请求，再点亮屏幕一次性发送。</p>
+</li>
+<li><p>3.利用一切可以利用的资源，点亮屏幕的操作并不是只有你的APP会做，<strong>监听屏幕点亮广播</strong>，在用户手动点亮、其他应用点亮时做网络请求</p>
+</li>
+<li><p>4.如果你的请求真的很急切，且<strong>略有些频繁</strong>，可以加入适当掩饰。比如弹一个本地已经缓存好的通知出来。如果通知并不是很重要，息屏后建议自动清除。</p>
+</li>
+<li><p>5.如果你的需求迫切到，<strong>必须定时定点</strong>，那么我的建议是向用户坦白，在什么工作情况下，您的屏幕将会自动被点亮。</p>
+</li>
+<li><p>6.<strong>白名单导航页</strong>还是要做的，毕竟进了白名单就没有那么多事了。点亮屏幕只是一个缓冲之计。</p>
+</li>
+<li><p>7.<strong>公关</strong>也是要的，如果可以直接被系统默认收进白名单皆大欢喜</p>
+</li>
+<li><p>8.记得<strong>区分</strong>是当前无网络还是被屏蔽了，如果用户就是没开数据和wifi，你不停的在闪屏幕，不卸载才怪！</p>
+</li>
+<li><p>9.并不会息屏后立刻断网，还可以活2-3分钟，有时候5-7分钟也是有可能的，所以事情情况并没有那么严峻。</p>
+</li>
+<li><p>10.无论是Timer还是线程Sleep，都可以保证系统一直在唤醒状态，但强烈不建议这样做，手机时刻保持唤醒状态，是非常非常耗电的！</p>
+</li>
+</ul>
+<h3 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h3><p>最后，废话说了这么多，直接上Demo代码啦。代码很简单，里面都写好了注释，具体用户体验逻辑还要Developers 自己添加哦~</p>
+<p><a href="https://github.com/lizhaoxuan/IamAlive" target="_blank" rel="external">https://github.com/lizhaoxuan/IamAlive</a></p>
+<p>对了，还要感谢我的Android组Leader本篇文章的最大贡献者 锦洋大哥 ^.^</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/开发经验/" rel="tag">#开发经验</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/10/android-rendering-performance-optimization/" rel="next" title="Android之GPU过度绘制与图形渲染优化">
+                <i class="fa fa-chevron-left"></i> Android之GPU过度绘制与图形渲染优化
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/17/androidgcdiaoyan/" rel="prev" title="Android GC机制实践调研">
+                Android GC机制实践调研 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/17/shenyingpojie/"
+           data-title="小米神隐模式破解（反系统息屏后网络中断）" data-url="http://lizhaoxuan.github.io/2016/01/17/shenyingpojie/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpeg"
+               alt="lizhaoxuan" />
+          <p class="site-author-name" itemprop="name">lizhaoxuan</p>
+          <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决思路"><span class="nav-number">2.</span> <span class="nav-text">解决思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方案1"><span class="nav-number">2.1.</span> <span class="nav-text">方案1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案2"><span class="nav-number">2.2.</span> <span class="nav-text">方案2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保证用户体验下的解决方案"><span class="nav-number">3.</span> <span class="nav-text">保证用户体验下的解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例代码"><span class="nav-number">4.</span> <span class="nav-text">示例代码</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lizhaoxuan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lizhaoxuan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Lb3BBgF3jv5bwrRc8KBz1cuP-gzGzoHsz", "kaPIOk4dBLRc4wfrlc2Tffrm");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,938 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="GC," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~
+网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面这几种情况：
+
+System.gc(),真的是随叫随到？
+软引用弱引用的错">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android GC机制实践调研">
+<meta property="og:url" content="http://lizhaoxuan.github.io/2016/02/17/androidgcdiaoyan/index.html">
+<meta property="og:site_name" content="暴打小女孩-Blog">
+<meta property="og:description" content="众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~
+网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面这几种情况：
+
+System.gc(),真的是随叫随到？
+软引用弱引用的错">
+<meta property="og:image" content="http://img2.ph.126.net/K7Q7D5OLxL2nqgtP9ItXtw==/6631554849350641553.png">
+<meta property="og:image" content="http://img2.ph.126.net/TslV5cRuca6OkzBQ1aE_kQ==/6631772552652944693.png">
+<meta property="og:image" content="http://img2.ph.126.net/d5cIKUN7owo1Lx_AbIIy9Q==/6631652705885517209.png">
+<meta property="og:image" content="http://img0.ph.126.net/mPTcmWGbUrUlvpgyDy9oyw==/6631601028839009163.png">
+<meta property="og:image" content="http://img1.ph.126.net/zE33pF2ch1sPmvU6Z48kNQ==/6631804438490152210.png">
+<meta property="og:image" content="http://img2.ph.126.net/iV9aVKjF_j4tIFtN02g34A==/6631763756559918878.jpg">
+<meta property="og:image" content="http://img2.ph.126.net/yjZGCVaIhaEz83K8xb9LvQ==/6631495475722745750.png">
+<meta property="og:image" content="http://img1.ph.126.net/zmrZbtadOQbmyN4n6OLwuQ==/6631804438490152216.png">
+<meta property="og:image" content="http://img2.ph.126.net/bCzvPTK4Suj_HnUIgE0UFw==/6631653805397144960.png">
+<meta property="og:image" content="http://img0.ph.126.net/ntkgGBiAHQBFYOHJ8HnQVQ==/6631822030676193801.png">
+<meta property="og:image" content="http://img2.ph.126.net/DDuC2UhymeHruBwxoCwemg==/6631728572187818831.png">
+<meta property="og:image" content="http://img2.ph.126.net/UdnKhp9rjfY4M8PxO1Dnhw==/6631709880490161458.png">
+<meta property="og:image" content="http://img2.ph.126.net/sOz4fddKuIWH_1dnJnLCtg==/6631763756559918881.png">
+<meta property="og:image" content="http://img1.ph.126.net/_Q1HJ5I0geb4eyHoloph6g==/6631698885373879888.png">
+<meta property="og:image" content="http://img2.ph.126.net/1UmCr_BsgGyA0Ljk7Eihvg==/6631630715652961007.jpg">
+<meta property="og:image" content="http://img2.ph.126.net/F2UDo2Wffl2iep4aog04Hg==/6631718676583178933.png">
+<meta property="og:image" content="http://img2.ph.126.net/o96gsLvjTz9Xdl2Z5nca3g==/6631764856071546647.jpg">
+<meta property="og:image" content="http://img0.ph.126.net/sCccZcFlApzYMD_wylzafA==/6631718676583178928.jpg">
+<meta property="og:updated_time" content="2016-08-09T06:50:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android GC机制实践调研">
+<meta name="twitter:description" content="众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~
+网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面这几种情况：
+
+System.gc(),真的是随叫随到？
+软引用弱引用的错">
+<meta name="twitter:image" content="http://img2.ph.126.net/K7Q7D5OLxL2nqgtP9ItXtw==/6631554849350641553.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/02/17/androidgcdiaoyan/"/>
+
+  <title> Android GC机制实践调研 | 暴打小女孩-Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?56e0f8da7e01da926bfb931472e9a26d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暴打小女孩-Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/lizhaoxuan" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            Github
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android GC机制实践调研
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-17T16:20:58+08:00" content="2016-02-17">
+              2016-02-17
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/17/androidgcdiaoyan/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/17/androidgcdiaoyan/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/02/17/androidgcdiaoyan/" class="leancloud_visitors" data-flag-title="Android GC机制实践调研">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~</p>
+<p>网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面这几种情况：</p>
+<ul>
+<li>System.gc(),真的是随叫随到？</li>
+<li>软引用弱引用的错误使用</li>
+<li>你觉得内存释放了，它就真的释放了么?</li>
+</ul>
+<p>幸得Android Monitor 提供了内存监视器，起码打开了一个窗口可以让我们看看当前应用的内存到底是什么样的。 那么现在我们就来通过一个小Demo，看看android 的GC到底是怎么样吧。</p>
+<a id="more"></a>
+<p><strong><em>测试过程中，很悲痛的验证了不同设备不同系统的GC机制是不一样的，我把它粗糙的区分为灵敏型和不灵敏性，所以，我们开发中还是小心小心再小心吧……例如：某些机型System.gc()会被立刻触发，有些机型毫无响应。</em></strong></p>
+<h3 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h3><p>本次测试从以下几个方面对Android GC 进行调研</p>
+<ul>
+<li>主动调用System.gc()，不同状态的GC时机</li>
+<li>空白Activity所占内存大小及GC时机</li>
+<li>大内存量的Activity的GC时机</li>
+<li>奔溃临界值下，对象置NULL，是否还会引起内存溢出</li>
+<li>内存抖动</li>
+<li>软引用、弱引用的使用</li>
+</ul>
+<p><strong>本次测试采用两款手机：红米3 .低端机型，手机内存值较低，测试环境更加严苛</strong></p>
+<h3 id="主动调用GC下的GC时机"><a href="#主动调用GC下的GC时机" class="headerlink" title="主动调用GC下的GC时机"></a>主动调用GC下的GC时机</h3><p><img src="http://img2.ph.126.net/K7Q7D5OLxL2nqgtP9ItXtw==/6631554849350641553.png" width="250" height="150" alt="红米-初始内存值" align="center"></p>
+<p>（红米初始内存值）</p>
+<h4 id="测试1：创建临时变量，通过主动调用System-gc-观察"><a href="#测试1：创建临时变量，通过主动调用System-gc-观察" class="headerlink" title="测试1：创建临时变量，通过主动调用System.gc()观察"></a>测试1：创建临时变量，通过主动调用System.gc()观察</h4><p><img src="http://img2.ph.126.net/TslV5cRuca6OkzBQ1aE_kQ==/6631772552652944693.png" width="250" height="200" alt="创建临时变量" align="center"></p>
+<p>可以看到内存立刻增加了十几MB，这里我创建了一个Bitmap加载了一张比较大的图片117.16KB，<strong>内存增加量是远大于图片大小的</strong>。</p>
+<pre><code>//并没有进行显示，仅是创建一个图片
+Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.big_254);
+</code></pre><p>2分钟后内存一直维持在这个水平，<strong>临时变量的GC时机是完全不能保证的，我们可以理解为，GC线程还没有转到这个地方</strong></p>
+<p><img src="http://img2.ph.126.net/d5cIKUN7owo1Lx_AbIIy9Q==/6631652705885517209.png" width="250" height="200" alt="主动调用GC" align="center"></p>
+<p><strong>之后我们多次调用System.gc()，内存监视窗口是没有任何反应的。</strong></p>
+<h4 id="测试2：初始化类成员变量，置NULL后，主动调用System-gc-观察"><a href="#测试2：初始化类成员变量，置NULL后，主动调用System-gc-观察" class="headerlink" title="测试2：初始化类成员变量，置NULL后，主动调用System.gc()观察"></a>测试2：初始化类成员变量，置NULL后，主动调用System.gc()观察</h4><p><img src="http://img0.ph.126.net/mPTcmWGbUrUlvpgyDy9oyw==/6631601028839009163.png" width="250" height="200" alt="创建类成员变量" align="center"></p>
+<pre><code>this.bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.big_254);
+
+//置NULL
+this.bitmap = null;
+
+//GC
+System.gc();
+</code></pre><p><img src="http://img1.ph.126.net/zE33pF2ch1sPmvU6Z48kNQ==/6631804438490152210.png" width="250" height="200" alt="置NULL后销毁" align="center"></p>
+<p><strong>GC依然没有被触发</strong></p>
+<p><strong>发现更有意思的问题，每点击一次按钮，内存消耗增加0.02MB,世界上果然没有免费的午餐，点击事件又有新的对象产生了</strong></p>
+<h4 id="测试3：不停的初始化类成员变量"><a href="#测试3：不停的初始化类成员变量" class="headerlink" title="测试3：不停的初始化类成员变量"></a>测试3：不停的初始化类成员变量</h4><p>也就是说不停的调用下面代码</p>
+<pre><code>this.bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.big_254);
+</code></pre><p><img src="http://img2.ph.126.net/iV9aVKjF_j4tIFtN02g34A==/6631763756559918878.jpg" width="500" height="200" alt="多次初始化类成员" align="center"></p>
+<p>可以看到一串有趣的现象，似乎只有在内存值在41.78以上时，GC才会被触发。</p>
+<p><strong>内存占用只有达到一定限度时，GC才会开始执行。</strong></p>
+<p>期间也创建过临时变量，GC也多次调用后全无反应。</p>
+<h3 id="空Activity占用的内存大小及销毁时间"><a href="#空Activity占用的内存大小及销毁时间" class="headerlink" title="空Activity占用的内存大小及销毁时间"></a>空Activity占用的内存大小及销毁时间</h3><p><img src="http://img2.ph.126.net/yjZGCVaIhaEz83K8xb9LvQ==/6631495475722745750.png" width="150" height="150" alt="初始" align="center"></p>
+<p>初始值</p>
+<p><img src="http://img1.ph.126.net/zmrZbtadOQbmyN4n6OLwuQ==/6631804438490152216.png" width="150" height="150" alt="初次打开" align="center"></p>
+<p>初次打开</p>
+<p><img src="http://img2.ph.126.net/bCzvPTK4Suj_HnUIgE0UFw==/6631653805397144960.png" width="150" height="150" alt="返回后再次打开" align="center"></p>
+<p>返回后再次打开</p>
+<p><img src="http://img0.ph.126.net/ntkgGBiAHQBFYOHJ8HnQVQ==/6631822030676193801.png" width="150" height="150" alt="返回后再次打开" align="center"></p>
+<p>返回后再次打开</p>
+<p>初始（9.00MB）~ 初次打开（9.40MB）~ 返回后再次打开（9.55MB）~ 返回后再次打开（9.69MB）</p>
+<p><strong>一个空白Activity的内存占用量是0.4MB,返回后再次进入每次增加0.15MB左右，返回键每次增加0~0.01MB左右</strong></p>
+<p>迷之增长……</p>
+<h3 id="非空Activity的销毁"><a href="#非空Activity的销毁" class="headerlink" title="非空Activity的销毁"></a>非空Activity的销毁</h3><p>通过下面代码增加Activity内存占用量</p>
+<pre><code>Resources res = getResources();
+for (int i = 0; i &lt; 10; i++) {
+    Bitmap bmp = BitmapFactory.decodeResource(res, R.drawable.test_100);
+    this.bitmapList.add(bmp);
+}
+</code></pre><p> <img src="http://img2.ph.126.net/DDuC2UhymeHruBwxoCwemg==/6631728572187818831.png" width="150" height="150" alt="返回后再次打开" align="center"></p>
+<p> 之后执行</p>
+<pre><code> System.gc();
+finish();
+</code></pre><p>  无任何反应。</p>
+<p>  <strong>无论Activity是否占用大量内存，其销毁的时间都是迟钝的。</strong></p>
+<h3 id="濒临临界值情况下，对象-NULL，再次消耗内存是否会溢出"><a href="#濒临临界值情况下，对象-NULL，再次消耗内存是否会溢出" class="headerlink" title="濒临临界值情况下，对象=NULL，再次消耗内存是否会溢出"></a>濒临临界值情况下，对象=NULL，再次消耗内存是否会溢出</h3><p>经测算，当前测试机在190MB+时，将会内存溢出崩溃。</p>
+<p> <img src="http://img2.ph.126.net/UdnKhp9rjfY4M8PxO1Dnhw==/6631709880490161458.png" width="250" height="150" alt="返回后再次打开" align="center"></p>
+<p>对象置NULL</p>
+<pre><code>this.bitmapList = null;
+</code></pre><p>再次增加并显示</p>
+<pre><code>this.img.setImageResource(R.drawable.big_254);
+</code></pre><p><img src="http://img2.ph.126.net/sOz4fddKuIWH_1dnJnLCtg==/6631763756559918881.png" width="250" height="150" alt="返回后再次打开" align="center"></p>
+<p>欣喜的事情发生了，<strong>“类成员置NULL，对防止内存溢出崩溃是有必要的”</strong></p>
+<h3 id="循环内创建（big-or-small）对象是否会引起内存抖动"><a href="#循环内创建（big-or-small）对象是否会引起内存抖动" class="headerlink" title="循环内创建（big or small）对象是否会引起内存抖动"></a>循环内创建（big or small）对象是否会引起内存抖动</h3><p><img src="http://img1.ph.126.net/_Q1HJ5I0geb4eyHoloph6g==/6631698885373879888.png" width="250" height="150" alt="返回后再次打开" align="center"></p>
+<pre><code>for (int i = 0; i &lt; 20; i++) {
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.test_100);
+    }
+</code></pre><p>创建“小（1MB左右）”对象 </p>
+<p><img src="http://img2.ph.126.net/1UmCr_BsgGyA0Ljk7Eihvg==/6631630715652961007.jpg" width="250" height="150" alt="返回后再次打开" align="center"></p>
+<pre><code>for (int i = 0; i &lt; 20; i++) {
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.big_254);
+    }
+</code></pre><p>循环内创建“大（10MB左右）”对象会引起严重的内存抖动</p>
+<p><strong>无论对象大小，都应避免在循环内创建对象</strong></p>
+<h3 id="软引用弱引用的错误使用"><a href="#软引用弱引用的错误使用" class="headerlink" title="软引用弱引用的错误使用"></a>软引用弱引用的错误使用</h3><p>这个错误似乎很少会有人犯，但感觉还是列出来比较好</p>
+<pre><code>//错误使用
+private SoftReference&lt;List&lt;Bitmap&gt;&gt; softReference = new SoftReference&lt;List&lt;Bitmap&gt;&gt;(new ArrayList&lt;Bitmap&gt;());
+private WeakReference&lt;List&lt;Bitmap&gt;&gt; weakReference = new WeakReference&lt;List&lt;Bitmap&gt;&gt;(new ArrayList&lt;Bitmap&gt;());
+
+
+//正确使用
+private List&lt;SoftReference&lt;Bitmap&gt;&gt; listRefrence = new ArrayList&lt;&gt;();
+</code></pre><p>用上述错误使用方式代码的两种情况</p>
+<pre><code>List&lt;Bitmap&gt; list = softReference.get();
+    if (list == null) {
+        list = new ArrayList&lt;&gt;();
+        softReference = new SoftReference&lt;&gt;(list);
+    }
+    Resources res = getResources();
+    for (int i = 0; i &lt; 10; i++) {
+        Bitmap bmp = BitmapFactory.decodeResource(res, R.drawable.big_254);
+        list.add(bmp);
+    }
+
+List&lt;Bitmap&gt; list = null;
+    Resources res = getResources();
+    for (int i = 0; i &lt; 10; i++) {
+        Bitmap bmp = BitmapFactory.decodeResource(res, R.drawable.big_254);
+        list = weakReference.get();
+        if (list == null) {
+            list = new ArrayList&lt;&gt;();
+            weakReference = new WeakReference&lt;&gt;(list);
+        }
+        list.add(bmp);
+    }
+</code></pre><p><img src="http://img2.ph.126.net/F2UDo2Wffl2iep4aog04Hg==/6631718676583178933.png" width="250" height="150" alt="返回后再次打开" align="center"></p>
+<p>内存会一直暴涨到奔溃。软引用弱引用并不会被收回</p>
+<pre><code>//正确使用
+Resources res = getResources();
+    for (int i = 0; i &lt; 10; i++) {
+        Bitmap bmp = BitmapFactory.decodeResource(res, R.drawable.big_254);
+        right.add(new SoftReference&lt;&gt;(bmp));
+    }
+</code></pre><p><img src="http://img2.ph.126.net/o96gsLvjTz9Xdl2Z5nca3g==/6631764856071546647.jpg" width="250" height="150" alt="返回后再次打开" align="center"></p>
+<p><strong>SoftReference 可以看到明显的内存抖动，但是内存不会暴涨。</strong></p>
+<p><img src="http://img0.ph.126.net/sCccZcFlApzYMD_wylzafA==/6631718676583178928.jpg" width="250" height="150" alt="返回后再次打开" align="center"></p>
+<p><strong>WeakReference 和 SoftReference 不同的是，牙更深一点，销毁平率更大，验证了弱引用比软引用更容易被销毁~</strong></p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><ul>
+<li>不同系统不同型号的手机的GC机制是不同的<ul>
+<li>System.gc()调用结果不同（立即GC或无反应）</li>
+<li>废弃内存回收频率不同</li>
+<li>大规模GC临界值不同</li>
+</ul>
+</li>
+<li>对于加载图片来说，内存增加量是远大于图片大小的。</li>
+<li>临时变量的GC时机是完全不能保证的，我们可以理解为，GC线程还没有转到这个地方。</li>
+<li>System.gc()并不是立刻执行GC的。</li>
+<li>每点击一次按钮，内存消耗增加0.02MB,世界上没有免费的午餐，点击事件内部是会有新的对象产生的</li>
+<li>有时，内存占用只有达到一定限度时，GC才会开始被触发。</li>
+<li>一个空白Activity的内存占用量是0.4MB,返回后再次进入每次增加0.15MB左右，返回键每次增加0~0.01MB左右</li>
+<li>无论Activity是否占用大量内存，其销毁的时间都是迟钝的。</li>
+<li>类成员置NULL，对防止内存溢出崩溃是有必要的</li>
+<li>无论对象大小，都应避免在循环内创建对象</li>
+<li>注意软引用与弱引用的正确使用</li>
+</ul>
+<p><strong>最后告诫一点：尽量不要在应用中调用System.gc(); 如果调用了System.gc()可能会为系统性能带来严重的波动，即便调用System.gc()系统也未必立即响应去执行垃圾回收。</strong></p>
+<p><a href="https://github.com/lizhaoxuan/Android-GC-Research" target="_blank" rel="external">Demo代码https://github.com/lizhaoxuan/Android-GC-Research</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GC/" rel="tag">#GC</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/17/shenyingpojie/" rel="next" title="小米神隐模式破解（反系统息屏后网络中断）">
+                <i class="fa fa-chevron-left"></i> 小米神隐模式破解（反系统息屏后网络中断）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/17/AndroidCoding-performance-specification/" rel="prev" title="Android性能编码规范">
+                Android性能编码规范 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/02/17/androidgcdiaoyan/"
+           data-title="Android GC机制实践调研" data-url="http://lizhaoxuan.github.io/2016/02/17/androidgcdiaoyan/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpeg"
+               alt="lizhaoxuan" />
+          <p class="site-author-name" itemprop="name">lizhaoxuan</p>
+          <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概要"><span class="nav-number">1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主动调用GC下的GC时机"><span class="nav-number">2.</span> <span class="nav-text">主动调用GC下的GC时机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#测试1：创建临时变量，通过主动调用System-gc-观察"><span class="nav-number">2.1.</span> <span class="nav-text">测试1：创建临时变量，通过主动调用System.gc()观察</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试2：初始化类成员变量，置NULL后，主动调用System-gc-观察"><span class="nav-number">2.2.</span> <span class="nav-text">测试2：初始化类成员变量，置NULL后，主动调用System.gc()观察</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试3：不停的初始化类成员变量"><span class="nav-number">2.3.</span> <span class="nav-text">测试3：不停的初始化类成员变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空Activity占用的内存大小及销毁时间"><span class="nav-number">3.</span> <span class="nav-text">空Activity占用的内存大小及销毁时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非空Activity的销毁"><span class="nav-number">4.</span> <span class="nav-text">非空Activity的销毁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#濒临临界值情况下，对象-NULL，再次消耗内存是否会溢出"><span class="nav-number">5.</span> <span class="nav-text">濒临临界值情况下，对象=NULL，再次消耗内存是否会溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环内创建（big-or-small）对象是否会引起内存抖动"><span class="nav-number">6.</span> <span class="nav-text">循环内创建（big or small）对象是否会引起内存抖动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软引用弱引用的错误使用"><span class="nav-number">7.</span> <span class="nav-text">软引用弱引用的错误使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">8.</span> <span class="nav-text">结论</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lizhaoxuan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lizhaoxuan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Lb3BBgF3jv5bwrRc8KBz1cuP-gzGzoHsz", "kaPIOk4dBLRc4wfrlc2Tffrm");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

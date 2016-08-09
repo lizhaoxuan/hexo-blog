@@ -1,0 +1,979 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="性能优化," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
+但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，也许最佳的解决办法便是从编码之初上着手进行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能编码规范">
+<meta property="og:url" content="http://lizhaoxuan.github.io/2016/03/17/AndroidCoding-performance-specification/index.html">
+<meta property="og:site_name" content="暴打小女孩-Blog">
+<meta property="og:description" content="前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
+但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，也许最佳的解决办法便是从编码之初上着手进行。">
+<meta property="og:image" content="http://images.cnitblog.com/blog/56846/201501/231407350162907.png">
+<meta property="og:updated_time" content="2016-08-09T06:50:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android性能编码规范">
+<meta name="twitter:description" content="前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
+但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，也许最佳的解决办法便是从编码之初上着手进行。">
+<meta name="twitter:image" content="http://images.cnitblog.com/blog/56846/201501/231407350162907.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/03/17/AndroidCoding-performance-specification/"/>
+
+  <title> Android性能编码规范 | 暴打小女孩-Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?56e0f8da7e01da926bfb931472e9a26d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暴打小女孩-Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/lizhaoxuan" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            Github
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android性能编码规范
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-17T16:20:58+08:00" content="2016-03-17">
+              2016-03-17
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/17/AndroidCoding-performance-specification/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/17/AndroidCoding-performance-specification/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/03/17/AndroidCoding-performance-specification/" class="leancloud_visitors" data-flag-title="Android性能编码规范">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。</p>
+<p>但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，也许最佳的解决办法便是从编码之初上着手进行。</p>
+<a id="more"></a>
+<p>传统的编码规范仅只是为了阅读规定了代码的编写格式，无数的性能优化博客则更多的是一种性能优化策略。一个应用的性能更多的是依靠程序员自身积累及习惯。</p>
+<p>本文目的是为了从编码初始硬性的对某些将会影响程序性能的操作进行规范，杜绝使用一定会引起性能问题的代码，以及给出更优的建议代码。</p>
+<p>值得注意的是，为了保证新的编码规范不会引起开发者强烈的反感与束缚，规范中并未涉及过于复杂与细化的编码操作，更多的是一种在原来基础上更优的代码替换。同时避免出现泛泛而谈的理论点，而是具体到固定代码如何做。本文并未对操作进行优先级划分，明确的优先级划分一定程度会引起开发者的惰性心理。每一种优化都很重要，笔者已经做了一定排序，排在前面的是你应该先注意的。</p>
+<p><br></p>
+<h3 id="编码之初"><a href="#编码之初" class="headerlink" title="编码之初"></a>编码之初</h3><h4 id="对于布局内容的数量要求"><a href="#对于布局内容的数量要求" class="headerlink" title="对于布局内容的数量要求"></a>对于布局内容的数量要求</h4><p>单个Activity显示的视图一般情况少于20，层数少于4。<br>对于Adapter控件，如ListView ，item的布局层数一般情况为2，不得超过3。</p>
+<p><strong>Activity加载中，背景的加载极其耗时，对其进行优化效果明显且工作简单</strong></p>
+<h4 id="将Acitivity-中的Window-的背景图设置为空。"><a href="#将Acitivity-中的Window-的背景图设置为空。" class="headerlink" title="将Acitivity 中的Window 的背景图设置为空。"></a>将Acitivity 中的Window 的背景图设置为空。</h4><p>getWindow().setBackgroundDrawable(null); </p>
+<p>android的默认背景不为空。</p>
+<h4 id="将Activity的背景放到Activity的Theme中设置。同时避免fragment和activity背景重复设置。"><a href="#将Activity的背景放到Activity的Theme中设置。同时避免fragment和activity背景重复设置。" class="headerlink" title="将Activity的背景放到Activity的Theme中设置。同时避免fragment和activity背景重复设置。"></a>将Activity的背景放到Activity的Theme中设置。同时避免fragment和activity背景重复设置。</h4><p>Theme设置属性</p>
+<pre><code>&lt;item name=&quot;android:windowBackground&quot;&gt;src_image&lt;/item&gt;
+</code></pre><h4 id="采用硬件加速"><a href="#采用硬件加速" class="headerlink" title="采用硬件加速"></a><del>采用硬件加速</del></h4><p>androidmanifest.xml中application添加 </p>
+<pre><code>android:hardwareAccelerated=&quot;true&quot;。
+</code></pre><p>需要注意的是：android 3.0以上才可以使用。</p>
+<h4 id="考虑使用Webp代替传统png图片。"><a href="#考虑使用Webp代替传统png图片。" class="headerlink" title="考虑使用Webp代替传统png图片。"></a>考虑使用Webp代替传统png图片。</h4><p>png虽能提供无损的图片，但相对于JPEG过大。Webp是既保持png优点，又能减少图片大小的新型格式。</p>
+<p>但你需要提前知道的是：编译器并不能预览webp格式的图片，所以在预览布局时，并不能显示你的素材。不过手机上是可以正常显示的。</p>
+<p>我的建议：在类似于表情库这样量大，且不需要预览的素材使用webp格式。还有背景这样体积大，但不影响布局预览的素材。</p>
+<p><br><br></p>
+<h3 id="禁止（避免）操作"><a href="#禁止（避免）操作" class="headerlink" title="禁止（避免）操作"></a>禁止（避免）操作</h3><p><strong>核心：少的对象创建，意味着少的GC操作。  杜绝引起内存溢出、内存抖动的操作行为</strong></p>
+<h4 id="禁止在单例模式中引用Activity的context。使用Application。"><a href="#禁止在单例模式中引用Activity的context。使用Application。" class="headerlink" title="禁止在单例模式中引用Activity的context。使用Application。"></a>禁止在单例模式中引用Activity的context。使用Application。</h4><p>如果在某个Activity中使用一下代码 就会造成该Activity一直被 Singleton 引用着，不能释放。</p>
+<pre><code>Singleton instance = Singleton.getInstance(this); // 禁止操作
+</code></pre><p>是使用 getApplicationContext()  这样就能避免内存泄露。</p>
+<pre><code>Singleton instance = Singleton.getInstance(getApplicationContext()); //建议操作
+</code></pre><h4 id="禁止使用枚举"><a href="#禁止使用枚举" class="headerlink" title="禁止使用枚举"></a>禁止使用枚举</h4><p>枚举将造成大量的内存浪费</p>
+<h4 id="禁止使用异步回调，"><a href="#禁止使用异步回调，" class="headerlink" title="禁止使用异步回调，"></a>禁止使用异步回调，</h4><p>异步回调被执行的时间不确定,很有可能发生在activity已经被销毁之后,这不仅仅很容易引起crash,还很容易发生内存泄露。</p>
+<h4 id="禁止static引用资源耗费过多的实例"><a href="#禁止static引用资源耗费过多的实例" class="headerlink" title="禁止static引用资源耗费过多的实例"></a>禁止static引用资源耗费过多的实例</h4><p>例如：context  , Activity</p>
+<p>对于某些不得不出现static引用context的情况，在onDestroy()方法中，解除Activity与static的绑定关系,从而去除static对Activity的引用，使Context能够被回收；</p>
+<h4 id="禁止内部的Getters-Setters"><a href="#禁止内部的Getters-Setters" class="headerlink" title="禁止内部的Getters/Setters"></a><del>禁止内部的Getters/Setters</del></h4><p><del>对于类的成员我们需要提供Get和Set方法</del></p>
+<p><del>但在类内部，应该避免使用Get和Set方法</del></p>
+<h4 id="禁止在非常复杂的布局上使用动画"><a href="#禁止在非常复杂的布局上使用动画" class="headerlink" title="禁止在非常复杂的布局上使用动画"></a>禁止在非常复杂的布局上使用动画</h4><h4 id="避免在循环（for、while、listView-getView方法、onDraw）里创建对象"><a href="#避免在循环（for、while、listView-getView方法、onDraw）里创建对象" class="headerlink" title="避免在循环（for、while、listView - getView方法、onDraw）里创建对象"></a>避免在循环（for、while、listView - getView方法、onDraw）里创建对象</h4><h4 id="避免在onDraw里创建对象"><a href="#避免在onDraw里创建对象" class="headerlink" title="避免在onDraw里创建对象"></a>避免在onDraw里创建对象</h4><p>对于onDraw中 Paint 我们可以这样优化</p>
+<pre><code>private Paint paint = new Paint();
+
+public on Draw(){
+    paint.setColor(mBorderColor);
+}        
+</code></pre><h4 id="避免使用static成员对象"><a href="#避免使用static成员对象" class="headerlink" title="避免使用static成员对象"></a>避免使用static成员对象</h4><p>static生命周期过长，对于需要传递的对象，使用(Intent)和(Handler)</p>
+<h4 id="避免使用浮点数"><a href="#避免使用浮点数" class="headerlink" title="避免使用浮点数"></a>避免使用浮点数</h4><p>浮点数会比整型慢两倍</p>
+<h4 id="避免Timer-schedule，对于延时操作，可用以下方式代替"><a href="#避免Timer-schedule，对于延时操作，可用以下方式代替" class="headerlink" title="避免Timer.schedule，对于延时操作，可用以下方式代替"></a>避免Timer.schedule，对于延时操作，可用以下方式代替</h4><pre><code>ScheduledExecutorService, 
+handler.postDelayed, 
+handler.postAtTime , 
+handler.sendMessageDelayed ,  
+View.postDelayed，      
+AlarmManager
+</code></pre><h4 id="避免加载过大图片。压缩或者使用对象池后再使用"><a href="#避免加载过大图片。压缩或者使用对象池后再使用" class="headerlink" title="避免加载过大图片。压缩或者使用对象池后再使用"></a>避免加载过大图片。压缩或者使用对象池后再使用</h4><h4 id="慎用异常"><a href="#慎用异常" class="headerlink" title="慎用异常"></a>慎用异常</h4><p>原因：创建一个异常时,需收集一个栈记录(stack track),用于描述异常是在何处创建的。</p>
+<p>构建这些此栈时需要为运行时栈做一份快照,这一部分开销很大。</p>
+<h4 id="避免使用递归"><a href="#避免使用递归" class="headerlink" title="避免使用递归"></a>避免使用递归</h4><h4 id="避免使用轮询"><a href="#避免使用轮询" class="headerlink" title="避免使用轮询"></a>避免使用轮询</h4><p>如果一定要使用，使用AlarmManager,或将多个轮询整合为一个轮询。并且添加轮询停止逻辑，在不必要的情况下停止轮询。</p>
+<h4 id="避免长周期内部类、匿名内部类长时间持有外部类对象导致相关资源无法释放。如：Handler-Thread-AsyncTask"><a href="#避免长周期内部类、匿名内部类长时间持有外部类对象导致相关资源无法释放。如：Handler-Thread-AsyncTask" class="headerlink" title="避免长周期内部类、匿名内部类长时间持有外部类对象导致相关资源无法释放。如：Handler, Thread , AsyncTask"></a>避免长周期内部类、匿名内部类长时间持有外部类对象导致相关资源无法释放。如：Handler, Thread , AsyncTask</h4><h3 id="优化操作"><a href="#优化操作" class="headerlink" title="优化操作"></a>优化操作</h3><p>  &lt;最优替换/&gt;</p>
+<h4 id="当数据量在100以内时，使用ArrayMap代替HashMap"><a href="#当数据量在100以内时，使用ArrayMap代替HashMap" class="headerlink" title="当数据量在100以内时，使用ArrayMap代替HashMap"></a>当数据量在100以内时，使用ArrayMap代替HashMap</h4><h4 id="为了避免自动装箱，当数量在1000以下时，使用如下容器"><a href="#为了避免自动装箱，当数量在1000以下时，使用如下容器" class="headerlink" title="为了避免自动装箱，当数量在1000以下时，使用如下容器"></a>为了避免自动装箱，当数量在1000以下时，使用如下容器</h4><pre><code>a)SparseBoolMap &lt;bool , obj&gt;
+b)SparseIntMap &lt;int , obj&gt;
+c)SparseLongMap &lt;long , obj&gt;
+d)LongSparseMap &lt;long ,obj&gt;
+</code></pre><h4 id="字符串拼接用StringBuilder或StringBuffer"><a href="#字符串拼接用StringBuilder或StringBuffer" class="headerlink" title="字符串拼接用StringBuilder或StringBuffer"></a>字符串拼接用StringBuilder或StringBuffer</h4><pre><code>//这种string第一次初始化的情况下，下面得效率更高
+String str1 = &quot;abc&quot;+“def”+&quot;hij&quot;;
+//非并发情况 ， StringBuilder效率更优
+StringBuilder str2 = str3 + str1 + &quot;builder&quot; ;
+//并发情况使用 StringBuffer
+StringBuffer str2 = str1 + &quot;buffer&quot; ;
+</code></pre><h4 id="文件、网络IO缓存，使用有缓存机制的输入流"><a href="#文件、网络IO缓存，使用有缓存机制的输入流" class="headerlink" title="文件、网络IO缓存，使用有缓存机制的输入流"></a>文件、网络IO缓存，使用有缓存机制的输入流</h4><pre><code>BufferedInputStream替代InputStream
+BufferedReader替代Reader
+BufferedReader替代BufferedInputStream. 
+</code></pre><h4 id="用两个平行的基本类型数组int-int-，代替一个对象Array-int-int"><a href="#用两个平行的基本类型数组int-int-，代替一个对象Array-int-int" class="headerlink" title="用两个平行的基本类型数组int[] int[]，代替一个对象Array(int , int)"></a>用两个平行的基本类型数组int[] int[]，代替一个对象Array(int , int)</h4><p>两个平行数组一定比一个对象数组的效率高。<br>但是如果是建立一个供第三方调用的API接口，需要牺牲一定效率保证接口友好</p>
+<h4 id="考虑使用Webp代替传统png图片。-1"><a href="#考虑使用Webp代替传统png图片。-1" class="headerlink" title="考虑使用Webp代替传统png图片。"></a>考虑使用Webp代替传统png图片。</h4><p>png虽能提供无损的图片，但相对于JPEG过大。Webp是既保持png优点，又能减少图片大小的新型格式。</p>
+<h4 id="在使用线程池的情况中，除需要设置优先级的线程使⽤用new-Thread创建外-其余线程创建使用new-Runnable。"><a href="#在使用线程池的情况中，除需要设置优先级的线程使⽤用new-Thread创建外-其余线程创建使用new-Runnable。" class="headerlink" title="在使用线程池的情况中，除需要设置优先级的线程使⽤用new Thread创建外,其余线程创建使用new Runnable。"></a>在使用线程池的情况中，除需要设置优先级的线程使⽤用new Thread创建外,其余线程创建使用new Runnable。</h4><p>因为⼦子类会有⾃自⼰己的属性创建需要更多开销。</p>
+<h4 id="在使用Factory或类似Factory模式的情况。"><a href="#在使用Factory或类似Factory模式的情况。" class="headerlink" title="在使用Factory或类似Factory模式的情况。"></a>在使用Factory或类似Factory模式的情况。</h4><p>少用new关键字创建对象，使用new，构造函数链中得所有构造函数都会被自动调用。</p>
+<pre><code>public static Credit createCredit(){
+    return new Credit();
+}
+</code></pre><p>改写为：</p>
+<pre><code>private static Credit BaseCredit = new Credit();
+public static Credit createCredit(){
+    return (Credit)BaseCredit.clone();
+}
+</code></pre><p><strong>你必须要注意的：clone是浅拷贝。</strong></p>
+<p> &lt;优化操作/&gt;</p>
+<h4 id="尽量使用局部变量"><a href="#尽量使用局部变量" class="headerlink" title="尽量使用局部变量"></a>尽量使用局部变量</h4><h4 id="for循环要求"><a href="#for循环要求" class="headerlink" title="for循环要求"></a>for循环要求</h4><p>禁止在for循环的第二个条件中调用任何方法，应这样做</p>
+<pre><code>int size = array.length;
+for(int i = 0; i&lt; size;i++)
+//替代：
+for(int i =0;i &lt; array.length;i++)
+</code></pre><p>在不需要使用下标的情况下，建议使用for_each循环</p>
+<h4 id="如果没有特殊需求，使用基本数据类型，而非对象类型。"><a href="#如果没有特殊需求，使用基本数据类型，而非对象类型。" class="headerlink" title="如果没有特殊需求，使用基本数据类型，而非对象类型。"></a>如果没有特殊需求，使用基本数据类型，而非对象类型。</h4><p>基本类似指：int , double , char等。</p>
+<h4 id="静态方法代替-虚拟对象执行方法（虚拟对象执行方法new-Object1-tool1-）"><a href="#静态方法代替-虚拟对象执行方法（虚拟对象执行方法new-Object1-tool1-）" class="headerlink" title="静态方法代替 虚拟对象执行方法（虚拟对象执行方法new Object1().tool1();）"></a>静态方法代替 虚拟对象执行方法（虚拟对象执行方法new Object1().tool1();）</h4><p>如果不需要访问某对象的字段，将方法设置为静态，调用会加速15%到20%。</p>
+<h4 id="对于使用超过两次的对象成员，-将成员缓存到本地。"><a href="#对于使用超过两次的对象成员，-将成员缓存到本地。" class="headerlink" title="对于使用超过两次的对象成员， 将成员缓存到本地。"></a>对于使用超过两次的对象成员， 将成员缓存到本地。</h4><p>反复使用的变量，保存到本地成为临时变量活成员变量后进行操作。尤其是在循环中</p>
+<p>例：多次比较目标时间和当前时间差。        </p>
+<h4 id="当new的对象并不是100-一定会被用到时，在使用时创建-有效减少不必要的对象生成"><a href="#当new的对象并不是100-一定会被用到时，在使用时创建-有效减少不必要的对象生成" class="headerlink" title="当new的对象并不是100%一定会被用到时，在使用时创建,有效减少不必要的对象生成"></a>当new的对象并不是100%一定会被用到时，在使用时创建,有效减少不必要的对象生成</h4><pre><code>Object ob = new Object();
+int value;
+if(i&gt;0)
+    value = ob.getVlaue();
+
+改写为：
+int value;
+
+if(i&gt;0){
+    Object ob = new Object();   //用到时加载
+    value = ob.getVlaue();
+}
+</code></pre><h4 id="不在使用的变量，手动置为null"><a href="#不在使用的变量，手动置为null" class="headerlink" title="不在使用的变量，手动置为null"></a>不在使用的变量，手动置为null</h4><p>通常对于对象成员如此使用，局部变量不需要</p>
+<pre><code>this.object = null；
+</code></pre><h4 id="常量用-static-final修饰"><a href="#常量用-static-final修饰" class="headerlink" title="常量用 static final修饰"></a>常量用 static final修饰</h4><p>&lt;缓存/&gt; </p>
+<h4 id="消息缓存，从handler消息池中取预存的Message"><a href="#消息缓存，从handler消息池中取预存的Message" class="headerlink" title="消息缓存，从handler消息池中取预存的Message"></a>消息缓存，从handler消息池中取预存的Message</h4><pre><code>handler.sendMessage(handler.obtainMessage(0, object)); 
+</code></pre><h4 id="尽量使用对象池机制"><a href="#尽量使用对象池机制" class="headerlink" title="尽量使用对象池机制"></a>尽量使用对象池机制</h4><p>对象池机制可以有效避免内存抖动提升性能</p>
+<p>优化：我们可以对对象进行预加载，有效提高程序首次运行速度</p>
+<p>警告：为避免内存泄露，需要保证所有对象和外部对象没有引用关系</p>
+<h4 id="使用对象池时，在使用结束后，需要保证对象池中对象和外部对象没有引用关系"><a href="#使用对象池时，在使用结束后，需要保证对象池中对象和外部对象没有引用关系" class="headerlink" title="使用对象池时，在使用结束后，需要保证对象池中对象和外部对象没有引用关系"></a>使用对象池时，在使用结束后，需要保证对象池中对象和外部对象没有引用关系</h4><p>通常，我们可以通过 objcet = null ; 来去掉对象的引用。</p>
+<h4 id="禁止将View添加到没有清除机制的容器里"><a href="#禁止将View添加到没有清除机制的容器里" class="headerlink" title="禁止将View添加到没有清除机制的容器里"></a>禁止将View添加到没有清除机制的容器里</h4><pre><code>如：WeakHashMap，没有清除机制，易引起内存溢出
+</code></pre><p>&lt;图片/&gt;</p>
+<h4 id="对于不同目的的图片需求（Bitmap），使用不同的图片解码格式"><a href="#对于不同目的的图片需求（Bitmap），使用不同的图片解码格式" class="headerlink" title="对于不同目的的图片需求（Bitmap），使用不同的图片解码格式"></a>对于不同目的的图片需求（Bitmap），使用不同的图片解码格式</h4><pre><code>itmap output = Bitmap.createBitmap(scaledSrcBmp.getWidth(),
+scaledSrcBmp.getHeight(),Config.ARGB_8888);
+</code></pre><ul>
+<li><p>ARGB_8888        32Bit        </p>
+<p>  (这是一种高质量的图片格式，电脑上普通采用的格式。它也是Android手机上一个BitMap的)</p>
+</li>
+<li><p>RGB_565        16Bit    </p>
+<p>  (对于没有透明和半透明颜色的图片来说，该格式的图片能够达到比较的呈现效果，相对于ARGB_8888来说也能减少一半的内存开销。因此它是一个不错的选择。另外我们通过android.content.res.Resources来取得一个张图片时，它也是以该格式来构建BitMap的<br>从 Android4.0 开始，该选项无效。即使设置为该值，系统任然会采用  ARGB_8888 来构造图片)</p>
+</li>
+<li><p>ARGB_4444        16Bit        </p>
+<p>  (这种格式的图片，看起来质量太差，已经不推荐使用)</p>
+</li>
+<li><p>ALPHA_8        8Bit          </p>
+<p>  (此时图片只有alpha值，没有RGB值， )</p>
+</li>
+</ul>
+<h4 id="对于图片缩放，提供一下几种方式和其各自优缺点。"><a href="#对于图片缩放，提供一下几种方式和其各自优缺点。" class="headerlink" title="对于图片缩放，提供一下几种方式和其各自优缺点。"></a>对于图片缩放，提供一下几种方式和其各自优缺点。</h4><pre><code>/* 
+ *1.  Android自带缩放API ,使用方便，但需要一次性讲图片读入内存，对于过大图片容易引起内存溢出
+*/
+createScaleBitmap(inBmp , 64 , 128);
+/*
+ *2.     inSimpleSize可以等比例缩放图片，参数表示 1/n.同时避免把原图加载到内存中  
+*/
+mBitmapOptions.inSimpleSize = 4 ;  //原图 1/4 
+mBitmap = BitmapFactory.decodeFile(fileName,mBitmapOptions);
+</code></pre><h4 id="Bitmap使用结束后，recycle（）释放内存"><a href="#Bitmap使用结束后，recycle（）释放内存" class="headerlink" title="Bitmap使用结束后，recycle（）释放内存"></a>Bitmap使用结束后，recycle（）释放内存</h4><pre><code>Bitmap.recycle();
+</code></pre><h4 id="相同图片Bitmap占用内存量要比Drawable大，可以的话尽量使用Drawable"><a href="#相同图片Bitmap占用内存量要比Drawable大，可以的话尽量使用Drawable" class="headerlink" title="相同图片Bitmap占用内存量要比Drawable大，可以的话尽量使用Drawable"></a>相同图片Bitmap占用内存量要比Drawable大，可以的话尽量使用Drawable</h4><p>Bitmap提供了对图片更多的操作。<br>同时Bitmap可以无条件的任意转为Drawable。但反过来就不行了，并不是任何一个Drawable都可以转为Bitmap,其转换关系类似于子类与父类之间转换，但本质有区别。</p>
+<p>&lt;布局/&gt;</p>
+<h4 id="慎用layout-weight属性，用相对布局替换线性布局亦可实现相同效果"><a href="#慎用layout-weight属性，用相对布局替换线性布局亦可实现相同效果" class="headerlink" title="慎用layout_weight属性，用相对布局替换线性布局亦可实现相同效果"></a>慎用layout_weight属性，用相对布局替换线性布局亦可实现相同效果</h4><h4 id="避免多个线性布局嵌套，使用相对布局减少层级"><a href="#避免多个线性布局嵌套，使用相对布局减少层级" class="headerlink" title="避免多个线性布局嵌套，使用相对布局减少层级"></a>避免多个线性布局嵌套，使用相对布局减少层级</h4><h4 id="对于TextView和ImageView组成的Layout，直接使用TextView替换"><a href="#对于TextView和ImageView组成的Layout，直接使用TextView替换" class="headerlink" title="对于TextView和ImageView组成的Layout，直接使用TextView替换"></a>对于TextView和ImageView组成的Layout，直接使用TextView替换</h4><pre><code>&lt;TextView
+    android:id=&quot;@+id/nameText&quot;
+    android:layout_width=&quot;wrap_content&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;暴打小女孩&quot;
+    android:layout_marginBottom=&quot;center&quot;
+    android:gravity=&quot;center&quot;
+       android:drawableTop=&quot;@drawable/icon&quot;/&gt;  //将图片置于上方  
+</code></pre><h4 id="默认不会显示的布局使用-viewstub-标签"><a href="#默认不会显示的布局使用-viewstub-标签" class="headerlink" title="默认不会显示的布局使用 viewstub 标签"></a>默认不会显示的布局使用 viewstub 标签</h4><p><strong>但是并没有发现使用viewstub和GONE在效率上的区别，还是更倾向于使用GONE</strong></p>
+<pre><code>&lt;ViewStub
+    android:id=&quot;@+id/network_error_layout&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:layout=&quot;@layout/network_error&quot; /&gt;
+
+//非显示的转换ViewStub 获取
+View viewStub = findViewById(R.id.network_error_layout);
+viewStub.setVisibility(View.VISIBLE); // ViewStub被展开后的布局所替换
+networkErrorView = findViewById(R.id.network_error_layout); // 获取 展开后的布局            
+</code></pre><h4 id="对于两次以上相同的infalte操作，用成员变量代替局部变量，避免重复加载"><a href="#对于两次以上相同的infalte操作，用成员变量代替局部变量，避免重复加载" class="headerlink" title="对于两次以上相同的infalte操作，用成员变量代替局部变量，避免重复加载"></a>对于两次以上相同的infalte操作，用成员变量代替局部变量，避免重复加载</h4><pre><code>class test{
+    private View view = null;
+    public void getView(){
+        view = findViewById(R.id.network_error_layout);
+    }
+    publi void showView(){
+        view.setVisiblity(View.VIWIBLE);
+    }
+}
+</code></pre><h4 id="对于重复出现超过2-3次的子布局，用-include-实现复用。"><a href="#对于重复出现超过2-3次的子布局，用-include-实现复用。" class="headerlink" title="对于重复出现超过2-3次的子布局，用 include 实现复用。"></a>对于重复出现超过2-3次的子布局，用 include 实现复用。</h4><pre><code>&lt;include layout=&quot;@layout/foot.xml&quot; /&gt;
+</code></pre><h4 id="当复用的布局中子View对所依赖的根节点要求不高时，使用-merge-作为根节点"><a href="#当复用的布局中子View对所依赖的根节点要求不高时，使用-merge-作为根节点" class="headerlink" title="当复用的布局中子View对所依赖的根节点要求不高时，使用 merge 作为根节点"></a>当<include>复用的布局中子View对所依赖的根节点要求不高时，使用 merge 作为根节点</include></h4><p>要求不高标准：非复杂结构布局，无Background,padding等属性，且子View数量较少</p>
+<pre><code>&lt;merge xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot; &gt;
+    &lt;Button
+        android:id=&quot;@+id/button&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;@dimen/dp_40&quot;
+        android:layout_above=&quot;@+id/text&quot;/&gt;
+    &lt;TextView
+        android:id=&quot;@+id/text&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;@dimen/dp_40&quot;
+        android:layout_alignParentBottom=&quot;true&quot;
+        android:text=&quot;@string/app_name&quot; /&gt;
+&lt;/merge&gt;
+</code></pre><p><br><br></p>
+<h3 id="性能优化策略"><a href="#性能优化策略" class="headerlink" title="性能优化策略"></a>性能优化策略</h3><ul>
+<li>减少过渡绘制，可以极大提高动画效率</li>
+<li><p>使用简单的动画效果，如：位置移动，慎用改变内容的动画效率</p>
+<pre><code>动画的绘制过程：创建DisplayList → 渲染DisplayList → 更新到屏幕。
+（DisplayList:DisplayList帮助完成把XML布局文件转换成GPU能识别并绘制的对象）
+
+不改变内容，DsiplayList不会重建，提高动画效率
+</code></pre></li>
+<li><p>捆绑非及时的网络请求，统一执行。</p>
+</li>
+<li>网络数据的预取：预先判断此次请求后，后续零散请求是否很有可能马上被触发，对此类数据进行预取。</li>
+<li>回退机制：对于轮询式的网络请求，服务器端判断此次请求和上次请求数据是否发生变化，负责不传输</li>
+</ul>
+<h3 id="性能优化心得"><a href="#性能优化心得" class="headerlink" title="性能优化心得"></a>性能优化心得</h3><p><br></p>
+<p>在Android系统 ，一个大多数人存在的误区：手机变卡 = 内存不足。所以才依靠第三方的软件不停的清理手机内存。依照这个惯性心理，我们在做性能优化过程中，优化的方向变成了尽量少的使用内存资源。</p>
+<p>其实这是一个不那么准确的误区。</p>
+<p>手机卡不卡和内存大小没有关系，直接影响手机流畅度的是CPU，只有当CPU超负荷运行时，手机才会变卡。（当然，大部分CPU超负荷运行的时候，内存也满载，这是引起误解的原因，但有时即使你清理了内存，手机依然卡）</p>
+<p>那么如何优化CPU呢？其实还是在内存上做，但重点不一样了，我们不能因为怕占内存而把所有数据存到本地存储（有点极端了，只是举一个例子），用一次取一次，这是极其耗时的。内存我们是一定要用的，数据存于内存，CPU读取快，应用运行便流畅。避免大量占用内存的原因不是怕内存满载，而是要避免 GC 。</p>
+<p>世上没有免费得午餐，对象创建后总是要回收的—GC。那么GC是由谁来做的呢？CPU。最重要的是，当进行GC时，其他所有线程都会被暂停，虽然系统已经尽力让GC的时间变短，但当大量的GC操作发生时，依然会影响到用户体验。</p>
+<p>所以，如何让CPU的使用率更高，不做无用功。如何更高效的利用内存，避免大量的GC，就是需要我们优化的地方了。</p>
+<p><br><br></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><br></p>
+<p><a href="http://www.cnblogs.com/hanyonglu/p/4244035.html" target="_blank" rel="external">Android性能优化典范（一)</a></p>
+<p><a href="http://hukai.me/android-performance-patterns-season-2/" target="_blank" rel="external">Android性能优化典范（二)</a></p>
+<p><a href="http://hukai.me/android-performance-patterns-season-3/" target="_blank" rel="external">Android性能优化典范（三)</a></p>
+<p><br><br></p>
+<h3 id="相关知识详述"><a href="#相关知识详述" class="headerlink" title="相关知识详述"></a>相关知识详述</h3><h4 id="为什么将背景设置在主题可以减少加载时间？"><a href="#为什么将背景设置在主题可以减少加载时间？" class="headerlink" title="为什么将背景设置在主题可以减少加载时间？"></a>为什么将背景设置在主题可以减少加载时间？</h4><p>回答这个问题，我们先要知道 activity的画面是如何绘制到屏幕上的？</p>
+<p>Resterization栅格化是绘制那些Button，Shape，Path，String，Bitmap等组件最基础的操作。它把那些组件拆分到不同的像素上进行显示。这是一个很费时的操作，GPU的引入就是为了加快栅格化的操作。</p>
+<p>CPU负责把UI组件计算成Polygons，Texture纹理，然后交给GPU进行栅格化渲染。</p>
+<p>然而每次从CPU转移到GPU是一件很麻烦的事情，所幸的是OpenGL ES可以把那些需要渲染的纹理Hold在GPU Memory里面，在下次需要渲染的时候直接进行操作。所以如果你更新了GPU所hold住的纹理内容，那么之前保存的状态就丢失了。</p>
+<p>在Android里面那些由主题所提供的资源，例如Bitmaps，Drawables都是一起打包到统一的Texture纹理当中，然后再传递到GPU里面，这意味着每次你需要使用这些资源的时候，都是直接从纹理里面进行获取渲染的。</p>
+<h4 id="为什么禁止onDraw创建对象？"><a href="#为什么禁止onDraw创建对象？" class="headerlink" title="为什么禁止onDraw创建对象？"></a>为什么禁止onDraw创建对象？</h4><p>首先onDraw()方法是执行在UI线程的，在UI线程尽量避免做任何可能影响到性能的操作。虽然分配内存的操作并不需要花费太多系统资源，但是这并不意味着是免费无代价的。设备有一定的刷新频率，导致View的onDraw方法会被频繁的调用，如果onDraw方法效率低下，在频繁刷新累积的效应下，效率低的问题会被扩大，然后会对性能有严重的影响。</p>
+<p>如果在onDraw里面执行内存分配的操作，会容易导致内存抖动，GC频繁被触发，虽然GC后来被改进为执行在另外一个后台线程(GC操作在2.3以前是同步的，之后是并发)，可是频繁的GC的操作还是会影响到CPU，影响到电量的消耗。</p>
+<h4 id="为什么要尽量使用局部变量？"><a href="#为什么要尽量使用局部变量？" class="headerlink" title="为什么要尽量使用局部变量？"></a>为什么要尽量使用局部变量？</h4><p>Android系统里面有一个Generational Heap Memory的模型，系统会根据内存中不同的内存数据类型分别执行不同的GC操作。例如，最近刚分配的对象会放在Young Generation区域，这个区域的对象通常都是会快速被创建并且很快被销毁回收的，</p>
+<p>同时这个区域的GC操作速度也是比Old Generation区域的GC操作速度更快的。</p>
+<p><img src="http://images.cnitblog.com/blog/56846/201501/231407350162907.png" alt="image"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/性能优化/" rel="tag">#性能优化</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/17/androidgcdiaoyan/" rel="next" title="Android GC机制实践调研">
+                <i class="fa fa-chevron-left"></i> Android GC机制实践调研
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/17/apt-Grammar-explanation/" rel="prev" title="Android编译时注解框架5-语法讲解">
+                Android编译时注解框架5-语法讲解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/17/AndroidCoding-performance-specification/"
+           data-title="Android性能编码规范" data-url="http://lizhaoxuan.github.io/2016/03/17/AndroidCoding-performance-specification/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpeg"
+               alt="lizhaoxuan" />
+          <p class="site-author-name" itemprop="name">lizhaoxuan</p>
+          <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码之初"><span class="nav-number">2.</span> <span class="nav-text">编码之初</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对于布局内容的数量要求"><span class="nav-number">2.1.</span> <span class="nav-text">对于布局内容的数量要求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将Acitivity-中的Window-的背景图设置为空。"><span class="nav-number">2.2.</span> <span class="nav-text">将Acitivity 中的Window 的背景图设置为空。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将Activity的背景放到Activity的Theme中设置。同时避免fragment和activity背景重复设置。"><span class="nav-number">2.3.</span> <span class="nav-text">将Activity的背景放到Activity的Theme中设置。同时避免fragment和activity背景重复设置。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#采用硬件加速"><span class="nav-number">2.4.</span> <span class="nav-text">采用硬件加速</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#考虑使用Webp代替传统png图片。"><span class="nav-number">2.5.</span> <span class="nav-text">考虑使用Webp代替传统png图片。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁止（避免）操作"><span class="nav-number">3.</span> <span class="nav-text">禁止（避免）操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#禁止在单例模式中引用Activity的context。使用Application。"><span class="nav-number">3.1.</span> <span class="nav-text">禁止在单例模式中引用Activity的context。使用Application。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#禁止使用枚举"><span class="nav-number">3.2.</span> <span class="nav-text">禁止使用枚举</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#禁止使用异步回调，"><span class="nav-number">3.3.</span> <span class="nav-text">禁止使用异步回调，</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#禁止static引用资源耗费过多的实例"><span class="nav-number">3.4.</span> <span class="nav-text">禁止static引用资源耗费过多的实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#禁止内部的Getters-Setters"><span class="nav-number">3.5.</span> <span class="nav-text">禁止内部的Getters/Setters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#禁止在非常复杂的布局上使用动画"><span class="nav-number">3.6.</span> <span class="nav-text">禁止在非常复杂的布局上使用动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免在循环（for、while、listView-getView方法、onDraw）里创建对象"><span class="nav-number">3.7.</span> <span class="nav-text">避免在循环（for、while、listView - getView方法、onDraw）里创建对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免在onDraw里创建对象"><span class="nav-number">3.8.</span> <span class="nav-text">避免在onDraw里创建对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免使用static成员对象"><span class="nav-number">3.9.</span> <span class="nav-text">避免使用static成员对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免使用浮点数"><span class="nav-number">3.10.</span> <span class="nav-text">避免使用浮点数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免Timer-schedule，对于延时操作，可用以下方式代替"><span class="nav-number">3.11.</span> <span class="nav-text">避免Timer.schedule，对于延时操作，可用以下方式代替</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免加载过大图片。压缩或者使用对象池后再使用"><span class="nav-number">3.12.</span> <span class="nav-text">避免加载过大图片。压缩或者使用对象池后再使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#慎用异常"><span class="nav-number">3.13.</span> <span class="nav-text">慎用异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免使用递归"><span class="nav-number">3.14.</span> <span class="nav-text">避免使用递归</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免使用轮询"><span class="nav-number">3.15.</span> <span class="nav-text">避免使用轮询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免长周期内部类、匿名内部类长时间持有外部类对象导致相关资源无法释放。如：Handler-Thread-AsyncTask"><span class="nav-number">3.16.</span> <span class="nav-text">避免长周期内部类、匿名内部类长时间持有外部类对象导致相关资源无法释放。如：Handler, Thread , AsyncTask</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化操作"><span class="nav-number">4.</span> <span class="nav-text">优化操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#当数据量在100以内时，使用ArrayMap代替HashMap"><span class="nav-number">4.1.</span> <span class="nav-text">当数据量在100以内时，使用ArrayMap代替HashMap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为了避免自动装箱，当数量在1000以下时，使用如下容器"><span class="nav-number">4.2.</span> <span class="nav-text">为了避免自动装箱，当数量在1000以下时，使用如下容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串拼接用StringBuilder或StringBuffer"><span class="nav-number">4.3.</span> <span class="nav-text">字符串拼接用StringBuilder或StringBuffer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件、网络IO缓存，使用有缓存机制的输入流"><span class="nav-number">4.4.</span> <span class="nav-text">文件、网络IO缓存，使用有缓存机制的输入流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用两个平行的基本类型数组int-int-，代替一个对象Array-int-int"><span class="nav-number">4.5.</span> <span class="nav-text">用两个平行的基本类型数组int[] int[]，代替一个对象Array(int , int)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#考虑使用Webp代替传统png图片。-1"><span class="nav-number">4.6.</span> <span class="nav-text">考虑使用Webp代替传统png图片。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在使用线程池的情况中，除需要设置优先级的线程使⽤用new-Thread创建外-其余线程创建使用new-Runnable。"><span class="nav-number">4.7.</span> <span class="nav-text">在使用线程池的情况中，除需要设置优先级的线程使⽤用new Thread创建外,其余线程创建使用new Runnable。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在使用Factory或类似Factory模式的情况。"><span class="nav-number">4.8.</span> <span class="nav-text">在使用Factory或类似Factory模式的情况。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#尽量使用局部变量"><span class="nav-number">4.9.</span> <span class="nav-text">尽量使用局部变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for循环要求"><span class="nav-number">4.10.</span> <span class="nav-text">for循环要求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如果没有特殊需求，使用基本数据类型，而非对象类型。"><span class="nav-number">4.11.</span> <span class="nav-text">如果没有特殊需求，使用基本数据类型，而非对象类型。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态方法代替-虚拟对象执行方法（虚拟对象执行方法new-Object1-tool1-）"><span class="nav-number">4.12.</span> <span class="nav-text">静态方法代替 虚拟对象执行方法（虚拟对象执行方法new Object1().tool1();）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于使用超过两次的对象成员，-将成员缓存到本地。"><span class="nav-number">4.13.</span> <span class="nav-text">对于使用超过两次的对象成员， 将成员缓存到本地。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#当new的对象并不是100-一定会被用到时，在使用时创建-有效减少不必要的对象生成"><span class="nav-number">4.14.</span> <span class="nav-text">当new的对象并不是100%一定会被用到时，在使用时创建,有效减少不必要的对象生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不在使用的变量，手动置为null"><span class="nav-number">4.15.</span> <span class="nav-text">不在使用的变量，手动置为null</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常量用-static-final修饰"><span class="nav-number">4.16.</span> <span class="nav-text">常量用 static final修饰</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息缓存，从handler消息池中取预存的Message"><span class="nav-number">4.17.</span> <span class="nav-text">消息缓存，从handler消息池中取预存的Message</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#尽量使用对象池机制"><span class="nav-number">4.18.</span> <span class="nav-text">尽量使用对象池机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用对象池时，在使用结束后，需要保证对象池中对象和外部对象没有引用关系"><span class="nav-number">4.19.</span> <span class="nav-text">使用对象池时，在使用结束后，需要保证对象池中对象和外部对象没有引用关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#禁止将View添加到没有清除机制的容器里"><span class="nav-number">4.20.</span> <span class="nav-text">禁止将View添加到没有清除机制的容器里</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于不同目的的图片需求（Bitmap），使用不同的图片解码格式"><span class="nav-number">4.21.</span> <span class="nav-text">对于不同目的的图片需求（Bitmap），使用不同的图片解码格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于图片缩放，提供一下几种方式和其各自优缺点。"><span class="nav-number">4.22.</span> <span class="nav-text">对于图片缩放，提供一下几种方式和其各自优缺点。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bitmap使用结束后，recycle（）释放内存"><span class="nav-number">4.23.</span> <span class="nav-text">Bitmap使用结束后，recycle（）释放内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相同图片Bitmap占用内存量要比Drawable大，可以的话尽量使用Drawable"><span class="nav-number">4.24.</span> <span class="nav-text">相同图片Bitmap占用内存量要比Drawable大，可以的话尽量使用Drawable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#慎用layout-weight属性，用相对布局替换线性布局亦可实现相同效果"><span class="nav-number">4.25.</span> <span class="nav-text">慎用layout_weight属性，用相对布局替换线性布局亦可实现相同效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免多个线性布局嵌套，使用相对布局减少层级"><span class="nav-number">4.26.</span> <span class="nav-text">避免多个线性布局嵌套，使用相对布局减少层级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于TextView和ImageView组成的Layout，直接使用TextView替换"><span class="nav-number">4.27.</span> <span class="nav-text">对于TextView和ImageView组成的Layout，直接使用TextView替换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#默认不会显示的布局使用-viewstub-标签"><span class="nav-number">4.28.</span> <span class="nav-text">默认不会显示的布局使用 viewstub 标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于两次以上相同的infalte操作，用成员变量代替局部变量，避免重复加载"><span class="nav-number">4.29.</span> <span class="nav-text">对于两次以上相同的infalte操作，用成员变量代替局部变量，避免重复加载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于重复出现超过2-3次的子布局，用-include-实现复用。"><span class="nav-number">4.30.</span> <span class="nav-text">对于重复出现超过2-3次的子布局，用 include 实现复用。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#当复用的布局中子View对所依赖的根节点要求不高时，使用-merge-作为根节点"><span class="nav-number">4.31.</span> <span class="nav-text">当复用的布局中子View对所依赖的根节点要求不高时，使用 merge 作为根节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能优化策略"><span class="nav-number">5.</span> <span class="nav-text">性能优化策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能优化心得"><span class="nav-number">6.</span> <span class="nav-text">性能优化心得</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关知识详述"><span class="nav-number">8.</span> <span class="nav-text">相关知识详述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么将背景设置在主题可以减少加载时间？"><span class="nav-number">8.1.</span> <span class="nav-text">为什么将背景设置在主题可以减少加载时间？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么禁止onDraw创建对象？"><span class="nav-number">8.2.</span> <span class="nav-text">为什么禁止onDraw创建对象？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要尽量使用局部变量？"><span class="nav-number">8.3.</span> <span class="nav-text">为什么要尽量使用局部变量？</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lizhaoxuan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lizhaoxuan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Lb3BBgF3jv5bwrRc8KBz1cuP-gzGzoHsz", "kaPIOk4dBLRc4wfrlc2Tffrm");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

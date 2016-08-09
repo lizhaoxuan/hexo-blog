@@ -1,0 +1,1167 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="性能优化," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="概述上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  背景-background（背景包括背景图片、颜色、形状、边框等等）。
+那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。这个时候，你就需要   Android过度绘制深度优化—View提前绘制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android过度绘制深度优化---View提前绘制">
+<meta property="og:url" content="http://lizhaoxuan.github.io/2015/09/09/SoftWidget/index.html">
+<meta property="og:site_name" content="暴打小女孩-Blog">
+<meta property="og:description" content="概述上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  背景-background（背景包括背景图片、颜色、形状、边框等等）。
+那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。这个时候，你就需要   Android过度绘制深度优化—View提前绘制">
+<meta property="og:image" content="http://img.blog.csdn.net/20151103211615749">
+<meta property="og:image" content="http://img.blog.csdn.net/20151103211244952">
+<meta property="og:image" content="http://img.blog.csdn.net/20151107151634177">
+<meta property="og:updated_time" content="2016-08-09T07:31:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android过度绘制深度优化---View提前绘制">
+<meta name="twitter:description" content="概述上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  背景-background（背景包括背景图片、颜色、形状、边框等等）。
+那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。这个时候，你就需要   Android过度绘制深度优化—View提前绘制">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20151103211615749">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2015/09/09/SoftWidget/"/>
+
+  <title> Android过度绘制深度优化---View提前绘制 | 暴打小女孩-Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?56e0f8da7e01da926bfb931472e9a26d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暴打小女孩-Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/lizhaoxuan" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            Github
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android过度绘制深度优化---View提前绘制
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-09-09T16:20:58+08:00" content="2015-09-09">
+              2015-09-09
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/09/09/SoftWidget/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/09/SoftWidget/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/09/09/SoftWidget/" class="leancloud_visitors" data-flag-title="Android过度绘制深度优化---View提前绘制">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  <strong>背景-background</strong>（背景包括背景图片、颜色、形状、边框等等）。</p>
+<p>那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。这个时候，你就需要   <strong>Android过度绘制深度优化—View提前绘制</strong></p>
+<p>先说原理：<strong>不做处理的View绘制过程像一把刷子一层层去绘制View，第一层刷一个形状，第二层刷背景图片/颜色，第三层刷文字等等，那么，如果我们将View提前画好，然后交给系统去绘制。这样不管你的View之前刷过多少次，系统只需要绘制一次。这样，过度绘制就可以轻松解决啦！</strong></p>
+<a id="more"></a>
+<p>先上效果图：<br>优化前   &amp;  优化后：<br><img src="http://img.blog.csdn.net/20151103211615749" width="150" height="250" alt="图片名称" align="center">        <img src="http://img.blog.csdn.net/20151103211244952" width="150" height="250" alt="图片名称" align="center"></p>
+<p><strong>Tips：</strong><br>1.首先控件的实现方式略有不同（带图标的输入框），但对我们这片文章讲的东西并没有冲突。<br>2.优化后的图片，为了突出所以添加了带图案的背景图片</p>
+<p><strong>颜色说明：</strong><br>优化前：</p>
+<ul>
+<li>Window（无色） 绘制一次</li>
+<li>背景（蓝色） 绘制2次</li>
+<li>Logo,输入框带小图标的背景，按钮,忘记密码（绿色）绘制三次</li>
+<li>输入框本身，按钮文字 （红色） 绘制三次</li>
+<li>输入框内部文字 （深红色）  绘制四次</li>
+</ul>
+<p>优化后：</p>
+<ul>
+<li>背景（无色） 绘制一次   ： 背景设置到主题后，将取代原本Window默认背景。</li>
+<li>Logo，按钮，带形状和颜色的输入框背景，忘记密码文字 （蓝色） 绘制两次： 这里我们对输入框和按钮进行了提前绘制，并去掉了按钮默认背景，所以按钮加其内部文字只绘制一次。带形状、颜色的输入框只绘制一次。</li>
+<li>文本框上面的图片和文字（绿色）绘制三次</li>
+</ul>
+<h2 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h2><p>View提前绘制可以从根本上去解决问题过度绘制问题，但并不是没有代价的，但你在做优化前，需要注意一下几个点：</p>
+<ul>
+<li>View的提前绘制只能应用到那些静态的View</li>
+<li>View的提前绘制并不能加过View的绘制速度，甚至会有小幅度的绘制时间增加。（提前在内存中进行View的绘制是有代价的）</li>
+<li>界面是有一定刷新频率的，每一次刷新都会调用View的onDraw方法，而View提前绘制就是在onDraw中进行。所以你需要考虑效率和性能问题。<strong>如：避免在onDraw创建对象，避免在onDraw进行绘制，应在构造函数中画好，交给onDraw。</strong></li>
+<li>对于登录界面，提前绘制的工作量和其收益比起来是得不偿失的，所以你需要进行权衡，哪里需要提前绘制。<strong>通常我是这样做的：大量被重用的控件，非常复杂的布局，布局之上有动画效果（过度绘制对动画的影响是极大的）</strong></li>
+</ul>
+<p>也许在你看到View的提前绘制是有代价的，就决定不在进行优化，这是错误的。除非极其复杂的View，负责提前绘制带来收益是绝对大于那多出来的一丢丢绘制时间的。</p>
+<p>另外即使类似于登录界面这样的简单布局没有必要进行过度绘制优化，但依然有大量的优秀公司进行了优化。我认为有两个点：<br>1.登录界面是应用打开的第一个界面，也是整个应用最简单的界面之一，用它来试手肯定是第一选择。<br>2.这是一个态度和逼格的问题。打开过度绘制调试后，别人家的应用蓝蓝的，怎么你的应用就是红彤彤一片？</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>啊，好吧，废话说的有点多了，下面我们上代码。</p>
+<p>Github链接：<a href="https://github.com/lizhaoxuan/SoftWidgetDemo.git" target="_blank" rel="external">https://github.com/lizhaoxuan/SoftWidgetDemo.git</a></p>
+<p>首先看目录结构：</p>
+<p><img src="http://img.blog.csdn.net/20151107151634177" width="180" height="230" alt="图片名称" align="center"></p>
+<p>有四个核心类：<br>DrawingCanvas.java 我们提前绘制就在这个类上画，然后交给onDraw，一气呵成。<br>PaintBox.java 里面包含了几个绘制方法，比如画背景颜色和形状</p>
+<p>SRoundRect_Button.java  SRoundRect_LinearLayout.java 是两个自定义控件，从名字上可以看出来，两个圆角矩形的按钮和线性布局</p>
+<p>然后看布局文件：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    android:padding=&quot;10dp&quot;&gt;
+
+    &lt;ImageView
+        android:id=&quot;@+id/logoView&quot;
+        android:layout_width=&quot;100dp&quot;
+        android:layout_height=&quot;100dp&quot;
+        android:layout_centerHorizontal=&quot;true&quot;
+        android:layout_marginTop=&quot;80dp&quot;
+        android:src=&quot;@drawable/logo&quot;/&gt;
+
+    &lt;com.example.zhaoxuanli.softwidgetdemo.soft.widget.SRoundRect_LinearLayout
+        android:id=&quot;@+id/accountLayout&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;40dp&quot;
+        android:layout_marginTop=&quot;50dp&quot;
+        android:layout_marginRight=&quot;20dp&quot;
+        android:layout_marginLeft=&quot;20dp&quot;
+        android:layout_below=&quot;@id/logoView&quot;
+        android:orientation=&quot;horizontal&quot;
+        android:paddingLeft=&quot;6dip&quot;
+        android:paddingRight=&quot;6dip&quot;
+        android:paddingTop=&quot;8dip&quot;
+        app:bgcolor=&quot;#CFCFCF&quot;&gt;
+
+        &lt;ImageView
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;22dip&quot;
+            android:layout_gravity=&quot;center_vertical&quot;
+            android:layout_marginLeft=&quot;8dip&quot;
+            android:layout_marginRight=&quot;8dip&quot;
+            android:paddingBottom=&quot;6dip&quot;
+            android:src=&quot;@drawable/ic_login_user&quot; /&gt;
+
+        &lt;EditText
+            android:id=&quot;@+id/accountEdit&quot;
+            android:layout_width=&quot;0dp&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_gravity=&quot;center_vertical&quot;
+            android:layout_marginRight=&quot;8dip&quot;
+            android:layout_weight=&quot;1&quot;
+            android:background=&quot;@null&quot;
+            android:digits=&quot;\@0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,_-&quot;
+            android:hint=&quot;账号&quot;
+            android:imeOptions=&quot;actionNext&quot;
+            android:paddingBottom=&quot;8dip&quot;
+            android:singleLine=&quot;true&quot;
+            android:textColor=&quot;@color/black&quot;
+            android:textCursorDrawable=&quot;@null&quot; /&gt;
+    &lt;/com.example.zhaoxuanli.softwidgetdemo.soft.widget.SRoundRect_LinearLayout&gt;
+
+    &lt;com.example.zhaoxuanli.softwidgetdemo.soft.widget.SRoundRect_LinearLayout
+        android:id=&quot;@+id/passwordLayout&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;40dp&quot;
+        android:layout_marginTop=&quot;3dp&quot;
+        android:layout_marginRight=&quot;20dp&quot;
+        android:layout_marginLeft=&quot;20dp&quot;
+        android:layout_below=&quot;@id/accountLayout&quot;
+        android:orientation=&quot;horizontal&quot;
+        android:paddingLeft=&quot;6dip&quot;
+        android:paddingRight=&quot;6dip&quot;
+        android:paddingTop=&quot;8dip&quot;
+        app:bgcolor=&quot;#CFCFCF&quot;&gt;
+
+        &lt;ImageView
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;22dip&quot;
+            android:layout_gravity=&quot;center_vertical&quot;
+            android:layout_marginLeft=&quot;8dip&quot;
+            android:layout_marginRight=&quot;8dip&quot;
+            android:paddingBottom=&quot;6dip&quot;
+            android:src=&quot;@drawable/ic_login_password&quot; /&gt;
+
+        &lt;EditText
+            android:id=&quot;@+id/passwordEdit&quot;
+            android:layout_width=&quot;0dp&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_gravity=&quot;center_vertical&quot;
+            android:layout_marginRight=&quot;8dip&quot;
+            android:layout_weight=&quot;1&quot;
+            android:background=&quot;@null&quot;
+            android:digits=&quot;\@0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,_-&quot;
+            android:hint=&quot;密码&quot;
+            android:imeOptions=&quot;actionNext&quot;
+            android:paddingBottom=&quot;8dip&quot;
+            android:singleLine=&quot;true&quot;
+            android:textColor=&quot;@color/black&quot;
+            android:textCursorDrawable=&quot;@null&quot;
+            android:inputType=&quot;textPassword&quot;/&gt;
+    &lt;/com.example.zhaoxuanli.softwidgetdemo.soft.widget.SRoundRect_LinearLayout&gt;
+
+    &lt;com.example.zhaoxuanli.softwidgetdemo.soft.widget.SRoundRect_Button
+        android:id=&quot;@+id/login_btn&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;50dp&quot;
+        android:layout_marginTop=&quot;20dp&quot;
+        android:layout_below=&quot;@id/passwordLayout&quot;
+        android:layout_alignLeft=&quot;@id/passwordLayout&quot;
+        android:layout_alignRight=&quot;@id/passwordLayout&quot;
+        android:layout_gravity=&quot;center&quot;
+        android:text=&quot;登录&quot;
+        android:textColor=&quot;@color/white&quot;
+        android:textSize=&quot;20sp&quot;
+        app:backgroundColor=&quot;#af0308&quot;/&gt;
+
+
+    &lt;TextView
+        android:id=&quot;@+id/forgetText&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentBottom=&quot;true&quot;
+        android:layout_alignParentLeft=&quot;true&quot;
+        android:layout_marginBottom=&quot;15dp&quot;
+        android:layout_marginLeft=&quot;10dp&quot;
+        android:gravity=&quot;center&quot;
+        android:textColor=&quot;#af0308&quot;
+        android:textSize=&quot;15sp&quot;
+        android:text=&quot;忘记密码&quot;/&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/registerText&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentBottom=&quot;true&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:layout_marginBottom=&quot;15dp&quot;
+        android:layout_marginRight=&quot;20dp&quot;
+        android:gravity=&quot;center&quot;
+        android:textColor=&quot;#af0308&quot;
+        android:textSize=&quot;15sp&quot;
+        android:text=&quot;注册&quot;/&gt;
+&lt;/RelativeLayout&gt;
+</code></pre><p>这里要说一下：<br>不加背景和形状的TextView 不需要进行优化，它只进行一次绘制。<br>不加形状的ImageView不需要进行优化，即使设置了background或src属性，也只绘制一次。<br>Button 本身是有背景的，所以你需要手动将它原来的背景去掉，在代码里：this.setBackgroundResource(0);</p>
+<p>通过代码我们可以看到，输入框的布局和Button是自定义控件，所以我对这两个做了提前绘制优化。理论上来说是可以将小图标也提前绘制进去的，这样输入框的小图标也将是蓝色，但计算位置复杂，也不利于扩展。</p>
+<p><em>DrawingCanvas.java:</em></p>
+<pre><code>package com.example.zhaoxuanli.softwidgetdemo.soft.widget.PaintBox;
+
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.RectF;
+
+/**
+ * Created by zhaoxuan.li on 2015/8/11.
+ * 在这上面进行提前绘制
+ */
+public class DrawingCanvas extends Canvas {
+
+    private Bitmap output;
+    private Rect rect;
+    private RectF rectF;
+    private DrawingCanvas(Bitmap output_, float width_, float height_){
+        super(output_);
+        output = output_;
+        rect = new Rect(0,0,(int)width_,(int)height_);
+        rectF = new RectF(0, 0, width_, height_);
+    }
+
+    public static DrawingCanvas instance(float width_ , float height_){
+        Bitmap bitmap = Bitmap.createBitmap((int) width_, (int) height_,
+                Bitmap.Config.ARGB_8888);
+        return new DrawingCanvas(bitmap,width_,height_);
+    }
+
+
+    public Bitmap getOutput(){
+        return output;
+    }
+    public Rect getRect(){
+        return rect;
+    }
+    public RectF getRectF(){
+        return rectF;
+    }
+}
+</code></pre><p>这个类继承了Canvas，并且已经传入一个Bitmap            </p>
+<pre><code>super(output_);
+</code></pre><p>所以我们可以直接在这上面画画。并且还提供了一些Rect，RectF 属性，供之后进行绘制时使用。</p>
+<p><em>PaintBox.java:</em></p>
+<pre><code>package com.example.zhaoxuanli.softwidgetdemo.soft.widget.PaintBox;
+
+import android.graphics.Paint;
+
+
+/**
+ * Created by zhaoxuan.li on 2015/8/12.
+ * 用来画图的盒子，里面放着画图的方法
+ */
+public class PaintBox {
+    /**
+     * 画圆角矩形
+     * @param canvas 画布
+     * @param color 填充颜色
+     * @param alpha 透明度
+     */
+    public static void drawRoundRect(DrawingCanvas canvas ,int color , int alpha){
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
+        paint.setColor(color);
+        paint.setAlpha(alpha);
+        canvas.drawRoundRect(canvas.getRectF(), 20, 20, paint);
+
+
+    }
+
+    /**
+     * 画圆角矩形
+     * @param canvas 画布
+     * @param color 填充颜色
+     * @param alpha 透明度
+     * @param border 带边框
+     */
+    public static void drawRoundRect(DrawingCanvas canvas ,int color , int alpha,boolean border){
+        if(border){
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.FILL);
+            paint.setAntiAlias(true);
+            paint.setColor(color);
+            paint.setAlpha(30);
+            canvas.drawRoundRect(canvas.getRectF(), 20, 20, paint);
+
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setAlpha(70);
+            paint.setStrokeWidth(4);
+            canvas.drawRoundRect(canvas.getRectF(),20,20,paint);
+        }else{
+            drawRoundRect(canvas,color,alpha);
+        }
+
+
+    }
+
+    /**
+     * 填充颜色
+     * @param canvas 
+     * @param color
+     */
+    public static void drawColor(DrawingCanvas canvas ,int color ){
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+        paint.setColor(color);
+        canvas.drawPaint(paint);
+    }
+
+
+    /**
+     * 写字在View正中间
+     * @param canvas  画布
+     * @param text   文字
+     * @param color  文字颜色
+     * @param size   文字大小
+     */
+    public static void drawTextCenter(DrawingCanvas canvas , String text , int color,int size){
+        //创建画笔
+        Paint pp = new Paint();
+        pp.setAntiAlias(true);
+        pp.setColor(color);
+        pp.setStrokeWidth(3);
+        pp.setTextSize(size);
+        pp.setTextAlign(Paint.Align.CENTER);
+        Paint.FontMetricsInt fontMetrics = pp.getFontMetricsInt();
+        float vertical = canvas.getRectF().top + (canvas.getRectF().bottom - canvas.getRectF().top - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
+        canvas.drawText(text, canvas.getRectF().centerX(), vertical, pp);
+    }
+}
+</code></pre><p>这个类比较简单了，你有什么需求，就在这里创建一个方法就好了，然后传入一个Canvas和一些必要参数，它帮你把你需要的东西画到Canvas上。<br>值得注意的是最后一个方法：drawTextCenter。 将文字绘制到View中间。这个是没有直接办法实现的，所以你需要计算一下位置。</p>
+<p>最后是我们的自定义控件，篇幅太长，所以我们只看一个Button的，LinearLayout的可以下载代码看.</p>
+<p><em>SRoundRect_Button.java:</em></p>
+<pre><code>package com.example.zhaoxuanli.softwidgetdemo.soft.widget;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.widget.Button;
+
+import com.example.zhaoxuanli.softwidgetdemo.R;
+import com.example.zhaoxuanli.softwidgetdemo.soft.widget.PaintBox.DrawingCanvas;
+import com.example.zhaoxuanli.softwidgetdemo.soft.widget.PaintBox.PaintBox;
+
+/**
+ * Created by zhaoxuan.li on 2015/8/12.
+ * 圆角矩形Button，无边框。  可以放一个颜色当做背景，
+ */
+
+//
+//字符编码 UTF-8  无BOM
+public class SRoundRect_Button extends Button {
+    private String text;
+    private int textColor;
+    private int textSize;
+    private int backgroundColor;
+    /**
+     * 提前绘制的画布
+     * 之前为了追求性能，所以用了软引用，但是在红米2上发现Bug
+     * DrawingCanvas被系统收回了，导致空指针异常。这里还要好好研究一下
+     * 反编译Path源码后，这里是采用软引用的
+     */
+    private DrawingCanvas localDrawingCanvas;  
+
+    /**
+     * 一下是超类的三个构造方法
+     * @param context
+     */
+    public SRoundRect_Button(Context context) {
+        super(context);
+        init(context,null , 0);
+    }
+
+    public SRoundRect_Button(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context,attrs , 0);
+    }
+
+    public SRoundRect_Button(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(context, attrs , defStyle);
+    }
+
+    private void init(Context context , AttributeSet attrs , int defStyle ){   //初始化操作
+        this.setBackgroundResource(0);  //去掉Button原来的背景
+        if(null == attrs)
+            return ;
+
+        /**
+         * View属性的提取
+         */
+        Resources resources = getResources();
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SRoundRect_Button);
+        text = a.getString(R.styleable.SRoundRect_Button_android_text);
+        textColor = a.getColor(R.styleable.SRoundRect_Button_android_textColor, resources.getColor(R.color.white));
+        textSize = a.getDimensionPixelSize(R.styleable.SRoundRect_Button_android_textSize, 20);
+        backgroundColor = a.getColor(R.styleable.SRoundRect_Button_backgroundColor, 0Xaf0308);
+
+
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        //取得View的长宽信息，因为每一次View的载入长款
+        float width = this.getWidth();
+        float height = this.getHeight();
+        /**
+         * 因为界面有一定的刷新率，每一次刷新都会调用onDraw方法
+         * 所以为了效率和性能考虑，需要做一些判断避免重复判断
+         */
+        if(localDrawingCanvas==null){
+            localDrawingCanvas = DrawingCanvas.instance(width,height);
+            PaintBox.drawRoundRect(localDrawingCanvas, backgroundColor, 30);
+            PaintBox.drawTextCenter(localDrawingCanvas,text,textColor,textSize);
+        }
+
+
+        canvas.drawBitmap(localDrawingCanvas.getOutput(),0,0,null);
+    }
+}
+</code></pre><p>这就是一个提前绘制的自定义控件的实现了。</p>
+<h2 id="End"><a href="#End" class="headerlink" title="End"></a>End</h2><p>这里有一个疑问：android:background 属性，我们可以设置图片、颜色、甚至是xml写得背景。这个究竟是如何实现的？<br>因为实现不了这个效果，所以只能添加了自定义属性</p>
+<pre><code>&lt;attr name=&quot;backgroundPic&quot; format=&quot;reference&quot;/&gt;
+&lt;attr name=&quot;backgroundColor&quot; format=&quot;color&quot;/&gt;
+</code></pre><p>感觉很Low啊这样！！！还期待大神帮解决。</p>
+<p>设计一个可以直接使用的重绘控件库，是一个长久的目标呀~</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/性能优化/" rel="tag">#性能优化</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/10/android-rendering-performance-optimization/" rel="prev" title="Android之GPU过度绘制与图形渲染优化">
+                Android之GPU过度绘制与图形渲染优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/09/09/SoftWidget/"
+           data-title="Android过度绘制深度优化---View提前绘制" data-url="http://lizhaoxuan.github.io/2015/09/09/SoftWidget/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpeg"
+               alt="lizhaoxuan" />
+          <p class="site-author-name" itemprop="name">lizhaoxuan</p>
+          <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#要点"><span class="nav-number">2.</span> <span class="nav-text">要点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">3.</span> <span class="nav-text">正文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#End"><span class="nav-number">4.</span> <span class="nav-text">End</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lizhaoxuan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lizhaoxuan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Lb3BBgF3jv5bwrRc8KBz1cuP-gzGzoHsz", "kaPIOk4dBLRc4wfrlc2Tffrm");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

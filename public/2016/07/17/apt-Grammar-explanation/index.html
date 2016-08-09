@@ -1,0 +1,1100 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="APT," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="概述本章内容主要对APT一些语法进行简单讲解。apt的学习资料真的太少了，我的学习方法基本上只能通过看开源库的源码猜、看源码注释猜、自己运行着猜……
+这里对猜对的结果进行一个总结，让后来者可以更快的上手。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android编译时注解框架5-语法讲解">
+<meta property="og:url" content="http://lizhaoxuan.github.io/2016/07/17/apt-Grammar-explanation/index.html">
+<meta property="og:site_name" content="暴打小女孩-Blog">
+<meta property="og:description" content="概述本章内容主要对APT一些语法进行简单讲解。apt的学习资料真的太少了，我的学习方法基本上只能通过看开源库的源码猜、看源码注释猜、自己运行着猜……
+这里对猜对的结果进行一个总结，让后来者可以更快的上手。">
+<meta property="og:image" content="http://img1.ph.126.net/nIF8CZgyLscGMXPO0UdCkA==/6631820931164553739.jpg">
+<meta property="og:image" content="http://img2.ph.126.net/Ypp8bT2ykMm35CSoPqO4Lw==/6631566943978535174.jpg">
+<meta property="og:image" content="http://img1.ph.126.net/bdMUDuJ_8US-yfB2JJjQpA==/6631580138118067912.jpg">
+<meta property="og:updated_time" content="2016-08-09T06:59:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android编译时注解框架5-语法讲解">
+<meta name="twitter:description" content="概述本章内容主要对APT一些语法进行简单讲解。apt的学习资料真的太少了，我的学习方法基本上只能通过看开源库的源码猜、看源码注释猜、自己运行着猜……
+这里对猜对的结果进行一个总结，让后来者可以更快的上手。">
+<meta name="twitter:image" content="http://img1.ph.126.net/nIF8CZgyLscGMXPO0UdCkA==/6631820931164553739.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-Grammar-explanation/"/>
+
+  <title> Android编译时注解框架5-语法讲解 | 暴打小女孩-Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?56e0f8da7e01da926bfb931472e9a26d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暴打小女孩-Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/lizhaoxuan" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            Github
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android编译时注解框架5-语法讲解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-17T15:20:58+08:00" content="2016-07-17">
+              2016-07-17
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/17/apt-Grammar-explanation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/17/apt-Grammar-explanation/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/07/17/apt-Grammar-explanation/" class="leancloud_visitors" data-flag-title="Android编译时注解框架5-语法讲解">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>本章内容主要对APT一些语法进行简单讲解。apt的学习资料真的太少了，我的学习方法基本上只能通过看开源库的源码猜、看源码注释猜、自己运行着猜……</p>
+<p>这里对猜对的结果进行一个总结，让后来者可以更快的上手。</p>
+<a id="more"></a>
+<p>第一次写这种类型的博客，总结的可能有些分散，建议结合开源库源码学习。</p>
+<h3 id="自定义注解相关"><a href="#自定义注解相关" class="headerlink" title="自定义注解相关"></a>自定义注解相关</h3><p>定义注解格式：   public @interface 注解名 {定义体}</p>
+<p>Annotation里面的参数该设定: </p>
+<p>第一,只能用public或默认(default)这两个访问权修饰.例如,String value();不能是private；　 　</p>
+<p>第二,参数只能使用基本类型byte,short,char,int,long,float,double,boolean八种基本数据类型和 String,Enum,Class,annotations等数据类型,以及这一些类型的数组.例如,String value();这里的参数类型就为String;　　</p>
+<pre><code>@Retention(RetentionPolicy.CLASS)
+@Target(ElementType.TYPE)
+public @interface GetMsg {
+    int id();  //注解参数
+    String name() default &quot;default&quot;;
+}
+
+//使用
+@GetMsg(id = 1,name = &quot;asd&quot;)
+class Test{
+}
+</code></pre><p>如果只有一个参数，建议设置为value</p>
+<pre><code>@Retention(RetentionPolicy.CLASS)
+@Target(ElementType.TYPE)
+public @interface Println {
+    int value();
+}
+
+//使用
+@Println(1)
+class Test{
+}
+</code></pre><p>参数为value时，可以直接写入参数,使用时不在需要key=value写法。<br>但当有多个参数时，不可以再使用value。</p>
+<h4 id="Retention"><a href="#Retention" class="headerlink" title="@Retention"></a>@Retention</h4><p>这个在第一章有讲。申明该注解属于什么类型注解</p>
+<ul>
+<li><p>@Retention(RetentionPolicy.SOURCE)</p>
+<p>  源码时注解，一般用来作为编译器标记。就比如Override, Deprecated, SuppressWarnings这样的注解。（这个我们一般都很少自定义的）</p>
+</li>
+<li><p>@Retention(RetentionPolicy.RUNTIME)</p>
+<p>  运行时注解，一般在运行时通过反射去识别的注解。</p>
+</li>
+<li><p>@Retention(RetentionPolicy.CLASS)</p>
+<p>  编译时注解，在编译时处理。</p>
+</li>
+</ul>
+<h4 id="Target-ElementType-TYPE"><a href="#Target-ElementType-TYPE" class="headerlink" title="@Target(ElementType.TYPE)"></a>@Target(ElementType.TYPE)</h4><p>表示该注解用来修饰哪些元素。并可以修饰多个</p>
+<pre><code>@Retention(RetentionPolicy.CLASS)
+@Target({ElementType.LOCAL_VARIABLE,ElementType.METHOD})
+public @interface GetMsg {
+    int id();
+    String name() default &quot;default&quot;;
+}
+</code></pre><p>例如 GetMsg只能用在局部变量和方法上，如果修饰到类上编译器会报错。</p>
+<pre><code>@GetMsg(1)
+public void printError(){
+    //TODO ~
+}
+
+@GetMsg(1)  //编译器会报错
+class Test{
+     //TODO ~
+}
+</code></pre><ul>
+<li><p>@Target(ElementType.TYPE)</p>
+<p>  接口、类、枚举、注解</p>
+</li>
+<li><p>@Target(ElementType.FIELD) </p>
+<p>  字段、枚举的常量</p>
+</li>
+<li><p>@Target(ElementType.METHOD) </p>
+<p>  方法</p>
+</li>
+<li><p>@Target(ElementType.PARAMETER)</p>
+<p>  方法参数 </p>
+</li>
+<li><p>@Target(ElementType.CONSTRUCTOR) </p>
+<p>  构造函数 </p>
+</li>
+<li><p>@Target(ElementType.LOCAL_VARIABLE)</p>
+<p>  局部变量 </p>
+</li>
+<li><p>@Target(ElementType.ANNOTATION_TYPE)</p>
+<p>  注解 </p>
+</li>
+<li><p>@Target(ElementType.package) </p>
+<p>  包 </p>
+</li>
+</ul>
+<h4 id="Inherited"><a href="#Inherited" class="headerlink" title="@Inherited"></a>@Inherited</h4><p>该注解的字面意识是继承，但你要知道<strong>注解是不可以继承的</strong>。</p>
+<p>@Inherited是在继承结构中使用的注解。</p>
+<p>如果你的注解是这样定义的：</p>
+<pre><code>@Inherited
+@Retention(RetentionPolicy.CLASS)
+@Target(ElementType.TYPE)
+public @interface Test {
+    //...
+}
+</code></pre><p>当你的注解定义到类A上，此时，有个B类继承A，且没使用该注解。但是扫描的时候，会把A类设置的注解，扫描到B类上。</p>
+<p><em>这里感谢 豪哥 @刘志豪 的排疑解惑~</em></p>
+<h4 id="注解的默认值"><a href="#注解的默认值" class="headerlink" title="注解的默认值"></a>注解的默认值</h4><p>注解可以设置默认值，有默认值的参数可以不写。</p>
+<pre><code>@Retention(RetentionPolicy.CLASS)
+@Target(ElementType.TYPE)
+public @interface GetMsg {
+    int id();  //注解参数
+    String name() default &quot;default&quot;;
+}
+
+//使用
+@GetMsg(id = 1) //name有默认值可以不写
+class Test{
+}
+</code></pre><h4 id="“注解的继承”（依赖倒置？）"><a href="#“注解的继承”（依赖倒置？）" class="headerlink" title="“注解的继承”（依赖倒置？）"></a>“注解的继承”（依赖倒置？）</h4><p>这里讲的继承并不是通过@Inherited修饰的注解。</p>
+<p>这个“继承”是一个注解的使用技巧，使用上的感觉类似于依赖倒置，来自于ButterKnife源码。</p>
+<p>先看代码。</p>
+<pre><code>@Target(METHOD)
+@Retention(CLASS)
+@ListenerClass(
+    targetType = &quot;android.view.View&quot;,
+    setter = &quot;setOnClickListener&quot;,
+    type = &quot;butterknife.internal.DebouncingOnClickListener&quot;,
+    method = @ListenerMethod(
+        name = &quot;doClick&quot;,
+        parameters = &quot;android.view.View&quot;
+    )
+)
+public @interface OnClick {
+      /** View IDs to which the method will be bound. */
+      int[] value() default { View.NO_ID };
+}
+</code></pre><p>这是ButterKnife的OnClick 注解。特殊的地方在于<strong>@OnClick修饰了注解@ListenerClass</strong>，并且设置了一些只属于@OnClick的属性。</p>
+<p>那这样的作用是什么呢？</p>
+<p>凡是修饰了@OnClick的地方，也就自动修饰了@ListenerClass。类似于@OnClick是@ListenerClass的子类。而ButterKnife有很多的监听注解@OnItemClick、@OnLongClick等等。</p>
+<p>这样在做代码生成时，不需要再单独考虑每一个监听注解，只需要处理@ListenerClass就OK。</p>
+<h3 id="处理器类Processor编写"><a href="#处理器类Processor编写" class="headerlink" title="处理器类Processor编写"></a>处理器类Processor编写</h3><p>自定义注解后，需要编写Processor类处理注解。Processor继承自AbstractProcessor的类。</p>
+<p>AbstractProcessor有两个重要的方法需要重写。</p>
+<p><img src="http://img1.ph.126.net/nIF8CZgyLscGMXPO0UdCkA==/6631820931164553739.jpg" alt=""></p>
+<h4 id="重写getSupportedAnnotationTypes方法："><a href="#重写getSupportedAnnotationTypes方法：" class="headerlink" title="重写getSupportedAnnotationTypes方法："></a>重写getSupportedAnnotationTypes方法：</h4><p>通过重写该方法，告知Processor哪些注解需要处理。</p>
+<p>返回一个Set集合，集合内容为自定义注解的包名+类名。</p>
+<p>建议项目中这样编写：</p>
+<pre><code>@Override
+public Set&lt;String&gt; getSupportedAnnotationTypes() {
+    Set&lt;String&gt; types = new LinkedHashSet&lt;&gt;();
+    //需要全类名
+    types.add(GetMsg.class.getCanonicalName()); 
+    types.add(Println.class.getCanonicalName());
+    return types;
+}
+</code></pre><p>另外如果注解数量很少的话，可以通过另一种方式实现：</p>
+<pre><code>//在只有一到两个注解需要处理时，可以这样编写：
+@SupportedAnnotationTypes(&quot;com.example.annotation.SetContentView&quot;)
+@SupportedSourceVersion(SourceVersion.RELEASE_7)
+public class ContentViewProcessor extends AbstractProcessor {
+
+}
+</code></pre><h4 id="重写process方法："><a href="#重写process方法：" class="headerlink" title="重写process方法："></a>重写process方法：</h4><p>所有的注解处理都是从这个方法开始的，你可以理解为，当APT找到所有需要处理的注解后，会回调这个方法，你可以通过这个方法的参数，拿到你所需要的信息。</p>
+<pre><code>@Override
+public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv) {
+
+
+    return false;
+}
+</code></pre><p>先简单解释下这个方法的参数和返回值。</p>
+<p><strong>参数</strong> <em>Set&lt;? extends TypeElement&gt; annotations</em> ：将返回所有的由该Processor处理，并待处理的 Annotations。（属于该Processor处理的注解，但并未被使用，不存在与这个集合里）<br><strong>参数</strong> <em>RoundEnvironment roundEnv</em> ：表示当前或是之前的运行环境，可以通过该对象查找找到的注解。</p>
+<p>例：        </p>
+<pre><code>for (Element element : env.getElementsAnnotatedWith(GetMsg.class)) {
+    //所有被使用的@GetMsg
+}
+</code></pre><p><strong>返回值</strong> 表示这组 annotations 是否被这个 Processor 接受，如果接受（true）后续子的 pocessor 不会再对这个 Annotations 进行处理</p>
+<h3 id="输出Log"><a href="#输出Log" class="headerlink" title="输出Log"></a>输出Log</h3><p>虽然是编译时执行Processor,但也是可以输入日志信息用于调试的。</p>
+<p><strong>Processor日志输出的位置在编译器下方的Messages窗口中。</strong></p>
+<p>Processor支持最基础的System.out方法。</p>
+<p>同样Processor也有自己的Log输出工具: Messager。</p>
+<pre><code>@Override
+public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment env) {
+
+    //取得Messager对象
+    Messager messager = processingEnv.getMessager();
+
+    //输出日志
+    messager.printMessage(Diagnostic.Kind.NOTE,
+                &quot;Annotation class : className = &quot; + element.getSimpleName().toString());
+    }
+</code></pre><p>同Log类似，Messager也有日志级别的选择。</p>
+<ul>
+<li>Diagnostic.Kind.ERROR </li>
+<li>Diagnostic.Kind.WARNING </li>
+<li>Diagnostic.Kind.MANDATORY_WARNING </li>
+<li>Diagnostic.Kind.NOTE </li>
+<li>Diagnostic.Kind.OTHER </li>
+</ul>
+<p>他们的输出样式如图：</p>
+<p><img src="http://img2.ph.126.net/Ypp8bT2ykMm35CSoPqO4Lw==/6631566943978535174.jpg" alt=""></p>
+<p><img src="http://img1.ph.126.net/bdMUDuJ_8US-yfB2JJjQpA==/6631580138118067912.jpg" alt=""></p>
+<p><strong>注意：当没有属于该Process处理的注解被使用时，process不会执行。</strong></p>
+<p><strong>注意：如果发现替换jar后，apt代码并没有执行，尝试clean项目。</strong></p>
+<p>这里你会发现输出了两次日志信息。其原因在于APT扫描了源码两次，可为什么要扫描两次？</p>
+<h3 id="用生成的代码来生成代码"><a href="#用生成的代码来生成代码" class="headerlink" title="用生成的代码来生成代码"></a>用生成的代码来生成代码</h3><p>APT可以扫描源码中的所有注解，依据这些注解来生成代码，那么生成的代码中如果也有注解呢？</p>
+<p>同样可以被扫描到，并且用于代码生成。其过程如下：</p>
+<p>APT第一次扫描源码中的所有注解，扫描结束后生成代码，之后再扫描一次，以保证生成的代码中的注解也可以被扫描到，第二次扫描到注解后继续生成代码，类似于递归一样的【扫描 - 代码生成 - 扫描 - 代码生成 - 扫描 - 代码生成 - 扫描 - 代码生成】。一直到扫描到的注解为0时停止。</p>
+<p>同样你肯定也会发现一个问题，这不很容易会变成死循环吗？</p>
+<p><strong>没错，所以在生成的代码中一定要慎重出现编译时注解，把控好你的代码逻辑！</strong></p>
+<h3 id="Element"><a href="#Element" class="headerlink" title="Element"></a>Element</h3><p>Element也是APT的重点之一，所有通过注解取得元素都将以Element类型等待处理，也可以理解为Element的子类类型与自定义注解时用到的@Target是有对应关系的。</p>
+<p>Element的官方注释：</p>
+<p>Represents a program element such as a package, class, or method.<br>Each element represents a static, language-level construct (and not, for example, a runtime construct of the virtual machine).</p>
+<p>表示一个程序元素，比如包、类或者方法。</p>
+<p>例如：取得所有修饰了@OnceClick的元素。</p>
+<pre><code>for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)){
+    //OnceClick.class是@Target(METHOD)
+    //则该element是可以强转为表示方法的ExecutableElement
+    ExecutableElement method = （ExecutableElement）element;
+    //如果需要用到其他类型的Element，则不可以直接强转，需要通过下面方法转换
+    //但有例外情况，我们稍后列举
+    TypeElement classElement = (TypeElement) element
+                .getEnclosingElement();
+}
+</code></pre><p>Element的子类有：</p>
+<ul>
+<li><p>ExecutableElement</p>
+<p>  表示某个类或接口的方法、构造方法或初始化程序（静态或实例），包括注释类型元素。</p>
+<p>  对应@Target(ElementType.METHOD) @Target(ElementType.CONSTRUCTOR)</p>
+</li>
+<li><p>PackageElement;</p>
+<p>  表示一个包程序元素。提供对有关包极其成员的信息访问。</p>
+<p>  对应@Target(ElementType.PACKAGE)</p>
+</li>
+<li><p>TypeElement;</p>
+<p>  表示一个类或接口程序元素。提供对有关类型极其成员的信息访问。</p>
+<p>  对应@Target(ElementType.TYPE)</p>
+<p>  <strong>注意：枚举类型是一种类，而注解类型是一种接口。</strong></p>
+</li>
+<li><p>TypeParameterElement;</p>
+<p>  表示一般类、接口、方法或构造方法元素的类型参数。</p>
+<p>  对应@Target(ElementType.PARAMETER)</p>
+</li>
+<li><p>VariableElement;</p>
+<p>  表示一个字段、enum常量、方法或构造方法参数、局部变量或异常参数。</p>
+<p>  对应@Target(ElementType.LOCAL_VARIABLE)</p>
+</li>
+</ul>
+<p>例如：@OnceClick的@Target(METHOD)。其修饰方法，那么在这个情况下：</p>
+<p>Element 可以直接强制转换为ExecutableElement。而其他类型的Element不能直接强制转，需要其他办法。</p>
+<pre><code>for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)){
+    ExecutableElement method = (ExecutableElement)element;
+}
+</code></pre><p>接下来我们将以@Target()分类进行讲解，不同Element的信息获取方式不同。</p>
+<h3 id="修饰方法的注解和ExecutableElement"><a href="#修饰方法的注解和ExecutableElement" class="headerlink" title="修饰方法的注解和ExecutableElement"></a>修饰方法的注解和ExecutableElement</h3><p>当你有一个注解是以@Target(ElementType.METHOD)定义时，表示该注解只能修饰方法。</p>
+<p>那么这个时候你为了生成代码，而需要获取一些基本信息：包名、类名、方法名、参数类型、返回值。</p>
+<p>如何获取：</p>
+<pre><code>//OnceClick.class 以 @Target(ElementType.METHOD)修饰
+for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) {
+    //对于Element直接强转
+    ExecutableElement executableElement = (ExecutableElement) element;
+
+    //非对应的Element，通过getEnclosingElement转换获取
+    TypeElement classElement = (TypeElement) element
+                .getEnclosingElement();
+
+    //当(ExecutableElement) element成立时，使用(PackageElement) element
+    //            .getEnclosingElement();将报错。
+    //需要使用elementUtils来获取
+    Elements elementUtils = processingEnv.getElementUtils();
+    PackageElement packageElement = elementUtils.getPackageOf(classElement);
+
+    //全类名
+    String fullClassName = classElement.getQualifiedName().toString();
+    //类名
+    String className = classElement.getSimpleName().toString();
+    //包名
+    String packageName = packageElement.getQualifiedName().toString();
+    //方法名
+    String methodName = executableElement.getSimpleName().toString();
+
+    //取得方法参数列表
+    List&lt;? extends VariableElement&gt; methodParameters = executableElement.getParameters();
+    //参数类型列表
+    List&lt;String&gt; types = new ArrayList&lt;&gt;();
+    for (VariableElement variableElement : methodParameters) {
+        TypeMirror methodParameterType = variableElement.asType();
+        if (methodParameterType instanceof TypeVariable) {
+            TypeVariable typeVariable = (TypeVariable) methodParameterType;
+            methodParameterType = typeVariable.getUpperBound();
+
+        }
+        //参数名
+        String parameterName = variableElement.getSimpleName().toString();
+        //参数类型
+        String parameteKind = methodParameterType.toString();
+        types.add(methodParameterType.toString());
+    }
+}
+</code></pre><h3 id="修饰属性、类成员的注解和VariableElement"><a href="#修饰属性、类成员的注解和VariableElement" class="headerlink" title="修饰属性、类成员的注解和VariableElement"></a>修饰属性、类成员的注解和VariableElement</h3><p>当你有一个注解是以@Target(ElementType.FIELD)定义时，表示该注解只能修饰属性、类成员。</p>
+<p>那么这个时候你为了生成代码，而需要获取一些基本信息：包名、类名、类成员类型、类成员名</p>
+<p>如何获取：</p>
+<pre><code>for (Element element : roundEnv.getElementsAnnotatedWith(IdProperty.class)) {
+    //ElementType.FIELD注解可以直接强转VariableElement
+    VariableElement variableElement = (VariableElement) element;
+
+    TypeElement classElement = (TypeElement) element
+            .getEnclosingElement();
+    PackageElement packageElement = elementUtils.getPackageOf(classElement);
+    //类名
+    String className = classElement.getSimpleName().toString();
+    //包名
+    String packageName = packageElement.getQualifiedName().toString();
+    //类成员名
+    String variableName = variableElement.getSimpleName().toString();
+
+    //类成员类型
+    TypeMirror typeMirror = variableElement.asType();
+    String type = typeMirror.toString();
+
+}
+</code></pre><h3 id="修饰类的注解和TypeElement"><a href="#修饰类的注解和TypeElement" class="headerlink" title="修饰类的注解和TypeElement"></a>修饰类的注解和TypeElement</h3><p>当你有一个注解是以@Target(ElementType.TYPE)定义时，表示该注解只能修饰类、接口、枚举。</p>
+<p>那么这个时候你为了生成代码，而需要获取一些基本信息：包名、类名、全类名、父类。</p>
+<p>如何获取：</p>
+<pre><code>for (Element element : roundEnv.getElementsAnnotatedWith(xxx.class)) {
+    //ElementType.TYPE注解可以直接强转TypeElement
+    TypeElement classElement = (TypeElement) element;
+
+    PackageElement packageElement = (PackageElement) element
+                .getEnclosingElement();
+
+    //全类名
+    String fullClassName = classElement.getQualifiedName().toString();
+    //类名
+    String className = classElement.getSimpleName().toString();
+    //包名
+    String packageName = packageElement.getQualifiedName().toString();
+     //父类名
+     String superClassName = classElement.getSuperclass().toString();
+
+}
+</code></pre><p><br></p>
+<hr>
+<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-wathapt/">《Android编译时注解框架-什么是编译时注解》</a></p>
+<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-run_demo/">《Android编译时注解框架-Run Demo》</a></p>
+<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-run_project/">《Android编译时注解框架-Run Project：OnceClick》</a></p>
+<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-Climbed-out-of-the-pit/">《Android编译时注解框架-爬坑》</a></p>
+<p>《Android编译时注解框架-语法讲解》</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/APT/" rel="tag">#APT</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/17/AndroidCoding-performance-specification/" rel="next" title="Android性能编码规范">
+                <i class="fa fa-chevron-left"></i> Android性能编码规范
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/17/apt-Climbed-out-of-the-pit/" rel="prev" title="Android编译时注解框架4-爬坑">
+                Android编译时注解框架4-爬坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/17/apt-Grammar-explanation/"
+           data-title="Android编译时注解框架5-语法讲解" data-url="http://lizhaoxuan.github.io/2016/07/17/apt-Grammar-explanation/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpeg"
+               alt="lizhaoxuan" />
+          <p class="site-author-name" itemprop="name">lizhaoxuan</p>
+          <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义注解相关"><span class="nav-number">2.</span> <span class="nav-text">自定义注解相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Retention"><span class="nav-number">2.1.</span> <span class="nav-text">@Retention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Target-ElementType-TYPE"><span class="nav-number">2.2.</span> <span class="nav-text">@Target(ElementType.TYPE)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inherited"><span class="nav-number">2.3.</span> <span class="nav-text">@Inherited</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注解的默认值"><span class="nav-number">2.4.</span> <span class="nav-text">注解的默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#“注解的继承”（依赖倒置？）"><span class="nav-number">2.5.</span> <span class="nav-text">“注解的继承”（依赖倒置？）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理器类Processor编写"><span class="nav-number">3.</span> <span class="nav-text">处理器类Processor编写</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#重写getSupportedAnnotationTypes方法："><span class="nav-number">3.1.</span> <span class="nav-text">重写getSupportedAnnotationTypes方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重写process方法："><span class="nav-number">3.2.</span> <span class="nav-text">重写process方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出Log"><span class="nav-number">4.</span> <span class="nav-text">输出Log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用生成的代码来生成代码"><span class="nav-number">5.</span> <span class="nav-text">用生成的代码来生成代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element"><span class="nav-number">6.</span> <span class="nav-text">Element</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修饰方法的注解和ExecutableElement"><span class="nav-number">7.</span> <span class="nav-text">修饰方法的注解和ExecutableElement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修饰属性、类成员的注解和VariableElement"><span class="nav-number">8.</span> <span class="nav-text">修饰属性、类成员的注解和VariableElement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修饰类的注解和TypeElement"><span class="nav-number">9.</span> <span class="nav-text">修饰类的注解和TypeElement</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lizhaoxuan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lizhaoxuan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Lb3BBgF3jv5bwrRc8KBz1cuP-gzGzoHsz", "kaPIOk4dBLRc4wfrlc2Tffrm");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

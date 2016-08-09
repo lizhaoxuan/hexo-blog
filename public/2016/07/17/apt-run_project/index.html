@@ -1,0 +1,1185 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="APT," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="概述因为编译时注解框架前期项目搭建部分需要较多的图文讲解，所以前一章《Android编译时注解框架-Run Demo》只是实现了最简单应用，或许注解信息，并没有生成代码。
+本章将以生成代码为重点进行一个案例讲解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android编译时注解框架3-Run Project:OnceClick">
+<meta property="og:url" content="http://lizhaoxuan.github.io/2016/07/17/apt-run_project/index.html">
+<meta property="og:site_name" content="暴打小女孩-Blog">
+<meta property="og:description" content="概述因为编译时注解框架前期项目搭建部分需要较多的图文讲解，所以前一章《Android编译时注解框架-Run Demo》只是实现了最简单应用，或许注解信息，并没有生成代码。
+本章将以生成代码为重点进行一个案例讲解。">
+<meta property="og:image" content="http://img0.ph.126.net/vHtdAVys2C-kIyWETwdaOw==/6631583436652950849.jpeg">
+<meta property="og:image" content="http://img0.ph.126.net/fiUsxAgW_ezfR7CEntOavw==/6631599929327368401.jpeg">
+<meta property="og:image" content="http://img0.ph.126.net/Fjmfygapp7D_zJXmxjru3A==/6631569143001790392.jpeg">
+<meta property="og:updated_time" content="2016-08-09T06:57:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android编译时注解框架3-Run Project:OnceClick">
+<meta name="twitter:description" content="概述因为编译时注解框架前期项目搭建部分需要较多的图文讲解，所以前一章《Android编译时注解框架-Run Demo》只是实现了最简单应用，或许注解信息，并没有生成代码。
+本章将以生成代码为重点进行一个案例讲解。">
+<meta name="twitter:image" content="http://img0.ph.126.net/vHtdAVys2C-kIyWETwdaOw==/6631583436652950849.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-run_project/"/>
+
+  <title> Android编译时注解框架3-Run Project:OnceClick | 暴打小女孩-Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?56e0f8da7e01da926bfb931472e9a26d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暴打小女孩-Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/lizhaoxuan" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            Github
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android编译时注解框架3-Run Project:OnceClick
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-17T15:40:58+08:00" content="2016-07-17">
+              2016-07-17
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/17/apt-run_project/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/17/apt-run_project/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/07/17/apt-run_project/" class="leancloud_visitors" data-flag-title="Android编译时注解框架3-Run Project:OnceClick">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>因为编译时注解框架前期项目搭建部分需要较多的图文讲解，所以前一章《Android编译时注解框架-Run Demo》只是实现了最简单应用，或许注解信息，并没有生成代码。</p>
+<p>本章将以生成代码为重点进行一个案例讲解。</p>
+<a id="more"></a>
+<h3 id="框架名称：OnceClick"><a href="#框架名称：OnceClick" class="headerlink" title="框架名称：OnceClick"></a>框架名称：OnceClick</h3><p><strong>框架功能：</strong>功能就是它的名字：在一定时间内，按钮点击事件只能执行一次。未到指定时间，不执行点击事件。</p>
+<p><strong>框架背景：</strong>从用户的角度，在使用应用的过程中，因为低端机性能原因、Web页面性能问题，导致点击按钮后程序卡顿，按钮事件延迟执行。造成的后果就是，卡顿后，继续多次点击非常容易导致事件多次执行，造成不可预知的Bug，且影响用户体验。</p>
+<p><strong>使用及项目引用地址：</strong><a href="https://github.com/lizhaoxuan/OnceClick" target="_blank" rel="external">https://github.com/lizhaoxuan/OnceClick</a></p>
+<p>OK，这是一个功能非常简单的小型类库。下面我们来实现它。</p>
+<h3 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h3><p>具体的项目搭建细节前一章已经有了介绍，这里不再讲述。</p>
+<p><strong>需要说明的是：</strong>我们的目的是写一个Android库，APT Moudle是java Library，不能使用Android API。所以还需要创建一个Android Library，负责框架主体部分. 然后由Android Library引用APT jar包。</p>
+<p>项目目录结构如图：</p>
+<p>Module职责：</p>
+<p>app：Demo</p>
+<p>apt：java Library.负责代码生成。编译成apt-jar包供外部使用</p>
+<p>onceclick：Android Library. OnceClick是我们真正对外发布并交由第三方使用的库，它引用了apt-jar包</p>
+<p><img src="http://img0.ph.126.net/vHtdAVys2C-kIyWETwdaOw==/6631583436652950849.jpeg" alt=""></p>
+<h3 id="OnceClick使用"><a href="#OnceClick使用" class="headerlink" title="OnceClick使用"></a>OnceClick使用</h3><pre><code>public class MainActivity extends AppCompatActivity {
+
+    private TextView text;
+    private int num;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        //类似于ButterKnife的Bind方法。初始化OnceClick,并设置点击事件间隔是2秒
+        OnceInit.once(this,2000);
+        text = (TextView)findViewById(R.id.textView);
+    }
+
+    @OnceClick(R.id.btn)
+    public void once(){
+        text.setText(&quot;click&quot;+num++);
+        Log.d(&quot;tag&quot;,&quot;once&quot;);
+    }
+
+    @OnceClick(R.id.btn2)
+    public void onceMe(View v){
+        ((Button)v).setText(&quot;click&quot;+num++);
+        Log.d(&quot;tag&quot;,&quot;onceMe&quot;);
+    }
+}
+</code></pre><p>在我连续点击按钮的情况下，可以看到日志一定是要2秒以上才会执行点击事件。</p>
+<p><img src="http://img0.ph.126.net/fiUsxAgW_ezfR7CEntOavw==/6631599929327368401.jpeg" alt=""></p>
+<h3 id="生成后代码"><a href="#生成后代码" class="headerlink" title="生成后代码"></a>生成后代码</h3><pre><code>// Generated code from OnceClick. Do not modify!
+package com.lizhaoxuan.onceclickdemo;
+
+import android.view.View;
+
+import com.lizhaoxuan.onceclick.Finder;
+import com.lizhaoxuan.onceclick.AbstractInjector;
+
+public class MainActivity$$PROXY&lt;T extends MainActivity&gt; implements AbstractInjector&lt;T&gt; {
+    //间隔多久可以执行一次点击事件
+    public long intervalTime;
+
+    @Override
+    public void setIntervalTime(long time) {
+        intervalTime = time;
+    }
+
+    @Override
+    public void inject(final Finder finder, final T target, Object source) {
+        View view;
+        view = finder.findViewById(source, 2131492945);
+        if (view != null) {
+            view.setOnClickListener(new View.OnClickListener() {
+                long time = 0L;
+                @Override
+                public void onClick(View v) {
+                    long temp = System.currentTimeMillis();
+                    if (temp - time &gt;= intervalTime) {
+                        time = temp;
+                        target.once();
+                    }
+                }
+            });
+        }
+        view = finder.findViewById(source, 2131492946);
+        if (view != null) {
+            view.setOnClickListener(new View.OnClickListener() {
+                long time = 0L;
+                @Override
+                public void onClick(View v) {
+                    long temp = System.currentTimeMillis();
+                    if (temp - time &gt;= intervalTime) {
+                        time = temp;
+                        target.onceMe(v);
+                        }
+                }
+            });
+        }
+    }
+}
+</code></pre><p>这个就是自动生成的代码，生成代码的位置我们之前的篇章有讲过，代码也很简单，就不做过多解释了。</p>
+<p>================</p>
+<h3 id="OnceClick-Module"><a href="#OnceClick-Module" class="headerlink" title="OnceClick Module"></a>OnceClick Module</h3><h4 id="OnceInit-once"><a href="#OnceInit-once" class="headerlink" title="OnceInit.once"></a>OnceInit.once</h4><p>看到OnceClick的使用和生成后的代码你可能会有一点疑惑他们之间是如何联系在一起的。看下<em>OnceInit.java</em>一目了然，我在注释中做讲解:</p>
+<pre><code>public class OnceInit {
+    private static final Map&lt;Class&lt;?&gt;, AbstractInjector&lt;Object&gt;&gt; INJECTORS = new LinkedHashMap&lt;Class&lt;?&gt;, AbstractInjector&lt;Object&gt;&gt;();
+
+    private static final long INTERVAL_TIME = 2000;
+
+    public static void once(Activity activity, long intervalTime) {
+        //生成的代码实现了AbstractInjector。我们通过activity找到生成的代码
+        AbstractInjector&lt;Object&gt; injector = findInjector(activity);
+        //执行生成代码中的inject方法
+        //Finder是枚举，这里用Activity类型
+        injector.inject(Finder.ACTIVITY, activity, activity);
+        //设置间隔时间
+        injector.setIntervalTime(intervalTime);
+    }
+
+    //其他几个重载方法
+    public static void once(View view, long intervalTime) {
+        AbstractInjector&lt;Object&gt; injector = findInjector(view);
+        //Finder是枚举，这里用VIEW类型
+        injector.inject(Finder.VIEW, view, view);
+        injector.setIntervalTime(intervalTime);
+    }
+    public static void once(Activity activity) {
+        once(activity, INTERVAL_TIME);
+    }
+    public static void once(View view) {
+        once(view, INTERVAL_TIME);
+    }
+
+    //查找生成的代码
+    private static AbstractInjector&lt;Object&gt; findInjector(Object activity) {
+        Class&lt;?&gt; clazz = activity.getClass();
+        //使用Map缓存一下，避免重复查找
+        AbstractInjector&lt;Object&gt; injector = INJECTORS.get(clazz);
+        if (injector == null) {
+            try {
+                //生成代码的类名是有格式的，className$$PROXY.所以我们可以通过字符串找到类，并初始化它。
+                Class injectorClazz = Class.forName(clazz.getName() + &quot;$$&quot;
+                    + ProxyInfo.PROXY);
+                injector = (AbstractInjector&lt;Object&gt;) injectorClazz
+                    .newInstance();
+                INJECTORS.put(clazz, injector);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return injector;
+    }
+}
+</code></pre><h4 id="AbstractInjector"><a href="#AbstractInjector" class="headerlink" title="AbstractInjector"></a>AbstractInjector</h4><p>代理类接口，所有生成代码类都要实现这个接口。</p>
+<p>inject方法用于实现代理代码。</p>
+<p>setIntervalTime设置点击事件执行间隔时间。</p>
+<pre><code>public interface AbstractInjector&lt;T&gt; {
+
+    void inject(Finder finder, T target, Object source);
+
+    void setIntervalTime(long time);
+}
+</code></pre><h4 id="Finder"><a href="#Finder" class="headerlink" title="Finder"></a>Finder</h4><p>Finder的作用是根据不同的类型，去实现不同的findViewById方法。</p>
+<pre><code>public enum Finder {
+    VIEW {
+        @Override
+        public View findViewById(Object source, int id) {
+            return ((View) source).findViewById(id);
+        }
+    },
+    ACTIVITY {
+        @Override
+        public View findViewById(Object source, int id) {
+            return ((Activity) source).findViewById(id);
+        }
+    };
+    public abstract View findViewById(Object source, int id);
+}
+</code></pre><p>================</p>
+<h3 id="APT-MODULE"><a href="#APT-MODULE" class="headerlink" title="APT MODULE"></a>APT MODULE</h3><h4 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h4><pre><code>@Retention(RetentionPolicy.CLASS)
+@Target(ElementType.METHOD)
+public @interface OnceClick {
+
+    int value();
+}
+</code></pre><p>OnceClick只有一个默认参数，用来设置View的Id。</p>
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p>编写文件javax.annotation.processing.Processor。</p>
+<pre><code>com.example.OnceClickProcessor
+</code></pre><p><img src="http://img0.ph.126.net/Fjmfygapp7D_zJXmxjru3A==/6631569143001790392.jpeg" alt=""></p>
+<h4 id="Process类-getSupportedAnnotationTypes"><a href="#Process类-getSupportedAnnotationTypes" class="headerlink" title="Process类-getSupportedAnnotationTypes"></a>Process类-getSupportedAnnotationTypes</h4><pre><code>@Override
+public Set&lt;String&gt; getSupportedAnnotationTypes() {
+    Set&lt;String&gt; types = new LinkedHashSet&lt;&gt;();
+    types.add(OnceClick.class.getCanonicalName());
+    return types;
+}
+</code></pre><h4 id="Process类-process方法"><a href="#Process类-process方法" class="headerlink" title="Process类-process方法"></a>Process类-process方法</h4><p>重点来啦。这里需要讲一个概念。</p>
+<p>当某个类Activity使用了@OnceClick注解之后，我们就应该为其生成一个对应的代理类，代理类实现我们框架的功能：为某个View设置点击事件，并且这个点击事件一定时间内只能执行一次。</p>
+<p>所以，一个代理类可能有多个需要处理的View。</p>
+<p>先看process代码：</p>
+<pre><code>@Override
+public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv) {
+    //获取proxyMap
+    Map&lt;String, ProxyInfo&gt; proxyMap = getProxyMap(roundEnv);
+    //遍历proxyMap，并生成代码
+    for (String key : proxyMap.keySet()) {
+        ProxyInfo proxyInfo = proxyMap.get(key);
+        writeCode(proxyInfo);
+    }
+    return true;
+}
+</code></pre><p><strong>ProxyInfo对象</strong>：存放生成代理类的必要信息，并生成代码。</p>
+<p><strong>getProxyMap方法</strong>：使用参数roundEnv，遍历所有@OnceClick注解，并生成代理类ProxyInfo的Map。</p>
+<p><strong>writeCode方法</strong>：真正生成代码的方法。</p>
+<p>总结一下：编译时，取得所有需要生成的代理类信息。遍历代理类集合，根据代理类信息，生成代码。</p>
+<h4 id="ProxyInfo代理类"><a href="#ProxyInfo代理类" class="headerlink" title="ProxyInfo代理类"></a>ProxyInfo代理类</h4><p>其实这个类，才是这个框架的重中之重，因为生成什么代码，全靠这个类说了算。这个类也没什么好讲的，就是用StringBuidler拼出一个类来。ProxyInfo保存的是类信息，方法信息我们用List<oncemethod> methods保存。<strong>然后根据这些信息生成类。</strong></oncemethod></p>
+<pre><code>public class ProxyInfo {
+    private String packageName;
+    private String targetClassName;
+    private String proxyClassName;
+    private TypeElement typeElement;
+
+    private List&lt;OnceMethod&gt; methods;
+
+    public static final String PROXY = &quot;PROXY&quot;;
+
+    ProxyInfo(String packageName, String className) {
+        this.packageName = packageName;
+        this.targetClassName = className;
+        this.proxyClassName = className + &quot;$$&quot; + PROXY;
+    }
+
+    String getProxyClassFullName() {
+        return packageName + &quot;.&quot; + proxyClassName;
+    }
+
+    String generateJavaCode() throws OnceClickException {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(&quot;// Generated code from OnceClick. Do not modify!\n&quot;);
+        builder.append(&quot;package &quot;).append(packageName).append(&quot;;\n\n&quot;);
+
+        builder.append(&quot;import android.view.View;\n&quot;);
+        builder.append(&quot;import com.lizhaoxuan.onceclick.Finder;\n&quot;);
+        builder.append(&quot;import com.lizhaoxuan.onceclick.AbstractInjector;\n&quot;);
+        builder.append(&apos;\n&apos;);
+
+        builder.append(&quot;public class &quot;).append(proxyClassName);
+        builder.append(&quot;&lt;T extends &quot;).append(getTargetClassName()).append(&quot;&gt;&quot;);
+        builder.append(&quot; implements AbstractInjector&lt;T&gt;&quot;);
+        builder.append(&quot; {\n&quot;);
+
+        generateInjectMethod(builder);
+        builder.append(&apos;\n&apos;);
+
+        builder.append(&quot;}\n&quot;);
+        return builder.toString();
+
+    }
+
+    private String getTargetClassName() {
+        return targetClassName.replace(&quot;$&quot;, &quot;.&quot;);
+    }
+
+    private void generateInjectMethod(StringBuilder builder) throws OnceClickException {
+
+        builder.append(&quot;public long intervalTime; \n&quot;);
+
+        builder.append(&quot;  @Override &quot;)
+                .append(&quot;public void setIntervalTime(long time) {\n&quot;)
+                .append(&quot;intervalTime = time;\n     } \n&quot;);
+        builder.append(&quot;  @Override &quot;)
+                .append(&quot;public void inject(final Finder finder, final T target, Object source) {\n&quot;);
+        builder.append(&quot;View view;&quot;);
+
+        for (OnceMethod method : getMethods()) {
+            builder.append(&quot;    view = &quot;)
+                    .append(&quot;finder.findViewById(source, &quot;)
+                    .append(method.getId())
+                    .append(&quot;);\n&quot;);
+            builder.append(&quot;if(view != null){&quot;)
+                    .append(&quot;view.setOnClickListener(new View.OnClickListener() {\n&quot;)
+                    .append(&quot;long time = 0L;&quot;);
+            builder.append(&quot;@Override\n&quot;)
+                    .append(&quot;public void onClick(View v) {&quot;);
+            builder.append(&quot;long temp = System.currentTimeMillis();\n&quot;)
+                    .append(&quot;if (temp - time &gt;= intervalTime) {\n&quot; +
+                                &quot;time = temp;\n&quot;);
+            if (method.getMethodParametersSize() == 1) {
+                if (method.getMethodParameters().get(0).equals(&quot;android.view.View&quot;)) {
+                    builder.append(&quot;target.&quot;).append(method.getMethodName()).append(&quot;(v);&quot;);
+                } else {
+                    throw new OnceClickException(&quot;Parameters must be android.view.View&quot;);
+                }
+            } else if (method.getMethodParametersSize() == 0) {
+            builder.append(&quot;target.&quot;).append(method.getMethodName()).append(&quot;();&quot;);
+            } else {
+                throw new OnceClickException(&quot;Does not support more than one parameter&quot;);
+            }
+            builder.append(&quot;\n}&quot;)
+                    .append(&quot;    }\n&quot;)
+                    .append(&quot;        });\n}&quot;);
+        }
+
+        builder.append(&quot;  }\n&quot;);
+    }
+
+    TypeElement getTypeElement() {
+        return typeElement;
+    }
+
+    void setTypeElement(TypeElement typeElement) {
+        this.typeElement = typeElement;
+    }
+
+    List&lt;OnceMethod&gt; getMethods() {
+        return methods == null ? new ArrayList&lt;OnceMethod&gt;() : methods;
+    }
+
+    void addMethod(OnceMethod onceMethod) {
+        if (methods == null) {
+            methods = new ArrayList&lt;&gt;();
+        }
+        methods.add(onceMethod);
+    }
+}
+</code></pre><h4 id="OnceMethod类"><a href="#OnceMethod类" class="headerlink" title="OnceMethod类"></a>OnceMethod类</h4><p>需要讲的一点是，每一个使用了@OnceClick注解的Activity或View，都会为其生成一个代理类，而一个代理中有可能有很多个@OnceClick修饰的方法，所以我们专门为每个方法有创建了一个javaBean用于保存方法信息:</p>
+<pre><code>public class OnceMethod {
+
+    private int id;
+    private String methodName;
+    private List&lt;String&gt; methodParameters;
+
+    OnceMethod(int id, String methodName, List&lt;String&gt; methodParameters) {
+        this.id = id;
+        this.methodName = methodName;
+        this.methodParameters = methodParameters;
+    }
+
+    int getMethodParametersSize() {
+        return methodParameters == null ? 0 : methodParameters.size();
+    }
+
+    int getId() {
+        return id;
+    }
+
+    String getMethodName() {
+        return methodName;
+    }
+
+    List&lt;String&gt; getMethodParameters() {
+        return methodParameters;
+    }
+
+}
+</code></pre><h4 id="getProxyMap方法"><a href="#getProxyMap方法" class="headerlink" title="getProxyMap方法"></a>getProxyMap方法</h4><p>getProxyMap其实也很简单的。通过注释就可以理解。</p>
+<p>比较不容易理解的是TypeElement、PackageElement的处理。这方面语法还请看《Android编译时注解框架-语法讲解》。</p>
+<pre><code>private Map&lt;String, ProxyInfo&gt; getProxyMap( RoundEnvironment roundEnv){
+    Map&lt;String, ProxyInfo&gt; proxyMap = new HashMap&lt;&gt;();
+    //遍历项目中所有的@OnceClick注解
+    for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) {            
+        //获取基本的类名、包名
+        TypeElement classElement = (TypeElement) element;
+        PackageElement packageElement = (PackageElement) element
+                .getEnclosingElement();
+
+        String fullClassName = classElement.getQualifiedName().toString();
+        String className = classElement.getSimpleName().toString();
+        String packageName = packageElement.getQualifiedName().toString();
+        //获取注解参数
+        int viewId = classElement.getAnnotation(OnceClick.class).value();
+
+        ProxyInfo proxyInfo = proxyMap.get(fullClassName);
+        //如果以创建该代理类，就只add viewId
+        if (proxyInfo != null) {
+            proxyInfo.addLayoutId(viewId);
+        } else {
+            proxyInfo = new ProxyInfo(packageName, className);
+            proxyInfo.setTypeElement(classElement);
+            proxyInfo.addLayoutId(viewId);
+            proxyMap.put(fullClassName, proxyInfo);
+        }
+    }
+    return proxyMap;
+}
+</code></pre><h4 id="writeCode方法"><a href="#writeCode方法" class="headerlink" title="writeCode方法"></a>writeCode方法</h4><p>writeCode方法用来生成代码文件，这个方法的代码相对固定，基本不用该，就是这样的。</p>
+<p>需要注意的是 <em>writer.write(proxyInfo.generateJavaCode());</em>。需要生成的代码以字符串形式传给writer。</p>
+<pre><code>private void writeCode(ProxyInfo proxyInfo){
+    try {
+        JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
+                proxyInfo.getProxyClassFullName(),
+                proxyInfo.getTypeElement());
+        Writer writer = jfo.openWriter();
+        writer.write(proxyInfo.generateJavaCode());
+        writer.flush();
+        writer.close();
+    } catch (IOException e) {
+        error(proxyInfo.getTypeElement(),
+                &quot;Unable to write injector for type %s: %s&quot;,
+                proxyInfo.getTypeElement(), e.getMessage());
+    }
+}
+
+//两个日志输出方法。
+private void print(String message){
+    messager.printMessage(Diagnostic.Kind.NOTE, message);
+}
+
+private void error(Element element, String message, Object... args) {
+    if (args.length &gt; 0) {
+        message = String.format(message, args);
+    }
+    messager.printMessage(Diagnostic.Kind.ERROR, message, element);
+}
+</code></pre><h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>这里可能会有一个疑问，一个Activity里不同的按钮不可以设置不同的点击事件间隔时间么？</p>
+<pre><code>//类似于ButterKnife的Bind方法。初始化OnceClick,并设置点击事件间隔是2秒
+OnceInit.once(this,2000);
+</code></pre><p>技术上是可以实现的，但作为一个第三方框架，一个不能忽视的因素就是使用体验。</p>
+<p>每一个控件单独设值的体验并不是很好，因为注解只有一个属性的时候可以直接这样用：</p>
+<pre><code>@OnceClick(R.id.btn)
+</code></pre><p>如果有两个属性，就必须要带名字了 </p>
+<pre><code>@OnceClick(id = R.id.btn)
+</code></pre><p>最后在把源码地址再放一下 <a href="https://github.com/lizhaoxuan/OnceClick" target="_blank" rel="external">https://github.com/lizhaoxuan/OnceClick</a>。看着Demo学习会更快！</p>
+<p><br></p>
+<hr>
+<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-wathapt/">《Android编译时注解框架-什么是编译时注解》</a></p>
+<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-run_demo/">《Android编译时注解框架-Run Demo》</a></p>
+<p>《Android编译时注解框架-Run Project：OnceClick》</p>
+<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-Climbed-out-of-the-pit/">《Android编译时注解框架-爬坑》</a></p>
+<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-Grammar-explanation/">《Android编译时注解框架-语法讲解》</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/APT/" rel="tag">#APT</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/17/apt-Climbed-out-of-the-pit/" rel="next" title="Android编译时注解框架4-爬坑">
+                <i class="fa fa-chevron-left"></i> Android编译时注解框架4-爬坑
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/17/apt-run_demo/" rel="prev" title="Android编译时注解框架系列2-Run Demo">
+                Android编译时注解框架系列2-Run Demo <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/17/apt-run_project/"
+           data-title="Android编译时注解框架3-Run Project:OnceClick" data-url="http://lizhaoxuan.github.io/2016/07/17/apt-run_project/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpeg"
+               alt="lizhaoxuan" />
+          <p class="site-author-name" itemprop="name">lizhaoxuan</p>
+          <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#框架名称：OnceClick"><span class="nav-number">2.</span> <span class="nav-text">框架名称：OnceClick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目搭建"><span class="nav-number">3.</span> <span class="nav-text">项目搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OnceClick使用"><span class="nav-number">4.</span> <span class="nav-text">OnceClick使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成后代码"><span class="nav-number">5.</span> <span class="nav-text">生成后代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OnceClick-Module"><span class="nav-number">6.</span> <span class="nav-text">OnceClick Module</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#OnceInit-once"><span class="nav-number">6.1.</span> <span class="nav-text">OnceInit.once</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AbstractInjector"><span class="nav-number">6.2.</span> <span class="nav-text">AbstractInjector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Finder"><span class="nav-number">6.3.</span> <span class="nav-text">Finder</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APT-MODULE"><span class="nav-number">7.</span> <span class="nav-text">APT MODULE</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义注解"><span class="nav-number">7.1.</span> <span class="nav-text">自定义注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件"><span class="nav-number">7.2.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Process类-getSupportedAnnotationTypes"><span class="nav-number">7.3.</span> <span class="nav-text">Process类-getSupportedAnnotationTypes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Process类-process方法"><span class="nav-number">7.4.</span> <span class="nav-text">Process类-process方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ProxyInfo代理类"><span class="nav-number">7.5.</span> <span class="nav-text">ProxyInfo代理类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OnceMethod类"><span class="nav-number">7.6.</span> <span class="nav-text">OnceMethod类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getProxyMap方法"><span class="nav-number">7.7.</span> <span class="nav-text">getProxyMap方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#writeCode方法"><span class="nav-number">7.8.</span> <span class="nav-text">writeCode方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">8.</span> <span class="nav-text">结论</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lizhaoxuan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lizhaoxuan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Lb3BBgF3jv5bwrRc8KBz1cuP-gzGzoHsz", "kaPIOk4dBLRc4wfrlc2Tffrm");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
