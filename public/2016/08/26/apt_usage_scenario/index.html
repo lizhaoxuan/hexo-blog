@@ -1,0 +1,954 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="APT," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="概述如果你已经读完了前面的5章博客，相信你已经对APT整体已经比较熟悉了，所以，APT真的很简单对嘛？
+但就像我前面提到过的，APT是一套非常强大的机制，它唯一的限制在于你天马行空的设计！ 
+APT有着非常简单的技术实现，但其应用场景却着实有点尴尬。我一直期望可以探索出ButterKnife和EventBus以外的应用场景，却始终未能如愿。姑且把我目前总结的成果列举，共勉~
+（本系列所讲APT均泛">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android编译时注解框架6-APT的优缺点与应用">
+<meta property="og:url" content="http://lizhaoxuan.github.io/2016/08/26/apt_usage_scenario/index.html">
+<meta property="og:site_name" content="暴打小女孩-Blog">
+<meta property="og:description" content="概述如果你已经读完了前面的5章博客，相信你已经对APT整体已经比较熟悉了，所以，APT真的很简单对嘛？
+但就像我前面提到过的，APT是一套非常强大的机制，它唯一的限制在于你天马行空的设计！ 
+APT有着非常简单的技术实现，但其应用场景却着实有点尴尬。我一直期望可以探索出ButterKnife和EventBus以外的应用场景，却始终未能如愿。姑且把我目前总结的成果列举，共勉~
+（本系列所讲APT均泛">
+<meta property="og:updated_time" content="2016-08-26T06:21:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android编译时注解框架6-APT的优缺点与应用">
+<meta name="twitter:description" content="概述如果你已经读完了前面的5章博客，相信你已经对APT整体已经比较熟悉了，所以，APT真的很简单对嘛？
+但就像我前面提到过的，APT是一套非常强大的机制，它唯一的限制在于你天马行空的设计！ 
+APT有着非常简单的技术实现，但其应用场景却着实有点尴尬。我一直期望可以探索出ButterKnife和EventBus以外的应用场景，却始终未能如愿。姑且把我目前总结的成果列举，共勉~
+（本系列所讲APT均泛">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/08/26/apt_usage_scenario/"/>
+
+  <title> Android编译时注解框架6-APT的优缺点与应用 | 暴打小女孩-Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?56e0f8da7e01da926bfb931472e9a26d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暴打小女孩-Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/lizhaoxuan" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            Github
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android编译时注解框架6-APT的优缺点与应用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-26T15:30:58+08:00" content="2016-08-26">
+              2016-08-26
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/26/apt_usage_scenario/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/26/apt_usage_scenario/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/26/apt_usage_scenario/" class="leancloud_visitors" data-flag-title="Android编译时注解框架6-APT的优缺点与应用">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>如果你已经读完了前面的5章博客，相信你已经对APT整体已经比较熟悉了，所以，APT真的很简单对嘛？</p>
+<p>但就像我前面提到过的，<strong>APT是一套非常强大的机制，它唯一的限制在于你天马行空的设计！</strong> </p>
+<p>APT有着非常简单的技术实现，但其应用场景却着实有点尴尬。我一直期望可以探索出ButterKnife和EventBus以外的应用场景，却始终未能如愿。姑且把我目前总结的成果列举，共勉~</p>
+<p>（<strong>本系列所讲APT均泛指编译时注解+代码生成</strong>，虽然运行时注解也属APT）</p>
+<a id="more"></a>
+<h3 id="APT优点"><a href="#APT优点" class="headerlink" title="APT优点"></a>APT优点</h3><ul>
+<li><p>对代码进行标记，在编译时收集信息，并做处理。</p>
+</li>
+<li><p>生成一套独立代码，辅助代码运行</p>
+</li>
+<li><p>生成代码位置的可控性（可以在任意包位置生成代码），与原有代码的关联性更为紧密方便</p>
+</li>
+<li><p>更为可靠的自动代码生成</p>
+</li>
+<li><p>自动生成的代码可以最大程度的简单粗暴，在不必考虑编写效率的情况下提高运行效率</p>
+</li>
+</ul>
+<h3 id="APT缺点"><a href="#APT缺点" class="headerlink" title="APT缺点"></a>APT缺点</h3><ul>
+<li><p>APT往往容易被误解可以实现代码插入，然而事实是并不可以</p>
+</li>
+<li><p>APT可以自动生成代码，但在运行时却需要主动调用</p>
+</li>
+<li><p>与GreenDao不同，GreenDao代码生成于app目录下，可以在编写时调用并修改。APT代码生成于Build目录，只能在运行时通过接口等方式进行操作。这意味着生成的代码必须要有一套固定的模板</p>
+</li>
+</ul>
+<h3 id="APT容易被你忽视的点"><a href="#APT容易被你忽视的点" class="headerlink" title="APT容易被你忽视的点"></a>APT容易被你忽视的点</h3><p>一个非常容易被你误解的点：只有被注解标记了的类或方法等，才可以被处理或收集信息。或者这样说，想要收集一些信息，只能先用注解修饰它。</p>
+<p>产生这样误解容易引起一个问题：你可能会觉得一个需要大量注解的框架体验不好而决定放弃。</p>
+<p>事实是怎么样呢？想一下同源的运行时注解+反射。反射可以通过一个类名便获取一个类的所有信息（方法、属性、方法参数等等等）。编译时注解也是可以的。当你修饰一个类时，可以通过类的Element获得类的属性和方法的Element,通过属性的Element可以获得属性所属类的信息，通过方法的Element可以获得所属类和其参数的信息。</p>
+<p>说白了，编译时注解你也完全可以当反射来理解。</p>
+<p>APT的优缺点都非常明显，优点足够了，缺点也不致命，只是让你在设计你的框架，选择技术方案时注意就好了。那么基于上面列出的几点，几个通用的应用场景就可以被设想了~<strong>一定要放大你的脑洞！！！</strong></p>
+<h3 id="应用场景-信息收集与统计"><a href="#应用场景-信息收集与统计" class="headerlink" title="应用场景-信息收集与统计"></a>应用场景-信息收集与统计</h3><p>注解的主要作用就是用于标记，所以最基础的应用就是信息收集与统计。可能你还是有点懵懵懂懂，没关系，举例子嘛~</p>
+<h4 id="编译时代码检查或统计"><a href="#编译时代码检查或统计" class="headerlink" title="编译时代码检查或统计"></a>编译时代码检查或统计</h4><p>统计可能会一点奇怪：看看我这次写了多少个方法呀，多少个类呀。回头可以给BOSS说一下，以后KPI用方法数来计算？抱歉我的脑洞也就这样了，你再扩展一下~</p>
+<pre><code>//示例代码  类统计
+@Override
+public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment env) {
+    Messager messager = processingEnv.getMessager();
+    int size = env.getElementsAnnotatedWith(GetMsg.class).size();
+    messager.printMessage(Diagnostic.Kind.NOTE,
+            &quot;Annotation class size = &quot; + size);
+}
+</code></pre><p>代码检查就比较靠谱一点了：类名是不是首字母大写的驼峰式啊？方法名有没有问题呀？常量是不是全大写啊？</p>
+<p>这里你可能比较好奇，我怎么检查啊，难道要给每个类都加一个注解嘛？不不不，你看刚刚我们才讲了：【APT容易被你忽视的点】，只需要一个就够了~</p>
+<p>（此处有点瞎扯淡了，一般代码检查都不会这么干）</p>
+<h4 id="运行时数据收集与统计"><a href="#运行时数据收集与统计" class="headerlink" title="运行时数据收集与统计"></a>运行时数据收集与统计</h4><p>通常来说，最容易想到的一个应用方向就是生成一个类似于字符串到类的对应Map结构。</p>
+<p>手写代码容易出错，交给APT来实现便可以将错误率降到最低。</p>
+<p>另外还有一个灵感来源于一个你不陌生的类：BuildConfig.</p>
+<p>在BuildConfig中存放着一些静态属性，而这些静态属性值是Grandle编译时赋予的。可能这里你最常用的就是 BuildConfig.DEBUG了。</p>
+<p>同理，APT也可以实现这样的功能。</p>
+<h3 id="应用场景-事件代理"><a href="#应用场景-事件代理" class="headerlink" title="应用场景-事件代理"></a>应用场景-事件代理</h3><p>此类应用场景的标志框架是ButterKnife。通过生成的代码代理实现View绑定。</p>
+<pre><code>//示例代码
+@Override
+public void bind(final Finder finder, final T target, Object source) {
+    //定义了一个View对象引用，这个对象引用被重复使用了（这可是一个偷懒的写法哦~）
+    View view;
+
+    //暂时不管Finder是个什么东西，反正就是一种类似于findViewById的操作。
+    view = finder.findRequiredView(source, 2131558541, &quot;field &apos;accountEdit&apos;&quot;);
+
+    //target就是我们的ForgetActivity，为ForgetActivity中的accountEdit赋值
+    target.accountEdit = finder.castView(view, 2131558541, &quot;field &apos;accountEdit&apos;&quot;);
+
+    view = finder.findRequiredView(source, 2131558543, &quot;field &apos;forgetBtn&apos; and method &apos;forgetOnClick&apos;&quot;);
+    target.forgetBtn = finder.castView(view, 2131558543, &quot;field &apos;forgetBtn&apos;&quot;);
+
+    //给view设置一个点击事件
+    view.setOnClickListener(
+        new butterknife.internal.DebouncingOnClickListener() {
+            @Override
+            public void doClick(android.view.View p0) {
+
+                //forgetOnClick()就是我们在ForgetActivity中写得事件方法。
+               target.forgetOnClick();
+
+            }
+        });
+}
+</code></pre><h4 id="ButterKnife扩展"><a href="#ButterKnife扩展" class="headerlink" title="ButterKnife扩展"></a>ButterKnife扩展</h4><p>ButterKnife绑定View的同时，我们也可以附加一些操作。</p>
+<p>一个典型案例就是 前面博客提到的OnceClick</p>
+<p>在给View设置监听事件时，添加一些自定操作。</p>
+<pre><code>view = finder.findViewById(source, 2131492945);
+    if (view != null) {
+        view.setOnClickListener(new View.OnClickListener() {
+            long time = 0L;
+            @Override
+            public void onClick(View v) {
+                long temp = System.currentTimeMillis();
+                if (temp - time &gt;= intervalTime) {
+                    time = temp;
+                    target.once();
+                }
+            }
+        });
+    }
+</code></pre><h4 id="其他属性（跨域）初始化-赋值"><a href="#其他属性（跨域）初始化-赋值" class="headerlink" title="其他属性（跨域）初始化\赋值"></a>其他属性（跨域）初始化\赋值</h4><p>ButterKnife的核心便是View的初始化操作，View可以初始化，其他对象的初始化当然也不在话下。</p>
+<p>举一个列子：</p>
+<p>Intent不能传输过大的数据量，那么在跳转Activity时有这大数据量传输的需求怎么办? APT遍可以解决。其核心原理通ButterKnife相同。</p>
+<p>ActivityA向ActivityB的代理类ProxyB赋值，ProxyB初始化ActivityB的属性。</p>
+<h3 id="应用场景-代理执行-or-“代码插入”"><a href="#应用场景-代理执行-or-“代码插入”" class="headerlink" title="应用场景-代理执行 or “代码插入”"></a>应用场景-代理执行 or “代码插入”</h3><p>虽然前面有说过APT并不能像Aspectj一样实现代码插入，但是可以使用某种变种方式实现，就是使用上怪怪的。</p>
+<p>####代理执行</p>
+<p>用注解修饰一系列方法，由APT来代理执行。</p>
+<p>此部分参考<a href="https://github.com/lizhaoxuan/CakeRun" target="_blank" rel="external">CakeRun</a></p>
+<pre><code>public class CrashApplication extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        //初始化APT框架，由Apt代理类来调用下列init方法，并在其中做些处理
+        //某种程度实现了代码插入
+        CakeRun.getInstance().applicationInit();
+    }
+
+    @AppInit(tag = 1, canSkip = true)
+    protected void init1() {
+        Log.d(&quot;TAG&quot;, &quot;init1()  将引起crash。非关键路径可以跳过&quot;);
+        String s = null;
+        Log.d(&quot;TAG&quot;, s);
+    }
+
+    @AsyncInit(tag = 2, packageName = {&quot;com.lizhaoxuan.cakerundemo.Lib1&quot;, &quot;other packageName&quot;})
+    protected void init2() {
+        Log.d(&quot;TAG&quot;, &quot;AsyncInit2() 引起Crash ,关键路径不可跳过&quot;);
+        Lib1.AsyncInit();
+    }
+
+    @AppInit(tag = 3)
+    protected void init3() {
+        Log.d(&quot;TAG&quot;, &quot;init3() 未引起crash&quot;);
+    }
+
+    @AppInit(tag = 4)
+    protected void init4() {
+        Log.d(&quot;TAG&quot;, &quot;init4() 未引起crash&quot;);
+    }
+}
+</code></pre><p>APT生成的代理类按照一定次序依次执行修饰了注解的初始化方法，并且在其中增加了一些逻辑判断，来决定是否要执行这个方法。从而绕过发生Crash的类。</p>
+<h4 id="代码插入AOP"><a href="#代码插入AOP" class="headerlink" title="代码插入AOP"></a>代码插入AOP</h4><p>使用APT实现AOP</p>
+<p>因为APT限制，通过click事件做切面，是最简单的，就是我们上面讲的 OnceClick</p>
+<pre><code>@CrashClick(id = R.id.btn, target = HomeActivity)
+public void startActivity() {
+      ...
+    this.startActivity(intent);
+}
+</code></pre><p>但对于普通方法，可能就需要这样调用</p>
+<pre><code>protected void onCreate(Bundle savedInstanceState) {
+
+    //...
+
+    //原本是这样调用方法的
+    startHomeActivity();
+
+    //使用了APT，需要在调用方法时插入一些逻辑，比如做AOP切面
+    //就需要这样调用
+    AptClient.doMethod(this,&quot;startHomeActivity&quot;);
+
+}
+
+@DemoTest(method = &quot;startHomeActivity&quot;)
+protected void startHomeActivity() {
+
+}
+</code></pre><p>APT生成代码样式：</p>
+<pre><code>public void doMethod(Object target){
+    int temp;
+    if(//一些逻辑条件){
+        //执行前做一些操作，比如记录
+        temp = 2; 
+        //执行真正的方法
+        target.startHomeActivity();
+    }else{
+        //这个方法有些问题不能执行
+    }
+}
+</code></pre><h3 id="应用场景-反射优化"><a href="#应用场景-反射优化" class="headerlink" title="应用场景-反射优化"></a>应用场景-反射优化</h3><p>编译时注解与反射异曲同工，只不过反射是在运行时获取类信息，编译时注解是在编译时获取类信息。所以反射可以做到事情，APT也是可以做到的。</p>
+<h4 id="EventBus优化"><a href="#EventBus优化" class="headerlink" title="EventBus优化"></a>EventBus优化</h4><p>EventBus效率的桎梏点在于需要通过反射遍历类中的Event接收方法，虽然做了缓存优化，但对效率的影响还是比较严重的。如果使用APT进行优化，EventBus最大的缺点就被解决了。</p>
+<p>APT优化:</p>
+<ul>
+<li><p>使用编译时注解标记Event接收方法。</p>
+</li>
+<li><p>通过APT+代码生成，生成对应代理类，并提取所有Event接收方法</p>
+</li>
+<li><p>每次注册不在需要在原本的类里寻找Event接收方法，而是直接注册代理类。</p>
+</li>
+</ul>
+<h3 id="应用场景-让代码返璞归真"><a href="#应用场景-让代码返璞归真" class="headerlink" title="应用场景-让代码返璞归真"></a>应用场景-让代码返璞归真</h3><p>实际项目开发中，往往为了提高开发效率，会牺牲一点性能。最简单的例子就是运行时注解的大量使用。</p>
+<p>运行时注解的大量使用减少了很多代码的编写，但谁都知道这是有性能损耗的。不过权衡利弊下，我们选择了妥协。</p>
+<p>以ORM数据库框架为例。</p>
+<p>细数目前Android主流的数据库框架：GreenDao、OrmLite、Active Android 。</p>
+<p>OrmLite、Active Android均使用了运行时注解作为辅助从而实现了ORM。极大地简化了数据库操作，在使用上是非常轻松便捷的。但也因为使用运行时注解，用到了反射，导致了数据库操作性能的下降。</p>
+<p>而作为数据库操作速度最快的GreenDao，它的原理是通过java工程替我们在项目中写了一套代码，一套返璞归真的数据库操作代码。没有反射的影响，采用最普通的方式操作数据库，它的速度是最快的！</p>
+<p>但缺点是GreenDao的使用太奇葩了……导致初学GreenDao很痛苦。这是一个很致命的缺点。</p>
+<p><strong>那么通过APT，则是一个很好的技术方案：CakeDao</strong></p>
+<p><a href="https://github.com/lizhaoxuan/CakeDao" target="_blank" rel="external">https://github.com/lizhaoxuan/CakeDao</a></p>
+<p>与GreenDao同理，自动生成最普通的数据库操作代码，从而提高数据库操作效率。但因为APT是在编译时自动进行的，所以他的学习成本是非常小的。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/APT/" rel="tag">#APT</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/17/apt-wathapt/" rel="next" title="Android编译时注解框架系列1-什么是编译时注解">
+                <i class="fa fa-chevron-left"></i> Android编译时注解框架系列1-什么是编译时注解
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/26/apt_usage_scenario/"
+           data-title="Android编译时注解框架6-APT的优缺点与应用" data-url="http://lizhaoxuan.github.io/2016/08/26/apt_usage_scenario/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpeg"
+               alt="lizhaoxuan" />
+          <p class="site-author-name" itemprop="name">lizhaoxuan</p>
+          <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APT优点"><span class="nav-number">2.</span> <span class="nav-text">APT优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APT缺点"><span class="nav-number">3.</span> <span class="nav-text">APT缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APT容易被你忽视的点"><span class="nav-number">4.</span> <span class="nav-text">APT容易被你忽视的点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景-信息收集与统计"><span class="nav-number">5.</span> <span class="nav-text">应用场景-信息收集与统计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编译时代码检查或统计"><span class="nav-number">5.1.</span> <span class="nav-text">编译时代码检查或统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行时数据收集与统计"><span class="nav-number">5.2.</span> <span class="nav-text">运行时数据收集与统计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景-事件代理"><span class="nav-number">6.</span> <span class="nav-text">应用场景-事件代理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ButterKnife扩展"><span class="nav-number">6.1.</span> <span class="nav-text">ButterKnife扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他属性（跨域）初始化-赋值"><span class="nav-number">6.2.</span> <span class="nav-text">其他属性（跨域）初始化\赋值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景-代理执行-or-“代码插入”"><span class="nav-number">7.</span> <span class="nav-text">应用场景-代理执行 or “代码插入”</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码插入AOP"><span class="nav-number">7.1.</span> <span class="nav-text">代码插入AOP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景-反射优化"><span class="nav-number">8.</span> <span class="nav-text">应用场景-反射优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EventBus优化"><span class="nav-number">8.1.</span> <span class="nav-text">EventBus优化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景-让代码返璞归真"><span class="nav-number">9.</span> <span class="nav-text">应用场景-让代码返璞归真</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lizhaoxuan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lizhaoxuan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Lb3BBgF3jv5bwrRc8KBz1cuP-gzGzoHsz", "kaPIOk4dBLRc4wfrlc2Tffrm");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

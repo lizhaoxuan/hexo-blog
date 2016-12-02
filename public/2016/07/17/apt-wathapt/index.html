@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://7o4zmy.com1.z0.glb.clouddn.com/11.jpeg">
 <meta property="og:image" content="http://7o4zmy.com1.z0.glb.clouddn.com/12.jpeg">
 <meta property="og:image" content="http://7o4zmy.com1.z0.glb.clouddn.com/13.jpeg">
-<meta property="og:updated_time" content="2016-08-09T08:05:53.000Z">
+<meta property="og:updated_time" content="2016-09-29T04:01:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android编译时注解框架系列1-什么是编译时注解">
 <meta name="twitter:description" content="概述Android编译时注解框架从入门到项目实践。该系列将通过5篇博客一步步教你打造一个属于自己的编译时注解框架，并在之后开源出基于APT的编译时注解框架。
@@ -361,17 +361,38 @@
 </li>
 </ul>
 <p>同样，自定义的注解也分为三类，通过元Annotation - @Retention 定义：</p>
-<ul>
+<p>这要要感谢大神@fw提醒，之前一直对RetentionPolicy.SOURCE，RetentionPolicy.RUNTIME，RetentionPolicy.CLASS三个元Annotation理解有误。我们先看一下官方注释</p>
+<pre><code>/**
+ * Annotation is only available in the source code.
+ */
+SOURCE,
+/**
+ * Annotation is available in the source code and in the class file, but not
+ * at runtime. This is the default policy.
+ */
+CLASS,
+/**
+ * Annotation is available in the source code, the class file and is
+ * available at runtime.
+ */
+RUNTIME
+</code></pre><ul>
 <li><p>@Retention(RetentionPolicy.SOURCE)</p>
-<p>  源码时注解，一般用来作为编译器标记。如Override, Deprecated, SuppressWarnings。</p>
-</li>
-<li><p>@Retention(RetentionPolicy.RUNTIME)</p>
-<p>  运行时注解，在运行时通过反射去识别的注解。</p>
+<p>  该注解仅用于源码阶段，就是我们编写的java文件。</p>
 </li>
 <li><p>@Retention(RetentionPolicy.CLASS)</p>
-<p>  编译时注解，在编译时被识别并处理的注解，这是本章重点。</p>
+<p>  该注解用于源码、类文件阶段。就是我们编写java文件和编译后产生的class文件。</p>
+</li>
+<li><p>@Retention(RetentionPolicy.RUNTIME)</p>
+<p>  该注解用于源码、类文件和运行时阶段。</p>
 </li>
 </ul>
+<p>可能说到这里你还不太明白他们的区别。首先RetentionPolicy类型是一种包含关系。另外什么阶段的RetentionPolicy就表示你可以在什么阶段处理他们。</p>
+<p>RetentionPolicy.SOURCE修饰的注解可以在源码阶段时处理，但在编译成class文件或运行中以后，APT就没有办法对他进行处理了。<br>修饰了RetentionPolicy.RUNTIME的注解则是优先级最大的，你可以在任何时候对他进行处理。</p>
+<p>那么可能你就会问了，那这样的话，不管我是用于编译时代码生成还是运行时反射处理，我直接对所有注解申明RetentionPolicy.RUNTIME不就好了吗？或者即使我想在编译时代码生成我也用RetentionPolicy.SOURCE，也是可以的吧？</p>
+<p>没错，RetentionPolicy.RUNTIME是优先级最大的修饰，但为什么不建议呢？这个的原因同修饰类成员时用的private还是public得道理一样。</p>
+<p>RetentionPolicy.SOURCE同样可以用于编译时代码生成，但他是有缺点的，编译时代码生成有一个技巧，“在生成的代码中，我们也是可以继续将我们的注解写上去的，APT会二次扫描，并且对其进行处理”。那么这里如果使用了RetentionPolicy.SOURCE就会产生一个问题，编译时生成的代码是class文件，RetentionPolicy.SOURCE在此时是不会被APT识别使用的。</p>
+<p><strong>请谨慎使用在生成代码中继续使用你的注解，这类似一种递归，处理不当易导致死循环</strong></p>
 <h3 id="运行时注解的简单使用"><a href="#运行时注解的简单使用" class="headerlink" title="运行时注解的简单使用"></a>运行时注解的简单使用</h3><p>运行时注解的实质是，在代码中通过注解进行标记，运行时通过反射寻找标记进行某种处理。而运行时注解一直以来被呕病的原因便是反射的低效。</p>
 <p>下面展示一个Demo。其功能是通过注解实现布局文件的设置。</p>
 <p>之前我们是这样设置布局文件的：</p>
@@ -590,6 +611,10 @@ public void bind(final Finder finder, final T target, Object source) {
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2016/08/26/apt_usage_scenario/" rel="prev" title="Android编译时注解框架6-APT的优缺点与应用">
+                Android编译时注解框架6-APT的优缺点与应用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -683,7 +708,7 @@ public void bind(final Finder finder, final T target, Object source) {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
