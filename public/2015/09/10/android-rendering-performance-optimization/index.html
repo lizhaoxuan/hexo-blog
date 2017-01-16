@@ -84,20 +84,22 @@
 
 
 
-<meta name="description" content="前言本文主要对过度绘制和图形渲染做一个概念性的描述。
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
+前言本文主要对过度绘制和图形渲染做一个概念性的描述。
 同时以案例方式列出一些简单适用的优化措施。
 如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章：
 优化Android过度绘制
-另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的 Android 性能优化典范">
+另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android之GPU过度绘制与图形渲染优化">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2015/09/10/android-rendering-performance-optimization/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="前言本文主要对过度绘制和图形渲染做一个概念性的描述。
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
+前言本文主要对过度绘制和图形渲染做一个概念性的描述。
 同时以案例方式列出一些简单适用的优化措施。
 如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章：
 优化Android过度绘制
-另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的 Android 性能优化典范">
+另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的">
 <meta property="og:image" content="http://img2.ph.126.net/HqqBm8xVjCUwd4EHSaQhgA==/6631820931164660027.jpeg">
 <meta property="og:image" content="http://img.blog.csdn.net/20151016211507297">
 <meta property="og:image" content="http://img.blog.csdn.net/20151103211615749">
@@ -107,14 +109,15 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151016211827892">
 <meta property="og:image" content="http://img.blog.csdn.net/20151016211844469">
 <meta property="og:image" content="http://img.blog.csdn.net/20151103211244952">
-<meta property="og:updated_time" content="2016-08-09T06:50:50.000Z">
+<meta property="og:updated_time" content="2017-01-16T05:13:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android之GPU过度绘制与图形渲染优化">
-<meta name="twitter:description" content="前言本文主要对过度绘制和图形渲染做一个概念性的描述。
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
+前言本文主要对过度绘制和图形渲染做一个概念性的描述。
 同时以案例方式列出一些简单适用的优化措施。
 如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章：
 优化Android过度绘制
-另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的 Android 性能优化典范">
+另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的">
 <meta name="twitter:image" content="http://img2.ph.126.net/HqqBm8xVjCUwd4EHSaQhgA==/6631820931164660027.jpeg">
 
 
@@ -334,7 +337,8 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文主要对过度绘制和图形渲染做一个概念性的描述。</p>
+        <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文主要对过度绘制和图形渲染做一个概念性的描述。</p>
 <p>同时以案例方式列出一些简单适用的优化措施。</p>
 <p>如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章：</p>
 <p><a href="">优化Android过度绘制</a></p>
@@ -694,7 +698,7 @@ onStart 到 onResume ：   3    3    2
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

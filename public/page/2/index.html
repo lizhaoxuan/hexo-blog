@@ -317,7 +317,8 @@
 
       
         
-          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  <strong>背景-background</strong>（背景包括背景图片、颜色、形状、边框等等）。</p>
+          <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  <strong>背景-background</strong>（背景包括背景图片、颜色、形状、边框等等）。</p>
 <p>那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。这个时候，你就需要   <strong>Android过度绘制深度优化—View提前绘制</strong></p>
 <p>先说原理：<strong>不做处理的View绘制过程像一把刷子一层层去绘制View，第一层刷一个形状，第二层刷背景图片/颜色，第三层刷文字等等，那么，如果我们将View提前画好，然后交给系统去绘制。这样不管你的View之前刷过多少次，系统只需要绘制一次。这样，过度绘制就可以轻松解决啦！</strong></p>
           <div class="post-more-link text-center">
@@ -443,7 +444,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

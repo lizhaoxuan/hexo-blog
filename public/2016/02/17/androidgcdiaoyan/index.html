@@ -84,20 +84,16 @@
 
 
 
-<meta name="description" content="众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~
-网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面这几种情况：
-
-System.gc(),真的是随叫随到？
-软引用弱引用的错">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
+众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~
+网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android GC机制实践调研">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2016/02/17/androidgcdiaoyan/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~
-网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面这几种情况：
-
-System.gc(),真的是随叫随到？
-软引用弱引用的错">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
+众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~
+网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面">
 <meta property="og:image" content="http://img2.ph.126.net/K7Q7D5OLxL2nqgtP9ItXtw==/6631554849350641553.png">
 <meta property="og:image" content="http://img2.ph.126.net/TslV5cRuca6OkzBQ1aE_kQ==/6631772552652944693.png">
 <meta property="og:image" content="http://img2.ph.126.net/d5cIKUN7owo1Lx_AbIIy9Q==/6631652705885517209.png">
@@ -116,14 +112,12 @@ System.gc(),真的是随叫随到？
 <meta property="og:image" content="http://img2.ph.126.net/F2UDo2Wffl2iep4aog04Hg==/6631718676583178933.png">
 <meta property="og:image" content="http://img2.ph.126.net/o96gsLvjTz9Xdl2Z5nca3g==/6631764856071546647.jpg">
 <meta property="og:image" content="http://img0.ph.126.net/sCccZcFlApzYMD_wylzafA==/6631718676583178928.jpg">
-<meta property="og:updated_time" content="2016-08-09T06:50:50.000Z">
+<meta property="og:updated_time" content="2017-01-16T05:13:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android GC机制实践调研">
-<meta name="twitter:description" content="众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~
-网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面这几种情况：
-
-System.gc(),真的是随叫随到？
-软引用弱引用的错">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
+众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~
+网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面">
 <meta name="twitter:image" content="http://img2.ph.126.net/K7Q7D5OLxL2nqgtP9ItXtw==/6631554849350641553.png">
 
 
@@ -343,7 +337,8 @@ System.gc(),真的是随叫随到？
       
 
       
-        <p>众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~</p>
+        <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
+<p>众所周知，java GC 是影响Android应用性能的主要因素之一。完全交给系统管理的GC往往不尽如人意，而开发者却也毫无办法，只能对着GC迎合啊迎合，想着办法把GC哄开心了呗~</p>
 <p>网上也不乏众多的android 内存优化文章，成为开发者的编码守则。但不管怎么遵守，内存管理依然像一个黑盒子一样，反正我是写着不踏实。就比如下面这几种情况：</p>
 <ul>
 <li>System.gc(),真的是随叫随到？</li>
@@ -688,7 +683,7 @@ Resources res = getResources();
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

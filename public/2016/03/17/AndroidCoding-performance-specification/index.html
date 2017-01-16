@@ -84,20 +84,23 @@
 
 
 
-<meta name="description" content="前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
-但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，也许最佳的解决办法便是从编码之初上着手进行。">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
+前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
+但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android性能编码规范">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2016/03/17/AndroidCoding-performance-specification/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
-但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，也许最佳的解决办法便是从编码之初上着手进行。">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
+前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
+但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，">
 <meta property="og:image" content="http://images.cnitblog.com/blog/56846/201501/231407350162907.png">
-<meta property="og:updated_time" content="2016-08-09T06:50:50.000Z">
+<meta property="og:updated_time" content="2017-01-16T05:13:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android性能编码规范">
-<meta name="twitter:description" content="前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
-但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，也许最佳的解决办法便是从编码之初上着手进行。">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
+前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
+但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，">
 <meta name="twitter:image" content="http://images.cnitblog.com/blog/56846/201501/231407350162907.png">
 
 
@@ -317,7 +320,8 @@
       
 
       
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。</p>
+        <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。</p>
 <p>但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，也许最佳的解决办法便是从编码之初上着手进行。</p>
 <a id="more"></a>
 <p>传统的编码规范仅只是为了阅读规定了代码的编写格式，无数的性能优化博客则更多的是一种性能优化策略。一个应用的性能更多的是依靠程序员自身积累及习惯。</p>
@@ -729,7 +733,7 @@ networkErrorView = findViewById(R.id.network_error_layout); // 获取 展开后�
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
