@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="APT," />
+  <meta name="keywords" content="测试," />
 
 
 
@@ -85,33 +85,18 @@
 
 
 <meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述先讲一下编写《Android编译时注解框架》的初衷吧，APT其实并不难，可以说是简单且高效，但关于APT的资料却并不多，甚至很多人都不知道这么一个技术。国内关于APT的博客屈指可数，唯二找到的几篇初级讲解一个是用Eclipse写得，一个是用AndroidStudio加Intellij。刚开始着实踩了不少坑，但事实是，AP">
+前言为了保证前面几章阅读上的流程度，我们将Calabash从环境搭建到具体使用中所遇到的所有问题做了一个总结，这里大部分是我实际所经历的坑，同时我也会尽可能的收录一下我在学习过程中从别的博客看到的问题。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android编译时注解框架系列2-Run Demo">
-<meta property="og:url" content="http://lizhaoxuan.github.io/2016/07/17/apt-run_demo/index.html">
+<meta property="og:title" content="App自动化测试探索5-Calabash踩坑总结">
+<meta property="og:url" content="http://lizhaoxuan.github.io/2017/02/11/App自动化测试探索5-Calabash踩坑总结/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
 <meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述先讲一下编写《Android编译时注解框架》的初衷吧，APT其实并不难，可以说是简单且高效，但关于APT的资料却并不多，甚至很多人都不知道这么一个技术。国内关于APT的博客屈指可数，唯二找到的几篇初级讲解一个是用Eclipse写得，一个是用AndroidStudio加Intellij。刚开始着实踩了不少坑，但事实是，AP">
-<meta property="og:image" content="http://img1.ph.126.net/u57VJi5uksh4duN6yMFxOA==/6631542754722720703.jpeg">
-<meta property="og:image" content="http://img0.ph.126.net/UhzqKVMFfwu3ty-OxxyMCg==/6631790144838976047.jpeg">
-<meta property="og:image" content="http://img1.ph.126.net/F8_ZnOElNPV06vSCsJnvFw==/6631658203443642814.jpeg">
-<meta property="og:image" content="http://img2.ph.126.net/cc1rbYqrXAfXk9lzz4dP8g==/6631577939094811679.jpeg">
-<meta property="og:image" content="http://img0.ph.126.net/JcFdC1YgKtkFQGqozEa_iw==/6631616422001785860.jpeg">
-<meta property="og:image" content="http://img1.ph.126.net/ODbgMyTTqIym9R-XzgPoWA==/6631704382932005509.jpeg">
-<meta property="og:image" content="http://img0.ph.126.net/Q4hJNglipWrhbm8BCEXaWg==/6631701084397122195.jpeg">
-<meta property="og:image" content="http://img0.ph.126.net/VhQ-R3WDsxyN0Jj-tjlbOw==/6631456992815762880.jpeg">
-<meta property="og:image" content="http://img1.ph.126.net/aLdtGF6QzHmAx9RgQA9xUg==/6631790144838976048.jpeg">
-<meta property="og:image" content="http://img2.ph.126.net/RpZ7TNvkMhh16qZw1Mickg==/6631662601490157227.jpeg">
-<meta property="og:image" content="http://img2.ph.126.net/j5zjxfuq-5c7iitXiRIyvA==/6631606526397135920.jpeg">
-<meta property="og:image" content="http://img2.ph.126.net/BG1Js3oL3cgWFoiqyK2gGQ==/6631701084397122194.jpeg">
-<meta property="og:image" content="http://img2.ph.126.net/Qy8xMkNkIv20akzOwLwqpA==/6631748363397120041.jpegg">
-<meta property="og:image" content="http://img1.ph.126.net/TdCL0wMyvStVQ_yBDMst8Q==/6631771453141303831.jpeg">
-<meta property="og:updated_time" content="2017-01-16T05:13:05.000Z">
+前言为了保证前面几章阅读上的流程度，我们将Calabash从环境搭建到具体使用中所遇到的所有问题做了一个总结，这里大部分是我实际所经历的坑，同时我也会尽可能的收录一下我在学习过程中从别的博客看到的问题。">
+<meta property="og:updated_time" content="2017-02-15T07:39:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android编译时注解框架系列2-Run Demo">
+<meta name="twitter:title" content="App自动化测试探索5-Calabash踩坑总结">
 <meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述先讲一下编写《Android编译时注解框架》的初衷吧，APT其实并不难，可以说是简单且高效，但关于APT的资料却并不多，甚至很多人都不知道这么一个技术。国内关于APT的博客屈指可数，唯二找到的几篇初级讲解一个是用Eclipse写得，一个是用AndroidStudio加Intellij。刚开始着实踩了不少坑，但事实是，AP">
-<meta name="twitter:image" content="http://img1.ph.126.net/u57VJi5uksh4duN6yMFxOA==/6631542754722720703.jpeg">
+前言为了保证前面几章阅读上的流程度，我们将Calabash从环境搭建到具体使用中所遇到的所有问题做了一个总结，这里大部分是我实际所经历的坑，同时我也会尽可能的收录一下我在学习过程中从别的博客看到的问题。">
 
 
 
@@ -132,9 +117,9 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-run_demo/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2017/02/11/App自动化测试探索5-Calabash踩坑总结/"/>
 
-  <title> Android编译时注解框架系列2-Run Demo | 暴打小女孩-Blog </title>
+  <title> App自动化测试探索5-Calabash踩坑总结 | 暴打小女孩-Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +259,7 @@
             
             
               
-                Android编译时注解框架系列2-Run Demo
+                App自动化测试探索5-Calabash踩坑总结
               
             
           </h1>
@@ -286,8 +271,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-17T15:50:58+08:00" content="2016-07-17">
-              2016-07-17
+            <time itemprop="dateCreated" datetime="2017-02-11T16:20:58+08:00" content="2017-02-11">
+              2017-02-11
             </time>
           </span>
 
@@ -297,8 +282,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/17/apt-run_demo/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/17/apt-run_demo/" itemprop="commentsCount"></span>
+                <a href="/2017/02/11/App自动化测试探索5-Calabash踩坑总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/11/App自动化测试探索5-Calabash踩坑总结/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -308,7 +293,7 @@
 
           
           
-             <span id="/2016/07/17/apt-run_demo/" class="leancloud_visitors" data-flag-title="Android编译时注解框架系列2-Run Demo">
+             <span id="/2017/02/11/App自动化测试探索5-Calabash踩坑总结/" class="leancloud_visitors" data-flag-title="App自动化测试探索5-Calabash踩坑总结">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -331,99 +316,34 @@
 
       
         <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
-<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>先讲一下编写《Android编译时注解框架》的初衷吧，APT其实并不难，可以说是简单且高效，但关于APT的资料却并不多，甚至很多人都不知道这么一个技术。国内关于APT的博客屈指可数，唯二找到的几篇初级讲解一个是用Eclipse写得，一个是用AndroidStudio加Intellij。刚开始着实踩了不少坑，但事实是，APT完全可以用AndroidStudio单独实现。光是项目搭建就如此麻烦了，更别提语法讲解了。资料匮乏无疑提高了APT的入门门槛。</p>
-<p>正因为如此，这个系列博客就这样诞生啦~现在就教你用AndroidStudio一步步打造自己的APT框架。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了保证前面几章阅读上的流程度，我们将Calabash从环境搭建到具体使用中所遇到的所有问题做了一个总结，这里大部分是我实际所经历的坑，同时我也会尽可能的收录一下我在学习过程中从别的博客看到的问题。</p>
 <a id="more"></a>
-<p>以我自己的学习习惯来讲，比起前期大量枯燥的基础知识积累，我更喜欢先把项目跑起来再说，虽然会不明所以，但反而会促进学习兴趣，并且在有结果的场景下一步步深入。</p>
-<p>所以作为《Android编译时注解框架》系列的第二篇，我们不管三七二十一，先把APT跑起来再说，看看这到底是个什么东西。跑起来，就入门啦！</p>
-<p><strong>在Running的过程中，有很多语法，我们都暂时一并跳过，都放到《Android编译时注解框架-语法讲解》统一讲。</strong></p>
-<h3 id="Running"><a href="#Running" class="headerlink" title="Running"></a>Running</h3><h4 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h4><p>首先创建一个Android项目</p>
-<p><img src="http://img1.ph.126.net/u57VJi5uksh4duN6yMFxOA==/6631542754722720703.jpeg" alt=""></p>
-<p>然后给我们的项目增加一个module,一定要记得是Java Library.</p>
-<p>因为APT需要用到jdk下的 【 <em>javax.~ </em>】包下的类，这在AndroidSdk中是没有的。</p>
-<p><img src="http://img0.ph.126.net/UhzqKVMFfwu3ty-OxxyMCg==/6631790144838976047.jpeg" alt=""></p>
-<p><img src="http://img1.ph.126.net/F8_ZnOElNPV06vSCsJnvFw==/6631658203443642814.jpeg" alt=""></p>
-<h4 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h4><p>新建一个类，GetMsg。就是我们自定义的注解。</p>
-<p><img src="http://img2.ph.126.net/cc1rbYqrXAfXk9lzz4dP8g==/6631577939094811679.jpeg" alt=""></p>
-<p>这是一个编译时注解，用<em>@Retention(RetentionPolicy.CLASS)</em>修饰。</p>
-<p>这个注解只能修饰方法。用<em>@Target(ElementType.METHOD)</em>修饰。</p>
-<p>且这个注解可以设置两个值。id和name。name是有默认值的，可以不设置。 </p>
-<h4 id="创建Processor"><a href="#创建Processor" class="headerlink" title="创建Processor"></a>创建Processor</h4><p>Processor是用来处理Annotation的类。继承自AbstractProcessor。</p>
-<p><img src="http://img0.ph.126.net/JcFdC1YgKtkFQGqozEa_iw==/6631616422001785860.jpeg" alt=""></p>
-<p>复写AbstractProcessor两个最重要的方法。</p>
-<p><em>process</em>方法是用来处理注解的，我们一会写。</p>
-<p><em>getSupportedAnnotationTypes</em>用来表示该Processor处理哪些注解。这里我们只有一个<em>GetMsg</em>注解需要处理。</p>
-<h4 id="重写process方法"><a href="#重写process方法" class="headerlink" title="重写process方法"></a>重写process方法</h4><p>我们的目的呢，是获取修饰了GetMsg注解的方法所有信息，只有获得了这些信息，才有依据生成代码不是吗?</p>
-<pre><code>@Override
-public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment env) {
-    Messager messager = processingEnv.getMessager();
-    for (Element element : env.getElementsAnnotatedWith(GetMsg.class)) {
-        PackageElement packageElement = (PackageElement) element
-                .getEnclosingElement();
-        //获取该注解所在类的包名
-        String packageName = packageElement.getQualifiedName().toString();
-        TypeElement classElement = (TypeElement) element;
-        //获取该注解所在类的类名
-        String className = classElement.getSimpleName().toString();
-        //获取该注解所在类的全类名
-        String fullClassName = classElement.getQualifiedName().toString();
-        VariableElement variableElement = (VariableElement) element.getEnclosingElement();
-        //获取方法名
-        String methodName = variableElement.getSimpleName().toString();
-        //获取该注解的值
-        int id = classElement.getAnnotation(GetMsg.class).id();
-        String name = classElement.getAnnotation(GetMsg.class).name();
-        messager.printMessage(Diagnostic.Kind.NOTE,
-                &quot;Annotation class : packageName = &quot; + packageName);
-        messager.printMessage(Diagnostic.Kind.NOTE,
-                &quot;Annotation class : className = &quot; + className);
-        messager.printMessage(Diagnostic.Kind.NOTE,
-                &quot;Annotation class : fullClassName = &quot; + fullClassName);
-        messager.printMessage(Diagnostic.Kind.NOTE,
-                &quot;Annotation class : methodName = &quot; + methodName);
-        messager.printMessage(Diagnostic.Kind.NOTE,
-                &quot;Annotation class : id = &quot; + id + &quot;  name = &quot; + name);
-    }
-    return true;
-}
-</code></pre><p>简单介绍一下代码：</p>
-<p>1.Messager 用来输出。就像我们平时用的System.out.pringln()和Log.d。输出位置在编译器下方的Messages窗口。这里System.out也是可以用的哦~</p>
-<p>2.用for循环遍历所有的 GetMsg注解，然后进行处理。</p>
-<p>3.Diagnostic.Kind.NOTE 类似于Log.d Log.e这样的等级。</p>
-<p>4.return true;表示该Process已经处理了，其他的Process不需要再处理了。</p>
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>一定不能忘记的文件配置。</p>
-<p>在main文件夹下创建一个resources.META-INF.services文件夹，创建文件</p>
-<p>javax.annotation.processing.Processor</p>
-<p><img src="http://img1.ph.126.net/ODbgMyTTqIym9R-XzgPoWA==/6631704382932005509.jpeg" alt=""></p>
-<p>文件内容是Process类的包名+类名</p>
-<p><img src="http://img0.ph.126.net/Q4hJNglipWrhbm8BCEXaWg==/6631701084397122195.jpeg" alt=""></p>
-<p>忘记这个配置文件的后果就是，注解无法生效。</p>
-<h4 id="编译jar"><a href="#编译jar" class="headerlink" title="编译jar"></a>编译jar</h4><p>这里有一个坑，我们的主Module是不可以直接引用这个java Module的。（直接引用，可以成功运行一次~修改代码以后就不能运行了）</p>
-<p>而如何单独编译这个java Module呢？</p>
-<p>在编译器Gradle视图里，找到Module apt下的build目录下的Build按钮。双击运行。</p>
-<p><img src="http://img0.ph.126.net/VhQ-R3WDsxyN0Jj-tjlbOw==/6631456992815762880.jpeg" alt=""></p>
-<p>代码没有问题编译通过的话，会有BUILD SUCCESS提示</p>
-<p><img src="http://img1.ph.126.net/aLdtGF6QzHmAx9RgQA9xUg==/6631790144838976048.jpeg" alt=""></p>
-<p>生成的jar包在 apt 下的build目录下的libs下</p>
-<p><img src="http://img2.ph.126.net/RpZ7TNvkMhh16qZw1Mickg==/6631662601490157227.jpeg" alt=""></p>
-<p>将apt.jar拷贝到app下的libs目录，右键该jar，点击Add as Library，添加Library.</p>
-<p><img src="http://img2.ph.126.net/j5zjxfuq-5c7iitXiRIyvA==/6631606526397135920.jpeg" alt=""></p>
-<p><img src="http://img2.ph.126.net/BG1Js3oL3cgWFoiqyK2gGQ==/6631701084397122194.jpeg" alt=""></p>
-<p>在APP项目中使用该注解GetMsg。运行。</p>
-<p><img src="http://img2.ph.126.net/Qy8xMkNkIv20akzOwLwqpA==/6631748363397120041.jpegg" alt=""></p>
-<p><strong>当你apt这个包的代码有修改时，需要重复2.6这个步骤。这是比较烦的，但是没办法</strong></p>
-<h4 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h4><p><img src="http://img1.ph.126.net/TdCL0wMyvStVQ_yBDMst8Q==/6631771453141303831.jpeg" alt=""></p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这个Demo只是使用了注解，并且根据注解得到一些必要的信息。没有做代码生成的操作，生成代码的具体操作我们放到后面开始写框架时再讲。</p>
-<p>整个项目跑起来，遇到了比较多的坑，我们在下一章讲《Android编译时注解框架-爬坑》</p>
-<p>这个Demo的代码我放到了GitHub:</p>
-<p><a href="https://github.com/lizhaoxuan/Android-APT-Framework/tree/master/run-demo/CakeDao" target="_blank" rel="external">https://github.com/lizhaoxuan/Android-APT-Framework/tree/master/run-demo/CakeDao</a></p>
+<h2 id="坑1：Calabash安装时Ruby报错"><a href="#坑1：Calabash安装时Ruby报错" class="headerlink" title="坑1：Calabash安装时Ruby报错"></a>坑1：Calabash安装时Ruby报错</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ sudo gem install calabash-android</div><div class="line">Password:</div><div class="line">Building natie extensions. This could take a while...</div><div class="line">RROR: Failed to build gem native extension.</div><div class="line"></div><div class="line">    /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby extconf.rb</div><div class="line">	mkmf.rb can&apos;t find header files for ruby at /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/include/ruby.h</div></pre></td></tr></table></figure>
+<p>好像大部分人都不会遇到这个问题，虽然看着像是Ruby缺了一个头文件，但实际问题不在于Ruby。</p>
+<p>执行下面命令：</p>
+<pre><code>$ xcode-select --install
+</code></pre><p>安装xcode就OK了！看样子是ruby依赖了xcode？心塞~</p>
+<h2 id="坑2：Could-not-find-an-Android-SDK-please-make-it-is-install"><a href="#坑2：Could-not-find-an-Android-SDK-please-make-it-is-install" class="headerlink" title="坑2：Could not find an Android SDK please make it is install"></a>坑2：Could not find an Android SDK please make it is install</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">No test server found for this combination of app and calabash version.Recreating test server</div><div class="line">ERROR:Could not find an Android SDK please make it is install</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>其他JDK,ANT问题同理。</p>
+<p>首先确保你确实安装了Android SDK,并且正确配置了环境变量。<br>如果已经确认了什么问题都没有，还是报这个错。<br>执行命令：</p>
+<pre><code>$.bash_profile
+</code></pre><p>还是报这个错？ 哈哈哈，下面就要出绝招了：<strong>重启大法好啊~</strong><br>恩，重启下电脑应该就可以了</p>
+<h2 id="坑3：App-did-not-start-或-WARN-Did-not-find-‘android-jar’…"><a href="#坑3：App-did-not-start-或-WARN-Did-not-find-‘android-jar’…" class="headerlink" title="坑3：App did not start 或 WARN:Did not find ‘android.jar’…"></a>坑3：App did not start 或 WARN:Did not find ‘android.jar’…</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">WARN: Did not find &apos;android.jar&apos; in any standard directory of &apos;.../sdk/platforms&apos;.Calabash will therefore take longer to load</div><div class="line">Feature: /**</div><div class="line">	Scenario: /**</div><div class="line">    App did not start(RuntimeError)</div><div class="line">    ./feature/support/app_life_cycle_hooks.rb:5:in&apos;Before&apos;</div><div class="line">    ...</div></pre></td></tr></table></figure>
+<p>首先确认手机或虚拟机以链接到电脑，并且调试模式什么的都开了。<br>确认App配置中是否赋予了网络权限,以Android为例</p>
+<p>manifest.xml文件：</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;
+</code></pre><h2 id="坑4：-apk-is-not-signed-with-any-of-the-available-keystores"><a href="#坑4：-apk-is-not-signed-with-any-of-the-available-keystores" class="headerlink" title="坑4：**.apk is not signed with any of the available keystores"></a>坑4：**.apk is not signed with any of the available keystores</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">No test server found for this combination of app and calabash version.Recreating test server</div><div class="line">**.apk is not signed with any of the available keystores</div></pre></td></tr></table></figure>
+<p>这个其实不算是坑，Calabash测试apk需要重新对其进行签名才可，按照错误提示或官方文档就可以解决这个问题，这个教程太多啦，就不熬述了。<a href="https://github.com/calabash/calabash-android/wiki/Running-Calabash-Android" target="_blank" rel="external">付官方解决方案</a>。</p>
+<h2 id="坑5：Calabash自定义的Steps-执行过程中提示未定义"><a href="#坑5：Calabash自定义的Steps-执行过程中提示未定义" class="headerlink" title="坑5：Calabash自定义的Steps,执行过程中提示未定义"></a>坑5：Calabash自定义的Steps,执行过程中提示未定义</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">You can implement step definitions for undefined steps with these snippets:</div><div class="line"></div><div class="line">Then /^I through welcomePages $/ do</div><div class="line">  pending # Write code here that turns the phrase above into concrete actions</div><div class="line">end</div></pre></td></tr></table></figure>
+<p>我写的没毛病啊，怎么就一直提示未定义呢？<br>如果你也遇到了这个问题，请先严格检查自己的代码有没有问题！如果检查一切都没有问题，就看看是不也犯了我这个错误！我觉得一般人都范不了我这个错误……</p>
+<p>最开始我的定义是这样写的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Then /^I through welcomePages $/ do</div><div class="line">	Then I drag from 90:50 to 20:50 moving with 20 steps </div><div class="line">    Then I drag from 90:50 to 20:50 moving with 20 steps </div><div class="line">    Then I drag from 90:50 to 20:50 moving with 20 steps </div><div class="line">end</div></pre></td></tr></table></figure>
+<p>好像看着也没毛病是吧？问题在这里<code>Then /^I through welcomePages $/ do</code> 末尾<code>$</code>符前不能有空格！！！</p>
+<p>改为下面这样就可以了！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Then /^I through welcomePages$/ do</div><div class="line">	Then I drag from 90:50 to 20:50 moving with 20 steps </div><div class="line">    Then I drag from 90:50 to 20:50 moving with 20 steps </div><div class="line">    Then I drag from 90:50 to 20:50 moving with 20 steps </div><div class="line">end</div></pre></td></tr></table></figure>
 <p><br></p>
 <hr>
-<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-wathapt/">《Android编译时注解框架-什么是编译时注解》</a></p>
-<p>《Android编译时注解框架-Run Demo》</p>
-<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-run_project/">《Android编译时注解框架-Run Project：OnceClick》</a></p>
-<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-Climbed-out-of-the-pit/">《Android编译时注解框架-爬坑》</a></p>
-<p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-Grammar-explanation/">《Android编译时注解框架-语法讲解》</a></p>
+<p><a href="https://lizhaoxuan.github.io/2017/02/15/App自动化测试探索1-大话App自动化测试/">《App自动化测试探索1-大话App自动化测试》</a><br><a href="https://lizhaoxuan.github.io/2017/02/14/App自动化测试探索2-Run%20Calabash/">《App自动化测试探索2-Run Calabash》</a><br><a href="https://lizhaoxuan.github.io/2017/02/13/App自动化测试探索3-Calabash用法详解/">《App自动化测试探索3-Calabash用法详解》</a><br><a href="https://lizhaoxuan.github.io/2017/02/12/App自动化测试探索4-Calabash进阶/">《App自动化测试探索4-Calabash进阶》</a><br>《App自动化测试探索5-Calabash踩坑总结》</p>
 
       
     </div>
@@ -446,7 +366,7 @@ public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnviro
       
         <div class="post-tags">
           
-            <a href="/tags/APT/" rel="tag">#APT</a>
+            <a href="/tags/测试/" rel="tag">#测试</a>
           
         </div>
       
@@ -455,16 +375,16 @@ public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnviro
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/17/apt-run_project/" rel="next" title="Android编译时注解框架3-Run Project:OnceClick">
-                <i class="fa fa-chevron-left"></i> Android编译时注解框架3-Run Project:OnceClick
+              <a href="/2016/08/26/apt_usage_scenario/" rel="next" title="Android编译时注解框架6-APT的优缺点与应用">
+                <i class="fa fa-chevron-left"></i> Android编译时注解框架6-APT的优缺点与应用
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/07/17/apt-wathapt/" rel="prev" title="Android编译时注解框架系列1-什么是编译时注解">
-                Android编译时注解框架系列1-什么是编译时注解 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/02/12/App自动化测试探索4-Calabash进阶/" rel="prev" title="App自动化测试探索4-Calabash进阶">
+                App自动化测试探索4-Calabash进阶 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -514,8 +434,8 @@ public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnviro
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/17/apt-run_demo/"
-           data-title="Android编译时注解框架系列2-Run Demo" data-url="http://lizhaoxuan.github.io/2016/07/17/apt-run_demo/">
+      <div class="ds-thread" data-thread-key="2017/02/11/App自动化测试探索5-Calabash踩坑总结/"
+           data-title="App自动化测试探索5-Calabash踩坑总结" data-url="http://lizhaoxuan.github.io/2017/02/11/App自动化测试探索5-Calabash踩坑总结/">
       </div>
     
   </div>
@@ -599,7 +519,7 @@ public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnviro
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Running"><span class="nav-number">2.</span> <span class="nav-text">Running</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#项目搭建"><span class="nav-number">2.1.</span> <span class="nav-text">项目搭建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义注解"><span class="nav-number">2.2.</span> <span class="nav-text">自定义注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Processor"><span class="nav-number">2.3.</span> <span class="nav-text">创建Processor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重写process方法"><span class="nav-number">2.4.</span> <span class="nav-text">重写process方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">2.5.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译jar"><span class="nav-number">2.6.</span> <span class="nav-text">编译jar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行结果"><span class="nav-number">2.7.</span> <span class="nav-text">运行结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坑1：Calabash安装时Ruby报错"><span class="nav-number">2.</span> <span class="nav-text">坑1：Calabash安装时Ruby报错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坑2：Could-not-find-an-Android-SDK-please-make-it-is-install"><span class="nav-number">3.</span> <span class="nav-text">坑2：Could not find an Android SDK please make it is install</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坑3：App-did-not-start-或-WARN-Did-not-find-‘android-jar’…"><span class="nav-number">4.</span> <span class="nav-text">坑3：App did not start 或 WARN:Did not find ‘android.jar’…</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坑4：-apk-is-not-signed-with-any-of-the-available-keystores"><span class="nav-number">5.</span> <span class="nav-text">坑4：**.apk is not signed with any of the available keystores</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坑5：Calabash自定义的Steps-执行过程中提示未定义"><span class="nav-number">6.</span> <span class="nav-text">坑5：Calabash自定义的Steps,执行过程中提示未定义</span></a></li></ol></div>
             
           </div>
         </section>
