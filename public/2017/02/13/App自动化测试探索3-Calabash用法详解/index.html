@@ -103,7 +103,7 @@ Calabash预定义Steps的使用。
 自定义Steps。
 使用Ruby语法编写带">
 <meta property="og:image" content="http://img.blog.csdn.net/20170215155519292?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDI1NTEyNw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-02-15T07:55:51.000Z">
+<meta property="og:updated_time" content="2017-02-16T08:11:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="App自动化测试探索3-Calabash用法详解">
 <meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
@@ -373,7 +373,7 @@ Calabash预定义Steps的使用。
 <pre><code>Then /^I enter &quot;([^\&quot;]*)&quot; into input field number (\d+)$/ do |text, index|
 </code></pre><p>以这个Step为例。<br>我忍不住要吐槽了，首先要承认我正则表达式接触的很少，为了这个我还去恶补了一下，因为第一次看到上面这个我都不知道怎么用，/^是啥？要不要写上去？  那个 do 要不要加上？ 后面|text, index|看着应该是参数名，要不要也上去？ 好烦好烦~</p>
 <p>好了吐槽结束，开讲：</p>
-<p>正确的使用方法是： <code>Then I enter 你好世界 into input field number 1</code><br>其含义是在第一个输入框里输入 你好世界。<br>这里的1是指当前界面第一个输入框，至于为什么不像是数组一样，是从0开始的问题，我们在下一节讲<strong>自定义Steps</strong>时，会分析这条Steps的源码，到时候你就明白了。</p>
+<p>正确的使用方法是： <code>Then I enter &quot;你好世界&quot; into input field number 1</code><br>其含义是在第一个输入框里输入 你好世界。<br>这里的1是指当前界面第一个输入框，至于为什么不像是数组一样，是从0开始的问题，我们在下一节讲<strong>自定义Steps</strong>时，会分析这条Steps的源码，到时候你就明白了。</p>
 <p>文档给出的写法实际是Step的定义写法，前面Then是关键字，我们不管它，所以 /^ $/  do |text, index| 通通都是定义语法，在使用中都是不用写上去的。这个等我们看到后面自定义Steps时就能理解了。<br>中间”([^\”]*)”  (\d+) 这两个就很简单了，就是两个正则表达式参数，正则所修饰的就是该参数所能接收的类型。</p>
 <h2 id="自定义Steps"><a href="#自定义Steps" class="headerlink" title="自定义Steps"></a>自定义Steps</h2><p>这一章我们暂只聊Calabash三种自定义Steps中的两种，第三种放到下一章进阶中讲。</p>
 <h3 id="自定义Steps-1"><a href="#自定义Steps-1" class="headerlink" title="自定义Steps"></a>自定义Steps</h3><p>Calabash提供的预定义Steps很明显不够用的嘛，那么就需要我们自己进行扩展。怎么扩展呢？</p>
@@ -391,8 +391,9 @@ Calabash预定义Steps的使用。
 <p>需要说一下的是，如果你用上面自定义Steps的方法直接在方法体中写自定义Steps的话，是不可行的，就像这样：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Then /^I through welcomePages$/ do</div><div class="line">	Then I drag from 90:50 to 20:50 moving with 20 steps </div><div class="line">    Then I drag from 90:50 to 20:50 moving with 20 steps </div><div class="line">    Then I drag from 90:50 to 20:50 moving with 20 steps </div><div class="line">end</div></pre></td></tr></table></figure>
 <p>上面的代码是无法执行的。想要封装已定义的Steps你需要这样做：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Then /^I through welcomePages$/ do</div><div class="line">	steps %&#123;</div><div class="line">		Then I drag from 90:50 to 20:50 moving with 20 steps</div><div class="line">        Then I drag from 90:50 to 20:50 moving with 20 steps</div><div class="line">        Then I drag from 90:50 to 20:50 moving with 20 steps</div><div class="line">	&#125;</div><div class="line">end</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Then /^I through welcomePages with (\d+) steps$/ do |steps|</div><div class="line">	steps %&#123;</div><div class="line">    	Then I drag from 90:50 to 20:50 moving with #&#123;steps&#125; steps</div><div class="line">        Then I drag from 90:50 to 20:50 moving with #&#123;steps&#125; steps</div><div class="line">        Then I drag from 90:50 to 20:50 moving with #&#123;steps&#125; steps</div><div class="line">	&#125;</div><div class="line">end</div></pre></td></tr></table></figure>
 <p><code>%{}</code> 是ruby中表示多行字符串的格式，一对大括号之间的所有换行符和空格符都会原原本本的输出。</p>
+<p>如果需要再<code>%{}</code> 内部使用参数，直接写参数名是不会被识别的，需要使用<code>#{}</code>包裹。</p>
 <p>在自定义Steps时，你可能会遇到<a href="https://lizhaoxuan.github.io/2017/02/11/App自动化测试探索5-Calabash踩坑总结/">坑5：Calabash自定义的Steps,执行过程中提示未定义</a>。</p>
 <h2 id="使用Ruby语法编写带逻辑判断的Steps"><a href="#使用Ruby语法编写带逻辑判断的Steps" class="headerlink" title="使用Ruby语法编写带逻辑判断的Steps"></a>使用Ruby语法编写带逻辑判断的Steps</h2><p>上面只是介绍了Steps的自定义方法，简单的对原有库方法或命令进行封装，修改方面名或参数值。扩展的能力有限，Calabash当然不会如此的初级，.rb是Ruby文件，所以这里使用的都是Ruby语法，你也当然可以通过Ruby语法为你的Steps添加各种逻辑。</p>
 <p><strong>Steps的定义不只是已有库方法和以后Steps的封装，他的内部定义同样可以非常丰富。</strong></p>

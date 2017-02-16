@@ -154,7 +154,7 @@ calabash-android run test.apk ./login.feature ./health.feature
 
 好了吐槽结束，开讲：
 
-正确的使用方法是： `` Then I enter 你好世界 into input field number 1``
+正确的使用方法是： `` Then I enter "你好世界" into input field number 1``
 其含义是在第一个输入框里输入 你好世界。
 这里的1是指当前界面第一个输入框，至于为什么不像是数组一样，是从0开始的问题，我们在下一节讲**自定义Steps**时，会分析这条Steps的源码，到时候你就明白了。
 
@@ -249,7 +249,7 @@ end
 ```
 Then /^I through welcomePages with (\d+) steps$/ do |steps|
 	steps %{
-		Then I drag from 90:50 to 20:50 moving with #{steps} steps
+    	Then I drag from 90:50 to 20:50 moving with #{steps} steps
         Then I drag from 90:50 to 20:50 moving with #{steps} steps
         Then I drag from 90:50 to 20:50 moving with #{steps} steps
 	}

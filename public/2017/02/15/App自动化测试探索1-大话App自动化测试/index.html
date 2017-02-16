@@ -94,7 +94,7 @@
 <meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
 前言最近连续出现因为回归测试不够充足导致的线上事故。一次还好，但连着几次真的是被打痛了。业务无限复杂化，回归测试心有而余力不足，OK，一直被拖着的自动化测试终于被压力push到了日程上。
 简单考察了几种自动化测试方案，考虑学习成本，多平台扩展，可理解程度，最后选择了一个较为偏冷，但一眼看过去就很喜欢的一个技术方案：Calab">
-<meta property="og:updated_time" content="2017-02-16T03:52:18.000Z">
+<meta property="og:updated_time" content="2017-02-16T08:19:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="App自动化测试探索1-大话App自动化测试">
 <meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
@@ -325,7 +325,7 @@
 <a id="more"></a>
 <p>提到自动化测试，种种细分的边界case,一个必然很繁琐的东西想一想就更繁琐了,所以大部分的人止步于了想想~<br>所以第一步，除了介绍我对自动化测试一些想法以外，我要帮助你降低期望，迈出第一步，敏捷开发同样适用于测试用例的编写。既然上路了，你也不好意思那么果断的就放弃之前的劳动成果。<br>同样还要聊聊Calabash的优缺点，为你画一个好像挺好吃的大饼。<br>然后在后续篇章再对Calabash逐步展开并深入。</p>
 <h2 id="大话App客户端自动化测试"><a href="#大话App客户端自动化测试" class="headerlink" title="大话App客户端自动化测试"></a>大话App客户端自动化测试</h2><p>仅代表个人观点，见识还浅，欢迎多多打脸。</p>
-<h3 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h3><p>以Android为例，从2010年开始，Android开发环境以及其迅猛的态势发展到今天，几近趋于成熟，开发者的目光早已不在局限于这单一的开发平台，开始寻求Android，ios在开发上的统一：ReactNactive,WEEX,H5……</p>
+<h3 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h3><p>以Android为例，从2010年开始，Android开发环境以及其迅猛的态势发展到今天，几近趋于成熟，开发者的目光早已不在局限于这单一的开发平台，开始寻求Android，iOS在开发上的统一：ReactNactive,WEEX,H5……</p>
 <p>开发环境已经成熟，但移动客户端的测试环境却有些滞后。这中间的几座大山是很多团队正在面对且驻足的：</p>
 <p>1.App测试不像服务端测试,通常只需对数据本身进行验证即可，App涉及到界面展示及交互，自动化识别的难度很大。<br>2.互联网企业一直都在追寻快速迭代，且App直接对接用户，App的界面与逻辑变更更是家常便饭，编写自动化测试脚本的稳定性很差。<br>3.Android IOS 双平台,甚至可以加上早前已死的WP，或web页面。如此多的平台想要依靠一套代码进行自动化测试几乎是不可能的。再考虑需要经常变更，你懂得。</p>
 <p>所以往往一个完善的移动自动化测试环境需要一个庞大的测试团队支撑，但一个庞大的测试团队只有大公司才能负担的起。移动的自动化测试，一直都在被中小型的创业公司所忽略。小团队开发自测了事，中型团队依靠测试人员人工操作进行验证。</p>
@@ -366,14 +366,14 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Feature: Login feature</div><div class="line"></div><div class="line">  Scenario: 登录测试用例</div><div class="line"></div><div class="line">  	When I press view with id &quot;account_edit&quot;</div><div class="line">  	Then I enter &quot;15104053650流量&quot; into input field number 1</div><div class="line"></div><div class="line">  	Then I press &quot;发送验证码&quot;</div><div class="line">  	Then I wait for 5 seconds</div><div class="line"></div><div class="line">  	When I press view with id &quot;verifying_code_edit&quot;</div><div class="line">  	Then I enter &quot;306423&quot; into input field number 2</div><div class="line"></div><div class="line">  	Then I wait for 5 seconds</div><div class="line"></div><div class="line">  	Then I press view with id &quot;login_login&quot;</div></pre></td></tr></table></figure>
 <p>我觉得我不需要再解释这脚本的含义了，这就是大白话！！<br><strong>Calabash最大的魅力在于，将难以理解的编程语言转换为谁都可以看得懂得自然语言。</strong><br><strong>特点1：极高的可读性</strong>，测试脚本不像是代码，可读性越高的测试脚本，意义越大。</p>
 <p>在可读性非常高的基础上，其编写难度也变得非常的低。<strong>特点2：语法简单易懂，谁都能写</strong></p>
-<p>同时可喜的是，这个代码同时支持Android 和IOS，web也有一定的支持！RN就更不用说了，跑起来的RN就是原生代码！WEEX还要再考察考察~<strong>特点3：支持多种平台</strong></p>
+<p>同时可喜的是，这个代码同时支持Android 和iOS，web也有一定的支持！RN就更不用说了，跑起来的RN就是原生代码！WEEX还要再考察考察~<strong>特点3：支持多种平台</strong></p>
 <p>一段使用自然语言编写的脚本，其底层当然要费一番功夫。上面是用Calabash预定义的Steps写的一段测试用例。</p>
 <p>这些大白话一样的Steps的实质是这样的：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Then /^I press &quot;([^\&quot;]*)&quot;$/ do |identifier|</div><div class="line">  tap_when_element_exists(&quot;* marked:&apos;#&#123;identifier&#125;&apos;&quot;)</div><div class="line">end</div></pre></td></tr></table></figure>
 <p>不要被这段代码吓到，在大部分时候，你都不需要接触到这样的代码，用大白话写小作文就好了。<br>如果预定义的Steps不能满足你的需求，Calabash灵活的支持<strong>不同程度自定义steps</strong>，大概就像上面那样，你可以简单理解为Calabash支持不同程度的，代码到自然语言的转换。<br>正是这种灵活的转换方式，让我们有了更多的想象：</p>
 <p><strong>特点4：Steps的开发与脚本的开发解耦分离，降低入门门槛，容纳更多的开发</strong><br>再简单解释一下：先让一部分人学起来，写出一个个大白话似的Steps。再接纳一部分人进来，比如产品经理！直接用这些大白话写测试case，熟悉了之后再去学自定义Steps。甚至产品都不需要学自定义Steps,给开发提需求好了，当你有一个非常丰富的Steps库的时候，你所烦的无穷无尽的边界case，不过就是全民小作文~</p>
 <p><strong>特点5：维护简单，我不知道小作文维护起来有什么难的~</strong></p>
-<p><strong>特点6：case也有设计感，不在那么枯燥</strong><br>在加一个最起码我觉得很兴奋的特点，考虑复用的话，自定义的Steps就要考虑与业务的解耦问题了，有的要解耦有的却要耦合一点。而且如果为了最小程度修改代码从而保证Android Ios在代码上通用，Android和Ios的开发上就会有更多的交流，测试脚本的编写也会有更通用的设计。这里面就有设计的快感了。</p>
+<p><strong>特点6：case也有设计感，不在那么枯燥</strong><br>在加一个最起码我觉得很兴奋的特点，考虑复用的话，自定义的Steps就要考虑与业务的解耦问题了，有的要解耦有的却要耦合一点。而且如果为了最小程度修改代码从而保证Android iOS在代码上通用，Android和iOS的开发上就会有更多的交流，测试脚本的编写也会有更通用的设计。这里面就有设计的快感了。</p>
 <p><strong>特点7：除模拟事件以外，Calabash还支持各种hook，如App生命周期的hook</strong></p>
 <p>App自动化测试一个普遍的痛点就是元素定位，Calabash有非常多的元素定位辅助方法，虽然有时候需要你动个脑筋~ <strong>特点8：丰富的元素定位辅助方法。</strong></p>
 <p>最后我们在看一个从网上摘下来的一段Calabash脚本：</p>
@@ -397,8 +397,8 @@
 <h3 id="资料、Demo稀少"><a href="#资料、Demo稀少" class="headerlink" title="资料、Demo稀少"></a>资料、Demo稀少</h3><p>Calabash大概有五年以上的历史，最早的first commit是2012年2月份，对于一个技术框架来说，这已经可以算是很老了，但Calabash依然是一个小众产品，然后导致的问题是资料非常非常少……官方Github只给了很简单很基础的API，还基本没有Demo,(官方Demo就几行代码~) </p>
 <p>同时资料少也意味着后面有非常多非常坑需要自己往过趟~</p>
 <p>（我大胆的怀疑了一下Calabash小众的原因，可能大厂还是更钟爱appium这种主流测试框架，毕竟语法复杂也意味着更多的可定制性，而小厂呢，相比起维护一套自动化测试框架，不如就手点点人工测试好了，所以Calabash这样的，就处于一个很尴尬的位置了）</p>
-<h3 id="不支持跨进程"><a href="#不支持跨进程" class="headerlink" title="不支持跨进程"></a>不支持跨进程</h3><p>Calabash底层是Robotium，Robotium不支持跨进程操作，所以Calabash也不支持。当你跳出当前测试App时，calabash变无法响应并做任何操作了。<br>在个别需要跨进程调用业务较多的App中，这个点是很痛的，甚至基本上就可以放弃Calabash了。</p>
-<p>以蜂鸟众包为例，需要跨进程的业务有分享和拍照（拍照调动了系统相机），分享业务暂不讨论，拍照影响到了主流程。<br>但如果修改为不调用系统相机，而是自定义相机的话，将不会存在这个问题，并且可以解决不同手机系统相机样式不同，脚本需要进行兼容的困扰。</p>
+<h3 id="不支持跨进程"><a href="#不支持跨进程" class="headerlink" title="不支持跨进程"></a>不支持跨进程</h3><p>Calabash底层是Robotium，Robotium不支持跨进程操作，所以Calabash也不支持。当你跳出当前测试App时，calabash便无法响应并做任何操作了。<br>在个别需要跨进程调用业务较多的App中，这个点是很痛的，甚至基本上就可以放弃Calabash了。</p>
+<p>以蜂鸟众包为例，需要跨进程的业务有分享和拍照（拍照调用了系统相机），分享业务暂不讨论，但拍照影响到了主流程。<br>不过如果修改为自定义相机，而是不调用系统相机的话，将不会存在这个问题，并且可以解决不同手机系统相机样式不同，脚本需要进行兼容的困扰。</p>
 <h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Calabash的优点让人爱不释手，缺点虽然很痛很痛但肯钻的话也不是不可以客服。<br>看到这里不知道你有没有意愿去尝试一下Calabash，后面的篇章我将会从零开始为你展开Calabash。</p>
 <p><br></p>
 <hr>
