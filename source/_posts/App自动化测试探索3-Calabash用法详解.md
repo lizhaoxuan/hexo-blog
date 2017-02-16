@@ -247,16 +247,18 @@ end
 上面的代码是无法执行的。想要封装已定义的Steps你需要这样做：
 
 ```
-Then /^I through welcomePages$/ do
+Then /^I through welcomePages with (\d+) steps$/ do |steps|
 	steps %{
-		Then I drag from 90:50 to 20:50 moving with 20 steps
-        Then I drag from 90:50 to 20:50 moving with 20 steps
-        Then I drag from 90:50 to 20:50 moving with 20 steps
+		Then I drag from 90:50 to 20:50 moving with #{steps} steps
+        Then I drag from 90:50 to 20:50 moving with #{steps} steps
+        Then I drag from 90:50 to 20:50 moving with #{steps} steps
 	}
 end
 ```
 
 ``%{}`` 是ruby中表示多行字符串的格式，一对大括号之间的所有换行符和空格符都会原原本本的输出。
+
+如果需要再``%{}`` 内部使用参数，直接写参数名是不会被识别的，需要使用``#{}``包裹。
 
 在自定义Steps时，你可能会遇到[坑5：Calabash自定义的Steps,执行过程中提示未定义](https://lizhaoxuan.github.io/2017/02/11/App自动化测试探索5-Calabash踩坑总结/)。
 
