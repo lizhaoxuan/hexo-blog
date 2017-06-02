@@ -258,8 +258,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/02/15/App自动化测试探索1-大话App自动化测试/" itemprop="url">
-                  App自动化测试探索1-大话App自动化测试
+                <a class="post-title-link" href="/2017/05/08/Java内存管理的一些小疑问/" itemprop="url">
+                  Java内存管理的一些小疑问
                 </a>
               
             
@@ -272,8 +272,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-02-15T16:20:58+08:00" content="2017-02-15">
-              2017-02-15
+            <time itemprop="dateCreated" datetime="2017-05-08T16:20:58+08:00" content="2017-05-08">
+              2017-05-08
             </time>
           </span>
 
@@ -283,8 +283,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/02/15/App自动化测试探索1-大话App自动化测试/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/15/App自动化测试探索1-大话App自动化测试/" itemprop="commentsCount"></span>
+                <a href="/2017/05/08/Java内存管理的一些小疑问/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/05/08/Java内存管理的一些小疑问/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -294,7 +294,7 @@
 
           
           
-             <span id="/2017/02/15/App自动化测试探索1-大话App自动化测试/" class="leancloud_visitors" data-flag-title="App自动化测试探索1-大话App自动化测试">
+             <span id="/2017/05/08/Java内存管理的一些小疑问/" class="leancloud_visitors" data-flag-title="Java内存管理的一些小疑问">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -318,11 +318,10 @@
       
         
           <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近连续出现因为回归测试不够充足导致的线上事故。一次还好，但连着几次真的是被打痛了。业务无限复杂化，回归测试心有而余力不足，OK，一直被拖着的自动化测试终于被压力push到了日程上。</p>
-<p>简单考察了几种自动化测试方案，考虑学习成本，多平台扩展，可理解程度，最后选择了一个较为偏冷，但一眼看过去就很喜欢的一个技术方案：Calabash。<strong>所以，这实际是一篇关于Calabash教程的系列博客！</strong></p>
-<p>不过在这个系列的第一章，我想更多聊聊自动化测试，而不是具体的实现技术。<br>首先，主流的自动化测试方案的对比不在本系列探讨范围，网上这方面的博客已经非常非常多了。<br>其次，提到Calabash，就一定要说Cucumber（Calabash的核心）,那定然会引入一个高大上的词BDD（行为驱动开发），但这在这个系列同样不想谈，不说目前BDD还有点类似乌邦托是一种理想化的状态，只是不想在这些概念上的问题纠结太多。能解决问题就好！</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。<br>这其实是一个很粗的论调，会引起很多错误的理解。</p>
+<p>这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？<br>因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我们熟悉的GC吗？怎么都感觉GC算法在栈这种结构上没法跑啊……堆内存，栈内存究竟是什么样的？</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/02/15/App自动化测试探索1-大话App自动化测试/#more" rel="contents">
+            <a class="btn" href="/2017/05/08/Java内存管理的一些小疑问/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -373,8 +372,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/02/14/App自动化测试探索2-Run Calabash/" itemprop="url">
-                  App自动化测试探索2-Run Calabash
+                <a class="post-title-link" href="/2017/03/21/小微团队怎么玩转App自动化测试/" itemprop="url">
+                  小微团队怎么玩转App自动化测试
                 </a>
               
             
@@ -387,8 +386,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-02-14T16:20:58+08:00" content="2017-02-14">
-              2017-02-14
+            <time itemprop="dateCreated" datetime="2017-03-21T16:20:58+08:00" content="2017-03-21">
+              2017-03-21
             </time>
           </span>
 
@@ -398,8 +397,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/02/14/App自动化测试探索2-Run Calabash/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/14/App自动化测试探索2-Run Calabash/" itemprop="commentsCount"></span>
+                <a href="/2017/03/21/小微团队怎么玩转App自动化测试/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/21/小微团队怎么玩转App自动化测试/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -409,7 +408,7 @@
 
           
           
-             <span id="/2017/02/14/App自动化测试探索2-Run Calabash/" class="leancloud_visitors" data-flag-title="App自动化测试探索2-Run Calabash">
+             <span id="/2017/03/21/小微团队怎么玩转App自动化测试/" class="leancloud_visitors" data-flag-title="小微团队怎么玩转App自动化测试">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -433,11 +432,9 @@
       
         
           <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看了一些Calabash入门的文章，便准备开始实践。但在最开始时，真的好气啊。<br>从来没人告诉我Mac安装Calabash需要xcode支持！<br>大部分的入门demo止步于一个简单的case，从来没人告诉我后续的case需要怎么继续执行！！！<br>一条怎么看怎么没毛病的语句，怎么就无脑报错呢？<br>…</p>
-<p>其实这些都是开发中的一些意外情况，但就是这些意外情况，让好多人就此止步了。其实如果耐心一点，在官方文档深挖一下，把十几篇几十篇博客参照着一起看，再或者辛苦一点，多多试错，这些坑其实都能踩平。<br>但是这种方法代价太大了，作为一个教程博客，我想把我从最开始一直到最后经历的所有都记下来，让后来者可以更轻松一点。</p>
-<p>所以我们从0开始，第一步先Run起来~</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇博客，我会站在小微团队的角度，介绍一下我对App自动化测试的一些看法。在帮助你降低对App自动化测试的期望的同时说服你开始实践App自动化测试。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/02/14/App自动化测试探索2-Run Calabash/#more" rel="contents">
+            <a class="btn" href="/2017/03/21/小微团队怎么玩转App自动化测试/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -488,8 +485,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/02/13/App自动化测试探索3-Calabash用法详解/" itemprop="url">
-                  App自动化测试探索3-Calabash用法详解
+                <a class="post-title-link" href="/2017/03/20/Calabash探索1-Run Calabash/" itemprop="url">
+                  Calabash探索1-Run Calabash
                 </a>
               
             
@@ -502,8 +499,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-02-13T16:20:58+08:00" content="2017-02-13">
-              2017-02-13
+            <time itemprop="dateCreated" datetime="2017-03-20T16:20:58+08:00" content="2017-03-20">
+              2017-03-20
             </time>
           </span>
 
@@ -513,8 +510,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/02/13/App自动化测试探索3-Calabash用法详解/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/13/App自动化测试探索3-Calabash用法详解/" itemprop="commentsCount"></span>
+                <a href="/2017/03/20/Calabash探索1-Run Calabash/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/20/Calabash探索1-Run Calabash/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -524,7 +521,126 @@
 
           
           
-             <span id="/2017/02/13/App自动化测试探索3-Calabash用法详解/" class="leancloud_visitors" data-flag-title="App自动化测试探索3-Calabash用法详解">
+             <span id="/2017/03/20/Calabash探索1-Run Calabash/" class="leancloud_visitors" data-flag-title="Calabash探索1-Run Calabash">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>作为这个系列的第一篇，先介绍一下大纲：</p>
+<ul>
+<li>《Run Calabash》简单介绍Calabash环境搭建及基本运行，然你给对Calabash有一个基础认识</li>
+<li>《Calabash用法详解》认识Calabash后介绍Calabash的基础用法，从而可以快速上手</li>
+<li>《Calabash进阶》介绍一些特殊或不常用到的技巧，对Calabash有更深的认识</li>
+<li>《Calabash踩坑》为不影响文章阅读的连贯性，相关异常解决的内容单列一章</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/03/20/Calabash探索1-Run Calabash/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/18/Calabash探索2-Calabash用法详解/" itemprop="url">
+                  Calabash探索2-Calabash用法详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-18T16:20:58+08:00" content="2017-03-18">
+              2017-03-18
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/18/Calabash探索2-Calabash用法详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/18/Calabash探索2-Calabash用法详解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/03/18/Calabash探索2-Calabash用法详解/" class="leancloud_visitors" data-flag-title="Calabash探索2-Calabash用法详解">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -558,7 +674,7 @@
 <li>Ruby Query的使用。</li>
 </ul>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/02/13/App自动化测试探索3-Calabash用法详解/#more" rel="contents">
+            <a class="btn" href="/2017/03/18/Calabash探索2-Calabash用法详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -609,8 +725,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/02/12/App自动化测试探索4-Calabash进阶/" itemprop="url">
-                  App自动化测试探索4-Calabash进阶
+                <a class="post-title-link" href="/2017/03/17/Calabash探索3-Calabash进阶/" itemprop="url">
+                  Calabash探索3-Calabash进阶
                 </a>
               
             
@@ -623,8 +739,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-02-12T16:20:58+08:00" content="2017-02-12">
-              2017-02-12
+            <time itemprop="dateCreated" datetime="2017-03-17T16:20:58+08:00" content="2017-03-17">
+              2017-03-17
             </time>
           </span>
 
@@ -634,8 +750,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/02/12/App自动化测试探索4-Calabash进阶/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/12/App自动化测试探索4-Calabash进阶/" itemprop="commentsCount"></span>
+                <a href="/2017/03/17/Calabash探索3-Calabash进阶/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/17/Calabash探索3-Calabash进阶/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -645,7 +761,7 @@
 
           
           
-             <span id="/2017/02/12/App自动化测试探索4-Calabash进阶/" class="leancloud_visitors" data-flag-title="App自动化测试探索4-Calabash进阶">
+             <span id="/2017/03/17/Calabash探索3-Calabash进阶/" class="leancloud_visitors" data-flag-title="Calabash探索3-Calabash进阶">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -677,7 +793,7 @@
 <li>Calabash源码修改与扩展。</li>
 </ul>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/02/12/App自动化测试探索4-Calabash进阶/#more" rel="contents">
+            <a class="btn" href="/2017/03/17/Calabash探索3-Calabash进阶/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -728,8 +844,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/02/11/App自动化测试探索5-Calabash踩坑总结/" itemprop="url">
-                  App自动化测试探索5-Calabash踩坑总结
+                <a class="post-title-link" href="/2017/03/16/Calabash探索4-Calabash踩坑总结/" itemprop="url">
+                  Calabash探索4-Calabash踩坑总结
                 </a>
               
             
@@ -742,8 +858,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-02-11T16:20:58+08:00" content="2017-02-11">
-              2017-02-11
+            <time itemprop="dateCreated" datetime="2017-03-16T16:20:58+08:00" content="2017-03-16">
+              2017-03-16
             </time>
           </span>
 
@@ -753,8 +869,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/02/11/App自动化测试探索5-Calabash踩坑总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/11/App自动化测试探索5-Calabash踩坑总结/" itemprop="commentsCount"></span>
+                <a href="/2017/03/16/Calabash探索4-Calabash踩坑总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/16/Calabash探索4-Calabash踩坑总结/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -764,7 +880,7 @@
 
           
           
-             <span id="/2017/02/11/App自动化测试探索5-Calabash踩坑总结/" class="leancloud_visitors" data-flag-title="App自动化测试探索5-Calabash踩坑总结">
+             <span id="/2017/03/16/Calabash探索4-Calabash踩坑总结/" class="leancloud_visitors" data-flag-title="Calabash探索4-Calabash踩坑总结">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -790,7 +906,7 @@
           <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了保证前面几章阅读上的流程度，我们将Calabash从环境搭建到具体使用中所遇到的所有问题做了一个总结，这里大部分是我实际所经历的坑，同时我也会尽可能的收录一下我在学习过程中从别的博客看到的问题。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/02/11/App自动化测试探索5-Calabash踩坑总结/#more" rel="contents">
+            <a class="btn" href="/2017/03/16/Calabash探索4-Calabash踩坑总结/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -867,7 +983,7 @@
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
                 <a href="/2016/08/26/apt_usage_scenario/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/26/apt_usage_scenario/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/26/apt_usage_scenario/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -983,7 +1099,7 @@
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
                 <a href="/2016/07/17/apt-wathapt/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/17/apt-wathapt/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/17/apt-wathapt/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1098,7 +1214,7 @@
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
                 <a href="/2016/07/17/apt-run_demo/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/17/apt-run_demo/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/17/apt-run_demo/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1212,7 +1328,7 @@
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
                 <a href="/2016/07/17/apt-run_project/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/17/apt-run_project/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/17/apt-run_project/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1250,121 +1366,6 @@
 <p>本章将以生成代码为重点进行一个案例讲解。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/07/17/apt-run_project/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/17/apt-Climbed-out-of-the-pit/" itemprop="url">
-                  Android编译时注解框架4-爬坑
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-17T15:30:58+08:00" content="2016-07-17">
-              2016-07-17
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/17/apt-Climbed-out-of-the-pit/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/17/apt-Climbed-out-of-the-pit/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/07/17/apt-Climbed-out-of-the-pit/" class="leancloud_visitors" data-flag-title="Android编译时注解框架4-爬坑">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
-<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>因为有关APT的资料过少，又因为是Java Moudle +Android Moudle的使用方式，在项目编写过程中，会有一些匪夷所思的奇怪问题~入门阶段真的是步履维艰。</p>
-<p>这篇博客就是编写《Android编译时注解框架》系列中，将所遇到的一些坑列举出来，并给出一些绕过坑的方法。（注意哦~是绕过，坑还在，没有填~因为不知道这坑咋来的……）</p>
-<p>随时踩坑，随时更新~</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/17/apt-Climbed-out-of-the-pit/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1439,7 +1440,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1584,30 +1585,28 @@
 
   
 
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"lizhaoxuan"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
 
 
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'lizhaoxuan';
+      var disqus_identifier = 'index.html';
+      var disqus_title = "";
+      var disqus_url = '';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+    </script>
+  
 
 
 

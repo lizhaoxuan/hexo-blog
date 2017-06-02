@@ -290,7 +290,7 @@
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
                 <a href="/2016/07/17/apt-Grammar-explanation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/17/apt-Grammar-explanation/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/17/apt-Grammar-explanation/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -691,8 +691,8 @@ for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/17/AndroidCoding-performance-specification/" rel="next" title="Android性能编码规范">
-                <i class="fa fa-chevron-left"></i> Android性能编码规范
+              <a href="/2016/05/12/探索Bitmap使用姿势/" rel="next" title="探索Bitmap的使用姿势">
+                <i class="fa fa-chevron-left"></i> 探索Bitmap的使用姿势
               </a>
             
           </div>
@@ -750,8 +750,11 @@ for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) {
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/17/apt-Grammar-explanation/"
-           data-title="Android编译时注解框架5-语法讲解" data-url="http://lizhaoxuan.github.io/2016/07/17/apt-Grammar-explanation/">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
       </div>
     
   </div>
@@ -796,7 +799,7 @@ for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -956,30 +959,30 @@ for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) {
 
   
 
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"lizhaoxuan"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
 
 
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'lizhaoxuan';
+      var disqus_identifier = '2016/07/17/apt-Grammar-explanation/';
+      var disqus_title = "Android编译时注解框架5-语法讲解";
+      var disqus_url = 'http://lizhaoxuan.github.io/2016/07/17/apt-Grammar-explanation/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
 
 
 

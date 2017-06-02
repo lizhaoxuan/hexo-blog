@@ -1,0 +1,794 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="性能优化," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
+前言一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。这其实是一个很粗的论调，会引起很多错误的理解。
+这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java内存管理的一些小疑问">
+<meta property="og:url" content="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/index.html">
+<meta property="og:site_name" content="暴打小女孩-Blog">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
+前言一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。这其实是一个很粗的论调，会引起很多错误的理解。
+这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我">
+<meta property="og:image" content="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/method_start.png">
+<meta property="og:image" content="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/method_end.png">
+<meta property="og:updated_time" content="2017-05-08T10:31:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java内存管理的一些小疑问">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
+前言一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。这其实是一个很粗的论调，会引起很多错误的理解。
+这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我">
+<meta name="twitter:image" content="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/method_start.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/"/>
+
+  <title> Java内存管理的一些小疑问 | 暴打小女孩-Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?56e0f8da7e01da926bfb931472e9a26d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暴打小女孩-Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/lizhaoxuan" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            Github
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java内存管理的一些小疑问
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-08T16:20:58+08:00" content="2017-05-08">
+              2017-05-08
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/08/Java内存管理的一些小疑问/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/05/08/Java内存管理的一些小疑问/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/08/Java内存管理的一些小疑问/" class="leancloud_visitors" data-flag-title="Java内存管理的一些小疑问">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。<br>这其实是一个很粗的论调，会引起很多错误的理解。</p>
+<p>这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？<br>因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我们熟悉的GC吗？怎么都感觉GC算法在栈这种结构上没法跑啊……堆内存，栈内存究竟是什么样的？</p>
+<a id="more"></a>
+<p>这里我非常推荐你阅读一本关于java虚拟机的书：《深入理解java虚拟机》 – 周志明</p>
+<h2 id="Java栈内存"><a href="#Java栈内存" class="headerlink" title="Java栈内存"></a>Java栈内存</h2><p>Java栈内存的内存回收是怎么做的？似乎因为这个问题太小白了，大部分关于JAVA GC的博客都不会特别的指明，GC是运行在JAVA内存堆上的。但也是因为这个原因，对于一些基础知识不太好的小白（比如我），看多了这种博客之后，想当然的认为了GC负责了整个java内存的管理，好像~栈内存也是由GC进行回收的……（毕竟栈的全名还叫堆栈呢）</p>
+<p>当有一天我翅膀硬了点，突然醒悟，栈这种只能在一头进出的数据结构，跑的是什么GC算法？？？如此简单的数据结构，也不需要GC了吧？</p>
+<p>终于在查阅了很多资料后，确认了一个问题：<strong>GC运行在JAVA堆上，负责java堆内存的回收。</strong></p>
+<p>那么确认这个大前提下，后面接二连三的问题就都冒出来了：<strong>栈内存是怎么进行内存回收的？所有的基础类型变量都保存在栈内存中吗？</strong> </p>
+<p>栈嘛，仅允许在线性表的一端进行插入和删除运算，所以分配内存就在栈顶插进去一块，回收，就从栈顶取出来。</p>
+<p>这种管理结构，从方法的角度其实很容易理解，我们看下面一段伪代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public void main()&#123;</div><div class="line">   	method1();</div><div class="line">   &#125;</div><div class="line"></div><div class="line">public void method1()&#123;</div><div class="line">   	...</div><div class="line">       method2();</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   public void method2()&#123;</div><div class="line">   	...</div><div class="line">       method3();</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   public void method3()&#123;</div><div class="line">   	...</div><div class="line">       //end</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>代码很简单，main方法调用了method1,method2调用了method3，method3结束了。用图的形式更直观：</p>
+<p>从main方法开始执行，各方法依次入栈，每个方法执行的同时，都会创建一个栈帧，然后进入虚拟机栈。<br><img src="/2017/05/08/Java内存管理的一些小疑问/method_start.png" alt=""></p>
+<p>method3方法执行结束后，各方法（栈帧）依次出栈：</p>
+<p><img src="/2017/05/08/Java内存管理的一些小疑问/method_end.png" alt=""></p>
+<p>这就是java栈内存，用《深入理解java虚拟机》一段话来描述：</p>
+<p><em>java虚拟机栈也是线程私有的，他的生命周期与线程相同。虚拟机栈描述的是java方法执行的内存模式：每个方法在执行的同时都会创建一个栈帧用于存储局部变量表，操作数栈，动态链接，方法出口等信息。每一个方法从调用直至执行完成的过程，就对应着一个栈帧在虚拟机中入栈到出栈的过程。</em></p>
+<p>OK，到这里我们基本上可以解决第二个问题：<strong>java栈内存的内存回收就是利用方法和栈的特性来做的！</strong></p>
+<p>那么第三个问题：<strong>所有的基础类型变量都保存在栈中吗？</strong></p>
+<p>其实这个问题已经不太需要再查资料验证了，我们自己就可以分析出结果。<br>栈内存主要描述的是java方法执行的内存模型，一个方法内部的局部变量生命周期跟随方法的开始和结束，管理起来非常简单，所以方法内部的局部变量保存在栈中没毛病！<br>但是对象内部的基础类型成员变量呢？这个生命周期就比较复杂了，有明确的开始却没有明确的结束，放到栈中明显无法管理。所以，<strong>只有方法内的基础类型变量才会保存在栈中！</strong></p>
+<p>第四个问题：<strong>我们知道栈的回收效率和速度远大于堆，为什么这一块的管理如此简单快速呢？</strong></p>
+<p>继续引用《深入理解java虚拟机》一段话来描述java栈内存：</p>
+<p><em>经常有人把java内存区分为堆内存和栈内存，这种分法比较粗糙，java内存区域的划分实际上远比这发杂。这种划分方式的流行只能说明大多数程序员最关注的、与对象内存分配关系最密切的内存区域是这两块。其中所指的“栈”就是现在讲的虚拟机栈，或者说是虚拟机栈中局部变量表部分。</em></p>
+<p><em>局部变量表存放了编译器可知的各种基本数据类型、对象引用和returnAddress类型。<br>其中64位长度的long和double类型的数据会占用2个局部变量空间（slot），其余的数据类型只占用1个。局部变量表所需的内存空间在编译期完成分配，当进入一个方法时，这个方法需要在帧中分配多大的局部变量空间是完全确定的，在方法运行期间不会改变局部变量表的大小。</em></p>
+<p>第五个问题：<strong>如此简单高效的栈内存，会内存溢出吗？</strong></p>
+<p>虽然大部分虚拟机的栈都可以动态扩展，但也并不是无限的。虽然栈溢出的情况比较小，但当有大量方法调用时非常有可能引起栈溢出，非常典型的案例就是递归调用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>解决了两个常见的误解或没有关注的点：GC运行在栈还是堆还是两者都有；所有基本类型变量都保存在栈中吗？</p>
+<p>java GC仅运行在堆内存上，回收效率较低。<br>栈内存仅描述了java方法的内存模型，每个方法所需的内存空间在编译器就已经确认，利用栈的特性完成内存分配和回收。<br>基础类型变量仅方法内的局部变量保存在栈内存中，成员变量保存在堆中。</p>
+<p>虽然没有定量的标准，也没有办法得出优化前后的对比量。但在开发中，我们应该有意识的减少成员变量，如果数据可以在方法间传递，就没有必要利用成员变量做中间状态保存。同时业务开发避免方法的递归调用。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/性能优化/" rel="tag">#性能优化</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/21/小微团队怎么玩转App自动化测试/" rel="next" title="小微团队怎么玩转App自动化测试">
+                <i class="fa fa-chevron-left"></i> 小微团队怎么玩转App自动化测试
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpeg"
+               alt="lizhaoxuan" />
+          <p class="site-author-name" itemprop="name">lizhaoxuan</p>
+          <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java栈内存"><span class="nav-number">2.</span> <span class="nav-text">Java栈内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lizhaoxuan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'lizhaoxuan';
+      var disqus_identifier = '2017/05/08/Java内存管理的一些小疑问/';
+      var disqus_title = "Java内存管理的一些小疑问";
+      var disqus_url = 'http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Lb3BBgF3jv5bwrRc8KBz1cuP-gzGzoHsz", "kaPIOk4dBLRc4wfrlc2Tffrm");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
