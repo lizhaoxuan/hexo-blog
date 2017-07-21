@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>我的歪着的照片</title>
+    <style>
+        .my_img {
+            width: 270px;
+            height: 200px;
+            position: absolute;
+            left: 40%;
+            top: 52%;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <img id="map" src="./map.jpg" width="100%">
+
+    <div class="my_img">
+        <img id="img1" src="./sea.jpg" width="50" height="50" onmouseover="bigger('img1')" onmouseout="smaller('img1')">
+    </div>
+
+    <div class="my_img" style="left:55% ;top:17%">
+        <img id="img2" src="./sea.jpg" width="50" height="50" onmouseover="bigger('img2')" onmouseout="smaller('img2')">
+    </div>
+</body>
+
+</html>
+<script>
+    function initMapMM() {
+        // 获取窗口宽度
+        if (window.innerWidth)
+            winWidth = window.innerWidth;
+        else if ((document.body) && (document.body.clientWidth))
+            winWidth = document.body.clientWidth;
+        // 获取窗口高度
+        if (window.innerHeight)
+            winHeight = window.innerHeight;
+        else if ((document.body) && (document.body.clientHeight))
+            winHeight = document.body.clientHeight;
+        // 通过深入 Document 内部对 body 进行检测，获取窗口大小
+        if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+            winHeight = document.documentElement.clientHeight;
+            winWidth = document.documentElement.clientWidth;
+        }
+
+        var map = document.getElementById("map");
+        map.width = winWidth;
+        map.height = winHeight;
+    }
+
+    window.onresize = function () {
+        initMapMM();
+    }
+
+    function bigger(id) {
+        var img = document.getElementById(id);
+        img.style.width = '400px';
+        img.style.height = '400px';
+    }
+
+    function smaller(id) {
+        var img = document.getElementById(id);
+        img.style.width = '50px';
+        img.style.height = '50px';
+    }
+
+</script>
