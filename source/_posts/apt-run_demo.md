@@ -111,11 +111,13 @@ Processor是用来处理Annotation的类。继承自AbstractProcessor。
 
 1.Messager 用来输出。就像我们平时用的System.out.pringln()和Log.d。输出位置在编译器下方的Messages窗口。这里System.out也是可以用的哦~
 
-2.用for循环遍历所有的 GetMsg注解，然后进行处理。
+2.这里还要解释一下`Messager messager = processingEnv.getMessager();` 这行代码里的`processingEnv`对象是哪来的。`processingEnv`是`CakeProcess`的父类`AbstractProcessor`的protected字段，其初始化是在父类中实现的，我们子类可以直接使用，比如这里就是通过`processingEnv`来获取`Messager`实例用来打Log。
 
-3.Diagnostic.Kind.NOTE 类似于Log.d Log.e这样的等级。
+3.用for循环遍历所有的 GetMsg注解，然后进行处理。
 
-4.return true;表示该Process已经处理了，其他的Process不需要再处理了。
+4.Diagnostic.Kind.NOTE 类似于Log.d Log.e这样的等级。
+
+5.return true;表示该Process已经处理了，其他的Process不需要再处理了。
 
 #### 配置
 

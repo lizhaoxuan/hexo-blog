@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://img2.ph.126.net/BG1Js3oL3cgWFoiqyK2gGQ==/6631701084397122194.jpeg">
 <meta property="og:image" content="http://img2.ph.126.net/Qy8xMkNkIv20akzOwLwqpA==/6631748363397120041.jpegg">
 <meta property="og:image" content="http://img1.ph.126.net/TdCL0wMyvStVQ_yBDMst8Q==/6631771453141303831.jpeg">
-<meta property="og:updated_time" content="2017-01-16T05:13:05.000Z">
+<meta property="og:updated_time" content="2017-09-18T06:35:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android编译时注解框架系列2-Run Demo">
 <meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
@@ -388,9 +388,10 @@ public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnviro
 }
 </code></pre><p>简单介绍一下代码：</p>
 <p>1.Messager 用来输出。就像我们平时用的System.out.pringln()和Log.d。输出位置在编译器下方的Messages窗口。这里System.out也是可以用的哦~</p>
-<p>2.用for循环遍历所有的 GetMsg注解，然后进行处理。</p>
-<p>3.Diagnostic.Kind.NOTE 类似于Log.d Log.e这样的等级。</p>
-<p>4.return true;表示该Process已经处理了，其他的Process不需要再处理了。</p>
+<p>2.这里还要解释一下<code>Messager messager = processingEnv.getMessager();</code> 这行代码里的<code>processingEnv</code>对象是哪来的。<code>processingEnv</code>是<code>CakeProcess</code>的父类<code>AbstractProcessor</code>的protected字段，其初始化是在父类中实现的，我们子类可以直接使用，比如这里就是通过<code>processingEnv</code>来获取<code>Messager</code>实例用来打Log。</p>
+<p>3.用for循环遍历所有的 GetMsg注解，然后进行处理。</p>
+<p>4.Diagnostic.Kind.NOTE 类似于Log.d Log.e这样的等级。</p>
+<p>5.return true;表示该Process已经处理了，其他的Process不需要再处理了。</p>
 <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>一定不能忘记的文件配置。</p>
 <p>在main文件夹下创建一个resources.META-INF.services文件夹，创建文件</p>
 <p>javax.annotation.processing.Processor</p>
@@ -563,7 +564,7 @@ public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnviro
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -573,7 +574,7 @@ public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnviro
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -621,7 +622,7 @@ public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnviro
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
