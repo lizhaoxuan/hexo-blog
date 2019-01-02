@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,44 +63,40 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="性能优化," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="性能优化,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
-但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。 但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，">
+<meta name="keywords" content="性能优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android性能编码规范">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2016/03/17/AndroidCoding-performance-specification/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
-但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。 但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://images.cnitblog.com/blog/56846/201501/231407350162907.png">
-<meta property="og:updated_time" content="2017-01-16T05:13:35.000Z">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.825Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android性能编码规范">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。
-但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言一个一般事实:只有当发现“严重”的性能问题时，我们才会开始着手进行性能优化，此时虽然可以针对性的解决程序严重性能问题。但在继续优化过程中，面对无数细小的“不良”代码，却又力不从心。相比得到的些微性能改善，庞大的工作量不得不令人放弃。 但同样不得不承认的是，无数细小的不良代码所累加的性能问题是不可忽视的。面对这样一个问题，">
 <meta name="twitter:image" content="http://images.cnitblog.com/blog/56846/201501/231407350162907.png">
 
 
@@ -122,12 +118,12 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/03/17/AndroidCoding-performance-specification/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/03/17/AndroidCoding-performance-specification/">
 
   <title> Android性能编码规范 | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -158,12 +154,12 @@
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -190,7 +186,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -200,7 +196,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -210,7 +206,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -220,7 +216,7 @@
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -253,7 +249,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -525,9 +521,9 @@ networkErrorView = findViewById(R.id.network_error_layout); // 获取 展开后�
 <p>所以，如何让CPU的使用率更高，不做无用功。如何更高效的利用内存，避免大量的GC，就是需要我们优化的地方了。</p>
 <p><br><br></p>
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><br></p>
-<p><a href="http://www.cnblogs.com/hanyonglu/p/4244035.html" target="_blank" rel="external">Android性能优化典范（一)</a></p>
-<p><a href="http://hukai.me/android-performance-patterns-season-2/" target="_blank" rel="external">Android性能优化典范（二)</a></p>
-<p><a href="http://hukai.me/android-performance-patterns-season-3/" target="_blank" rel="external">Android性能优化典范（三)</a></p>
+<p><a href="http://www.cnblogs.com/hanyonglu/p/4244035.html" target="_blank" rel="noopener">Android性能优化典范（一)</a></p>
+<p><a href="http://hukai.me/android-performance-patterns-season-2/" target="_blank" rel="noopener">Android性能优化典范（二)</a></p>
+<p><a href="http://hukai.me/android-performance-patterns-season-3/" target="_blank" rel="noopener">Android性能优化典范（三)</a></p>
 <p><br><br></p>
 <h3 id="相关知识详述"><a href="#相关知识详述" class="headerlink" title="相关知识详述"></a>相关知识详述</h3><h4 id="为什么将背景设置在主题可以减少加载时间？"><a href="#为什么将背景设置在主题可以减少加载时间？" class="headerlink" title="为什么将背景设置在主题可以减少加载时间？"></a>为什么将背景设置在主题可以减少加载时间？</h4><p>回答这个问题，我们先要知道 activity的画面是如何绘制到屏幕上的？</p>
 <p>Resterization栅格化是绘制那些Button，Shape，Path，String，Bitmap等组件最基础的操作。它把那些组件拆分到不同的像素上进行显示。这是一个很费时的操作，GPU的引入就是为了加快栅格化的操作。</p>
@@ -609,7 +605,7 @@ networkErrorView = findViewById(R.id.network_error_layout); // 获取 展开后�
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -658,7 +654,7 @@ networkErrorView = findViewById(R.id.network_error_layout); // 获取 展开后�
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -668,10 +664,8 @@ networkErrorView = findViewById(R.id.network_error_layout); // 获取 展开后�
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -733,10 +727,10 @@ networkErrorView = findViewById(R.id.network_error_layout); // 获取 展开后�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

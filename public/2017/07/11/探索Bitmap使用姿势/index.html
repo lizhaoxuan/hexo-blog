@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,37 +63,35 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="性能优化," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="性能优化,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言早些时候对Android下GC调用时机比较好奇，所以写了一些case测试各种情况下Android GC调用时机与现象，感兴趣的话可以跳过去瞅瞅 ： 《Android GC机制实践调研》
-在这个过程中发现一个让人非常震惊的问题：从资源文件中加载一张110kb的图片创建Bitmap对象，占用的内存高达40MB！为什么为什么为">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 前言早些时候对Android下GC调用时机比较好奇，所以写了一些case测试各种情况下Android GC调用时机与现象，感兴趣的话可以跳过去瞅瞅 ： 《Android GC机制实践调研》 在这个过程中发现一个让人非常震惊的问题：从资源文件中加载一张110kb的图片创建Bitmap对象，占用的内存高达40MB！为什么为什么为">
+<meta name="keywords" content="性能优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="探索Bitmap使用姿势">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2017/07/11/探索Bitmap使用姿势/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言早些时候对Android下GC调用时机比较好奇，所以写了一些case测试各种情况下Android GC调用时机与现象，感兴趣的话可以跳过去瞅瞅 ： 《Android GC机制实践调研》
-在这个过程中发现一个让人非常震惊的问题：从资源文件中加载一张110kb的图片创建Bitmap对象，占用的内存高达40MB！为什么为什么为">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言早些时候对Android下GC调用时机比较好奇，所以写了一些case测试各种情况下Android GC调用时机与现象，感兴趣的话可以跳过去瞅瞅 ： 《Android GC机制实践调研》 在这个过程中发现一个让人非常震惊的问题：从资源文件中加载一张110kb的图片创建Bitmap对象，占用的内存高达40MB！为什么为什么为">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2017/07/11/探索Bitmap使用姿势/mhdpi_xxhdpi.png">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2017/07/11/探索Bitmap使用姿势/mhdpi_xxhdpi_150.png">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2017/07/11/探索Bitmap使用姿势/resource_assets.png">
@@ -112,12 +110,10 @@
 <meta property="og:image" content="http://lizhaoxuan.github.io/2017/07/11/探索Bitmap使用姿势/old_take_photo.jpg">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2017/07/11/探索Bitmap使用姿势/new_take_photo.jpg">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2017/07/11/探索Bitmap使用姿势/listview.png">
-<meta property="og:updated_time" content="2017-07-11T03:08:17.000Z">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.837Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="探索Bitmap使用姿势">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言早些时候对Android下GC调用时机比较好奇，所以写了一些case测试各种情况下Android GC调用时机与现象，感兴趣的话可以跳过去瞅瞅 ： 《Android GC机制实践调研》
-在这个过程中发现一个让人非常震惊的问题：从资源文件中加载一张110kb的图片创建Bitmap对象，占用的内存高达40MB！为什么为什么为">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言早些时候对Android下GC调用时机比较好奇，所以写了一些case测试各种情况下Android GC调用时机与现象，感兴趣的话可以跳过去瞅瞅 ： 《Android GC机制实践调研》 在这个过程中发现一个让人非常震惊的问题：从资源文件中加载一张110kb的图片创建Bitmap对象，占用的内存高达40MB！为什么为什么为">
 <meta name="twitter:image" content="http://lizhaoxuan.github.io/2017/07/11/探索Bitmap使用姿势/mhdpi_xxhdpi.png">
 
 
@@ -139,12 +135,12 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2017/07/11/探索Bitmap使用姿势/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2017/07/11/探索Bitmap使用姿势/">
 
   <title> 探索Bitmap使用姿势 | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -175,12 +171,12 @@
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -207,7 +203,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -217,7 +213,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -227,7 +223,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -237,7 +233,7 @@
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -270,7 +266,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -389,7 +385,7 @@
 <p>38880000b是什么概念？37MB！！<br>想一下，你的应用还啥都没干呢，就仅是加载了一张图片将近40MB的内存就被占用了，再加上其他一些操作，内存妥妥的就跳到临界值了，如果再有一些不当的溢出，OOM指日可待！</p>
 <p><strong>似乎，图片放在分辨率越高的文件夹下，内存占用越小</strong></p>
 <h4 id="2-不同格式的图片创建Bitmap内存占用大小"><a href="#2-不同格式的图片创建Bitmap内存占用大小" class="headerlink" title="2.不同格式的图片创建Bitmap内存占用大小"></a>2.不同格式的图片创建Bitmap内存占用大小</h4><p>上面测试用的是jpg，而通常我们开发中使用的都是png，看到这么大的内存占用，我有想过是否是因为图片格式的问题，于是把这张图片丢到美图秀秀里（美图秀秀真好用），然后分别导出了长宽一样的jpg和png两张图片，放到资源文件夹中进行加载。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">【努比亚Z9  Nubia NX508J】</div><div class="line">drawable_jpg_1.jpg 1200*900  135.76kb</div><div class="line">drawable_png_1.png 1200*900  1.64mb</div><div class="line"></div><div class="line">jpg getByteCount : 38880000 getRowBytes:14400 getHeight:2700 getWidth:3600</div><div class="line">png getByteCount : 38880000 getRowBytes:14400 getHeight:2700 getWidth:3600</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">【努比亚Z9  Nubia NX508J】</span><br><span class="line">drawable_jpg_1.jpg 1200*900  135.76kb</span><br><span class="line">drawable_png_1.png 1200*900  1.64mb</span><br><span class="line"></span><br><span class="line">jpg getByteCount : 38880000 getRowBytes:14400 getHeight:2700 getWidth:3600</span><br><span class="line">png getByteCount : 38880000 getRowBytes:14400 getHeight:2700 getWidth:3600</span><br></pre></td></tr></table></figure>
 <p>内存占用和之前一样，并且虽然png的图片本身高达1.64mb，但内存占用依然只是37mb。</p>
 <p><strong>从资源文件中加载图片的内存占用与图片格式、图片占硬盘大小无关！（但和apk包体积有关）</strong></p>
 <h4 id="3-不同的分辨率的设备加载同一张素材，Bitmap内存占用大小"><a href="#3-不同的分辨率的设备加载同一张素材，Bitmap内存占用大小" class="headerlink" title="3.不同的分辨率的设备加载同一张素材，Bitmap内存占用大小"></a>3.不同的分辨率的设备加载同一张素材，Bitmap内存占用大小</h4><p>Android存在着很多分辨率适配问题，不同drawable文件夹也是为了适配而存在的，所以我们还要挑几个分辨率不一样的手机看一下：</p>
@@ -490,10 +486,10 @@
 <h3 id="从网络或本地存储创建Bitmap"><a href="#从网络或本地存储创建Bitmap" class="headerlink" title="从网络或本地存储创建Bitmap"></a>从网络或本地存储创建Bitmap</h3><p>通过资源文件创建Bitmap，Android系统会为了适配不同屏幕，而对图片进行一些调整，导致不同情况下内存占用区别很大。那么如果是从网络或本地存储中创建的Bitmap也会因为设备的像素密度而有很大差异吗？</p>
 <p>我们来实验一下，我从网络下载一张图片，然后观察内存情况。</p>
 <p>我选了一张216932b ≈ 212kb 1600 *1280 的jpg图片下载，并创建一个Bitmap</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">【努比亚Z9  Nubia NX508J 分辨率1080 * 1920  像素密度：424ppi 】</div><div class="line">网络下载：</div><div class="line">byte[] size : 216932 ≈ 212kb</div><div class="line">bitmap size : 8192000 ≈ 7.8125mb</div><div class="line">同一张图片放到资源文件中加载：</div><div class="line">drawable getByteCount : 73728000 ≈ 70mb getRowBytes:19200 getHeight:3840 getWidth:4800</div><div class="line">mdip getByteCount : 73728000 ≈ 70mb getRowBytes:19200 getHeight:3840 getWidth:4800</div><div class="line">xhdip getByteCount : 18432000 ≈ 17.5mb getRowBytes:9600 getHeight:1920 getWidth:2400</div><div class="line">xxhdip getByteCount : 8192000 ≈ 8mb getRowBytes:6400 getHeight:1280 getWidth:1600</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">【努比亚Z9  Nubia NX508J 分辨率1080 * 1920  像素密度：424ppi 】</span><br><span class="line">网络下载：</span><br><span class="line">byte[] size : 216932 ≈ 212kb</span><br><span class="line">bitmap size : 8192000 ≈ 7.8125mb</span><br><span class="line">同一张图片放到资源文件中加载：</span><br><span class="line">drawable getByteCount : 73728000 ≈ 70mb getRowBytes:19200 getHeight:3840 getWidth:4800</span><br><span class="line">mdip getByteCount : 73728000 ≈ 70mb getRowBytes:19200 getHeight:3840 getWidth:4800</span><br><span class="line">xhdip getByteCount : 18432000 ≈ 17.5mb getRowBytes:9600 getHeight:1920 getWidth:2400</span><br><span class="line">xxhdip getByteCount : 8192000 ≈ 8mb getRowBytes:6400 getHeight:1280 getWidth:1600</span><br></pre></td></tr></table></figure>
 <p>Bitmap大小还是要比图片本身大出好多，而且似乎和从xxhdip文件夹下加载大小是一样的，这一个示例不足以证明是否和手机分辨率有关，我们换个手机再看看：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">【魅族MX6 分辨率1080 * 1920  像素密度：401ppi 】</div><div class="line">网络下载：</div><div class="line">byte[] size : 216932 ≈ 212kb</div><div class="line">bitmap size : 8192000 ≈ 7.8125mb</div><div class="line">资源文件加载：</div><div class="line">drawable getByteCount : 73728000 ≈ 70mb getRowBytes:19200 getHeight:3840 getWidth:4800</div><div class="line">mdip getByteCount : 73728000 ≈ 70mb getRowBytes:19200 getHeight:3840 getWidth:4800</div><div class="line">xhdip getByteCount : 18432000 ≈ 17.5mb getRowBytes:9600 getHeight:1920 getWidth:2400</div><div class="line">xxhdip getByteCount : 8192000 ≈ 8mb getRowBytes:6400 getHeight:1280 getWidth:1600</div></pre></td></tr></table></figure>
-<p>好像看起来一样，不过这两台设备分辨率一样，像素密度也差不太多，还是不足以说明问题，我们找个像素密度更低一点的看一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">【虚拟机-5.4FWVGA 分辨率480 * 584  像素密度：mdpi 】</div><div class="line">网络下载：</div><div class="line">byte[] size : 216932 ≈ 212kb</div><div class="line">bitmap size : 8192000 ≈ 7.8125mb</div><div class="line">资源文件加载：</div><div class="line">drawable getByteCount : 8192000 ≈ 8mb getRowBytes:6400 getHeight:1280 getWidth:1600</div><div class="line">mdip getByteCount : 8192000 ≈ 8mb getRowBytes:6400 getHeight:1280 getWidth:1600</div><div class="line">xhdip getByteCount : 2048000 ≈ 2mb getRowBytes:3200 getHeight:640 getWidth:800</div><div class="line">xxhdip getByteCount : 910364 ≈ 1mb getRowBytes:2132 getHeight:427 getWidth:533</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">【魅族MX6 分辨率1080 * 1920  像素密度：401ppi 】</span><br><span class="line">网络下载：</span><br><span class="line">byte[] size : 216932 ≈ 212kb</span><br><span class="line">bitmap size : 8192000 ≈ 7.8125mb</span><br><span class="line">资源文件加载：</span><br><span class="line">drawable getByteCount : 73728000 ≈ 70mb getRowBytes:19200 getHeight:3840 getWidth:4800</span><br><span class="line">mdip getByteCount : 73728000 ≈ 70mb getRowBytes:19200 getHeight:3840 getWidth:4800</span><br><span class="line">xhdip getByteCount : 18432000 ≈ 17.5mb getRowBytes:9600 getHeight:1920 getWidth:2400</span><br><span class="line">xxhdip getByteCount : 8192000 ≈ 8mb getRowBytes:6400 getHeight:1280 getWidth:1600</span><br></pre></td></tr></table></figure>
+<p>好像看起来一样，不过这两台设备分辨率一样，像素密度也差不太多，还是不足以说明问题，我们找个像素密度更低一点的看一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">【虚拟机-5.4FWVGA 分辨率480 * 584  像素密度：mdpi 】</span><br><span class="line">网络下载：</span><br><span class="line">byte[] size : 216932 ≈ 212kb</span><br><span class="line">bitmap size : 8192000 ≈ 7.8125mb</span><br><span class="line">资源文件加载：</span><br><span class="line">drawable getByteCount : 8192000 ≈ 8mb getRowBytes:6400 getHeight:1280 getWidth:1600</span><br><span class="line">mdip getByteCount : 8192000 ≈ 8mb getRowBytes:6400 getHeight:1280 getWidth:1600</span><br><span class="line">xhdip getByteCount : 2048000 ≈ 2mb getRowBytes:3200 getHeight:640 getWidth:800</span><br><span class="line">xxhdip getByteCount : 910364 ≈ 1mb getRowBytes:2132 getHeight:427 getWidth:533</span><br></pre></td></tr></table></figure></p>
 <p>哦~ 这回有点说明性了，即使在像素密度不同情况下，从网络下载的图片创建的Bitmap大小都是固定的，从资源文件中加载则因为像素密度不同会产生很多变化。</p>
 <p>从网络直接下载得到的byte数组大小等同于原图片大小，不经处理，直接用byte创建得到Bitmap宽高会以原图片宽高创建，得到的Bitmap所占内存远大于原图在硬盘上的大小。</p>
 <p>做个小总结：</p>
@@ -584,7 +580,7 @@
 <p>而设备的像素密度往往并不会只有160、240、320、480、640这几个，我们可以看到第一节测试数据的几个设备像素密度都是 【努比亚Z9 像素密度：424ppi】 【荣耀畅玩4X 像素密度：267ppi】  【乐视 le x620 像素密度：401ppi】</p>
 <p>这些像素密度值是硬件的实际参数，但在系统运行时，硬件需要给Android系统提供一个准确的整数值，通常你可以粗略的将硬件实际像素密度套入上表中，去像素密度范文的最大值。但还是会有一些特殊的设备不会取标准值，比如乐视le x620的像素密度并不是标准的320dp或480dp，而是420dp。</p>
 <p>所以设备像素密度在系统运行中的值我们可以通过下面的代码获取：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">DisplayMetrics metric = new DisplayMetrics();</div><div class="line">int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DisplayMetrics metric = new DisplayMetrics();</span><br><span class="line">int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）</span><br></pre></td></tr></table></figure>
 <p>系统运行中取得的像素密度如下 【努比亚Z9 像素密度：480dp】 【荣耀畅玩4X 像素密度：320dp】  【乐视 le x620 像素密度：420dp】<br>如果素材在每个文件夹都放了图片，那么会通过上表的像素密度范围中寻找最佳的素材进行加载。</p>
 <p>简单总结一下：</p>
 <ul>
@@ -661,11 +657,11 @@
 <h3 id="Bitmap内存复用"><a href="#Bitmap内存复用" class="headerlink" title="Bitmap内存复用"></a>Bitmap内存复用</h3><p>通常来说我们在需要使用一张新的图片时，都会为这个重新分配一块内存,然后创建一个新的Bitmap对象，一个两个不会存在太大的问题，但当有大量的零时Bitmap对象被频繁创建时，将会引起频繁的GC。所以Google在很早之前发布的性能优化典范中推荐开发者使用<code>inBitmap</code>属性来对Bitmap做内存复用，通过该属性告知解码器尝试使用已经存在的内存区域，从而避免内存的重新分配。</p>
 <p>当然<code>inBitmap</code>是有较大限制的，有着一定的场景依赖，所以通常被使用的频率不是很高，具体限制我们后面会有简单提到。这里我们先通过Demo测试一下<code>inBitmap</code>的复用效果。</p>
 <p>首先我用下面的方法测试未复用Bitmap内存的情况下，在一个ImageView依次显示三张图片时内存占用情况：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">private void unRecycle() &#123;</div><div class="line">        byte[] welcome1 = Tool.readFile(this, bitmapPaths[index++]);</div><div class="line">        imageView.setImageBitmap(BitmapFactory.decodeByteArray(welcome1, 0, welcome1.length));</div><div class="line">        if (index &gt;= 3) &#123;</div><div class="line">            index = 0;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private void unRecycle() &#123;</span><br><span class="line">        byte[] welcome1 = Tool.readFile(this, bitmapPaths[index++]);</span><br><span class="line">        imageView.setImageBitmap(BitmapFactory.decodeByteArray(welcome1, 0, welcome1.length));</span><br><span class="line">        if (index &gt;= 3) &#123;</span><br><span class="line">            index = 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/2017/07/11/探索Bitmap使用姿势/un_recycle.png" alt="un_recycle"></p>
 <p>通过内存监控可知，三张图片依次加载时，内存成阶梯状上升，执行GC后，内存成断崖式下跌。在实际使用过程中，很可能因为内存无法即时回收而导致OOM，或因为大量内存需要回收而引起卡顿。</p>
 <p>然后我们在用下面的方法测试复用Bitmap内存的情况下，在一个ImageView依次显示三张图片时内存占用情况：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">byte[] welcome1 = Tool.readFile(this, bitmapPaths[index++]);</div><div class="line">        if (bitmap == null) &#123;</div><div class="line">            BitmapFactory.Options option1 = new BitmapFactory.Options();</div><div class="line">            option1.inMutable = true;</div><div class="line">            bitmap = BitmapFactory.decodeByteArray(welcome1, 0, welcome1.length, option1);</div><div class="line">        &#125; else &#123;</div><div class="line">            BitmapFactory.Options option1 = new BitmapFactory.Options();</div><div class="line">            option1.inBitmap = bitmap;</div><div class="line">            option1.inMutable = true;</div><div class="line">            bitmap = BitmapFactory.decodeByteArray(welcome1, 0, welcome1.length, option1);</div><div class="line">        &#125;</div><div class="line">        imageView.setImageBitmap(bitmap);</div><div class="line">        if (index &gt;= 3) &#123;</div><div class="line">            index = 0;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">byte[] welcome1 = Tool.readFile(this, bitmapPaths[index++]);</span><br><span class="line">        if (bitmap == null) &#123;</span><br><span class="line">            BitmapFactory.Options option1 = new BitmapFactory.Options();</span><br><span class="line">            option1.inMutable = true;</span><br><span class="line">            bitmap = BitmapFactory.decodeByteArray(welcome1, 0, welcome1.length, option1);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            BitmapFactory.Options option1 = new BitmapFactory.Options();</span><br><span class="line">            option1.inBitmap = bitmap;</span><br><span class="line">            option1.inMutable = true;</span><br><span class="line">            bitmap = BitmapFactory.decodeByteArray(welcome1, 0, welcome1.length, option1);</span><br><span class="line">        &#125;</span><br><span class="line">        imageView.setImageBitmap(bitmap);</span><br><span class="line">        if (index &gt;= 3) &#123;</span><br><span class="line">            index = 0;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/2017/07/11/探索Bitmap使用姿势/recycle.png" alt="recycle"></p>
 <p>通过内存监控可知，仅在第一张图片加载时，系统分配了一块内存给Bitmap，后面两张图没用再重新进行内存分配。避免了大块内存的重新分配和GC回收。</p>
 <h3 id="Bitmap复用场景实操-拍照后图片加载与显示的优化对比"><a href="#Bitmap复用场景实操-拍照后图片加载与显示的优化对比" class="headerlink" title="Bitmap复用场景实操 - 拍照后图片加载与显示的优化对比"></a>Bitmap复用场景实操 - 拍照后图片加载与显示的优化对比</h3><p>这里介绍一个最简单的适合使用<code>inBitmap</code>属性的场景：拍照！</p>
@@ -705,19 +701,19 @@
 <li>Bitmap复用有较大限制，只能复用相同解码格式的，可能会有某些图片没有办法用<code>Config.RGB_565</code>解码，此时将不能复用。Demo中我用try catch捕获复用失败的异常，然后降级创建新的Bitmap.</li>
 </ul>
 <h2 id="Bitmap加载速度探索"><a href="#Bitmap加载速度探索" class="headerlink" title="Bitmap加载速度探索"></a>Bitmap加载速度探索</h2><p>上面我们主要分析的是Bitmap占用内存方面的一些场景，在实际使用过程中，除了内存以外，Bitmap的快速加载也是非常值得我们关注的问题。</p>
-<p>这里我们仅讨论最常用的三种Bitmap加载方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//从资源文件中加载</div><div class="line">BitmapFactory.decodeResource();</div><div class="line">//从流中加载</div><div class="line">BitmapFactory.decodeStream();</div><div class="line">//从byte[]中加载</div><div class="line">BitmapFactory.decodeByteArray();</div></pre></td></tr></table></figure></p>
+<p>这里我们仅讨论最常用的三种Bitmap加载方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//从资源文件中加载</span><br><span class="line">BitmapFactory.decodeResource();</span><br><span class="line">//从流中加载</span><br><span class="line">BitmapFactory.decodeStream();</span><br><span class="line">//从byte[]中加载</span><br><span class="line">BitmapFactory.decodeByteArray();</span><br></pre></td></tr></table></figure></p>
 <h3 id="从资源文件中加载与流中加载对比"><a href="#从资源文件中加载与流中加载对比" class="headerlink" title="从资源文件中加载与流中加载对比"></a>从资源文件中加载与流中加载对比</h3><p>我将同一张1080x1920 655.45k的图片放在资源文件中和Assets目录下用分别用<code>BitmapFactory.decodeResource();</code>和<code>BitmapFactory.decodeStream();</code>两种方法加载，然后测算其加载速度。</p>
 <p>同时因为每一次Bitmap的加载耗时都不一样，所以我会列出多次执行的数据。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">【time1】</div><div class="line">资源文件加载Bitmap 耗时：160ms</div><div class="line">decodeStream加载本地图片 耗时：57ms</div><div class="line">【time2】</div><div class="line">资源文件加载Bitmap 耗时：157ms</div><div class="line">decodeStream加载本地图片 耗时：47ms</div><div class="line">【time3】</div><div class="line">资源文件加载Bitmap 耗时：162ms</div><div class="line">decodeStream加载本地图片 耗时：56ms</div><div class="line">【time4】</div><div class="line">资源文件加载Bitmap 耗时：124ms</div><div class="line">decodeStream加载本地图片 耗时：43ms</div><div class="line">【time5】</div><div class="line">资源文件加载Bitmap 耗时：123ms</div><div class="line">07decodeStream加载本地图片 耗时：43ms</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">【time1】</span><br><span class="line">资源文件加载Bitmap 耗时：160ms</span><br><span class="line">decodeStream加载本地图片 耗时：57ms</span><br><span class="line">【time2】</span><br><span class="line">资源文件加载Bitmap 耗时：157ms</span><br><span class="line">decodeStream加载本地图片 耗时：47ms</span><br><span class="line">【time3】</span><br><span class="line">资源文件加载Bitmap 耗时：162ms</span><br><span class="line">decodeStream加载本地图片 耗时：56ms</span><br><span class="line">【time4】</span><br><span class="line">资源文件加载Bitmap 耗时：124ms</span><br><span class="line">decodeStream加载本地图片 耗时：43ms</span><br><span class="line">【time5】</span><br><span class="line">资源文件加载Bitmap 耗时：123ms</span><br><span class="line">07decodeStream加载本地图片 耗时：43ms</span><br></pre></td></tr></table></figure>
 <p>数据已经很明显的说明问题了。因为BitmapFactory.decodeResource()方法会在图片加载完成后做一些适配工作，而decodeStream直接读取了字节码，速度更快。</p>
 <p>但因为缺少了适配处理，所以加载的图片是图片原本的大小，在使用中需要对其进行处理。但在加载一些明显图片尺寸大于控件尺寸的场景，decodeStream显然更为合适。</p>
 <h3 id="I-O耗时和图片解码耗时"><a href="#I-O耗时和图片解码耗时" class="headerlink" title="I/O耗时和图片解码耗时"></a>I/O耗时和图片解码耗时</h3><p>从接触编程开始，我们都一直在接受I/O是很耗时的观点。那么是否可以假想，在从本地文件中加载图片的场景，从本地读取数据到内存的过程消耗了很重要的一部分时间，无论这段时间多与少，都是一个优化点。</p>
 <p>OK，那么接下来我们只要通过测算其具体时间就可以验证假设了。</p>
 <p>还是那张图片，我们先从本地读取其为byte[]，然后在从byte[]通过BitmapFactory.decodeByteArray();转为Bitmap。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">【time1】</div><div class="line">读取本地图片到byte[] 耗时：1ms</div><div class="line">byte[] to Bitmap 耗时：43ms</div><div class="line"></div><div class="line">【time2】</div><div class="line">读取本地图片到byte[] 耗时：2ms</div><div class="line">byte[] to Bitmap 耗时：40ms</div><div class="line"></div><div class="line">【time3】</div><div class="line">读取本地图片到byte[] 耗时：1ms</div><div class="line">byte[] to Bitmap 耗时：43ms</div><div class="line"></div><div class="line">【time4】</div><div class="line">读取本地图片到byte[] 耗时：1ms</div><div class="line">byte[] to Bitmap 耗时：39ms</div><div class="line"></div><div class="line">【time5】</div><div class="line">读取本地图片到byte[] 耗时：1</div><div class="line">byte[] to Bitmap 耗时：39</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">【time1】</span><br><span class="line">读取本地图片到byte[] 耗时：1ms</span><br><span class="line">byte[] to Bitmap 耗时：43ms</span><br><span class="line"></span><br><span class="line">【time2】</span><br><span class="line">读取本地图片到byte[] 耗时：2ms</span><br><span class="line">byte[] to Bitmap 耗时：40ms</span><br><span class="line"></span><br><span class="line">【time3】</span><br><span class="line">读取本地图片到byte[] 耗时：1ms</span><br><span class="line">byte[] to Bitmap 耗时：43ms</span><br><span class="line"></span><br><span class="line">【time4】</span><br><span class="line">读取本地图片到byte[] 耗时：1ms</span><br><span class="line">byte[] to Bitmap 耗时：39ms</span><br><span class="line"></span><br><span class="line">【time5】</span><br><span class="line">读取本地图片到byte[] 耗时：1</span><br><span class="line">byte[] to Bitmap 耗时：39</span><br></pre></td></tr></table></figure>
 <p>结果还是较为失望的，从本地读取到内存中的时间消耗仅为1ms，主要耗时依然在解码上。</p>
 <h3 id="BitmapFactory-decodeByteArray-与BitmapFactory-decodeStream-对比"><a href="#BitmapFactory-decodeByteArray-与BitmapFactory-decodeStream-对比" class="headerlink" title="BitmapFactory.decodeByteArray()与BitmapFactory.decodeStream()对比"></a>BitmapFactory.decodeByteArray()与BitmapFactory.decodeStream()对比</h3><p>BitmapFactory.decodeStream()直接通过流读取图片字节码，然后进行图片解码操作，对比BitmapFactory.decodeByteArray()，直观上要多出一步本地到内存的过程，虽然从本地读取数据到内存耗时仅为1ms，但我还是想知道这两者的直接对比是怎么样的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">【time1】</div><div class="line">decodeStream加载本地图片 耗时：42ms</div><div class="line">读取本地图片到byte[] 再到Bitmap 耗时：40ms</div><div class="line">读取本地图片到byte[] 耗时：1ms</div><div class="line"></div><div class="line">【time2】</div><div class="line">decodeStream加载本地图片 耗时：55ms</div><div class="line">读取本地图片到byte[] 再到Bitmap 耗时：44ms</div><div class="line">读取本地图片到byte[] 耗时：1ms</div><div class="line"></div><div class="line">【time3】</div><div class="line">decodeStream加载本地图片 耗时：43ms</div><div class="line">读取本地图片到byte[] 再到Bitmap 耗时：40ms</div><div class="line">读取本地图片到byte[] 耗时：1ms</div><div class="line"></div><div class="line">【time4】</div><div class="line">decodeStream加载本地图片 耗时：85ms</div><div class="line">读取本地图片到byte[] 再到Bitmap 耗时：60ms</div><div class="line">读取本地图片到byte[] 耗时：2ms</div><div class="line"></div><div class="line">【time5】</div><div class="line">decodeStream加载本地图片 耗时：73ms</div><div class="line">读取本地图片到byte[] 再到Bitmap 耗时：57ms</div><div class="line">读取本地图片到byte[] 耗时：2ms</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">【time1】</span><br><span class="line">decodeStream加载本地图片 耗时：42ms</span><br><span class="line">读取本地图片到byte[] 再到Bitmap 耗时：40ms</span><br><span class="line">读取本地图片到byte[] 耗时：1ms</span><br><span class="line"></span><br><span class="line">【time2】</span><br><span class="line">decodeStream加载本地图片 耗时：55ms</span><br><span class="line">读取本地图片到byte[] 再到Bitmap 耗时：44ms</span><br><span class="line">读取本地图片到byte[] 耗时：1ms</span><br><span class="line"></span><br><span class="line">【time3】</span><br><span class="line">decodeStream加载本地图片 耗时：43ms</span><br><span class="line">读取本地图片到byte[] 再到Bitmap 耗时：40ms</span><br><span class="line">读取本地图片到byte[] 耗时：1ms</span><br><span class="line"></span><br><span class="line">【time4】</span><br><span class="line">decodeStream加载本地图片 耗时：85ms</span><br><span class="line">读取本地图片到byte[] 再到Bitmap 耗时：60ms</span><br><span class="line">读取本地图片到byte[] 耗时：2ms</span><br><span class="line"></span><br><span class="line">【time5】</span><br><span class="line">decodeStream加载本地图片 耗时：73ms</span><br><span class="line">读取本地图片到byte[] 再到Bitmap 耗时：57ms</span><br><span class="line">读取本地图片到byte[] 耗时：2ms</span><br></pre></td></tr></table></figure>
 <p>时间相差从3ms到20ms都有，虽然不大，但还是有一丢丢改善。<br>如果对图片加载速度非常苛刻的话，可以考虑提前将图片缓存到内存中，然后通过BitmapFactory.decodeByteArray()方式进行加载。但这需要消耗额外的内存空间，是典型的空间换时间。但考虑其20ms左右优化效果，考虑这种方式还需谨慎。</p>
 <h2 id="新的缓存代替品？"><a href="#新的缓存代替品？" class="headerlink" title="新的缓存代替品？"></a>新的缓存代替品？</h2><p>跟上一节。虽然从加载速度考虑，BitmapFactory.decodeByteArray()代替BitmapFactory.decodeStream()的收益不大，但换一种姿势，有没有可能让收益翻番？</p>
 <p>一直以来图片缓存大多都是指将图片保存到本地或网络，加载后得到Bitmap保存的内存中，其优化通常是指将用过的Bitmap用缓存容器保存起来<strong>避免重复从硬盘或网络加载</strong>。</p>
@@ -837,7 +833,7 @@
 </tbody>
 </table>
 <p>另外说道byte[]越小，解码越快的问题，我们不难联想到webp，webp比png,jpg更小，读取后的byte[]也更小，是否解压的更快呢？测试一下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ico_1080_1920.png  bytes:984712b ≈ 961kb  bitmap:8294400b ≈ 8100kb  use:91ms</div><div class="line">ico_1080_1920_compress.png  bytes:631610b ≈ 616kb  bitmap:8294400b ≈ 8100kb  use:44ms</div><div class="line">un_compress.webp  bytes:367018b ≈ 358kb  bitmap:8294400b ≈ 8100kb  use:152ms</div><div class="line">compress.webp  bytes:361200b ≈ 352kb  bitmap:8294400b ≈ 8100kb  use:141ms</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ico_1080_1920.png  bytes:984712b ≈ 961kb  bitmap:8294400b ≈ 8100kb  use:91ms</span><br><span class="line">ico_1080_1920_compress.png  bytes:631610b ≈ 616kb  bitmap:8294400b ≈ 8100kb  use:44ms</span><br><span class="line">un_compress.webp  bytes:367018b ≈ 358kb  bitmap:8294400b ≈ 8100kb  use:152ms</span><br><span class="line">compress.webp  bytes:361200b ≈ 352kb  bitmap:8294400b ≈ 8100kb  use:141ms</span><br></pre></td></tr></table></figure>
 <p>结果显而易见，下面两张图是上面两张图的webp版，虽然大幅度减少byte的大小，但解码时间也大幅度增加了。究其原因，webp的高强度压缩增加了解码复杂度，webp在其官网也早已对这种情况进行了说明。</p>
 <p>而byte[] - Bitmap所消耗的时间对系统流程度的影响又是如何呢？</p>
 <p>我写了一个demo，界面如下：</p>
@@ -917,7 +913,7 @@
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -966,7 +962,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -976,10 +972,8 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -1041,10 +1035,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

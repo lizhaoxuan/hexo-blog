@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,46 +63,42 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="性能优化," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="性能优化,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  背景-background（背景包括背景图片、颜色、形状、边框等等）。
-那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 概述上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  背景-background（背景包括背景图片、颜色、形状、边框等等）。 那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。">
+<meta name="keywords" content="性能优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android过度绘制深度优化---View提前绘制">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2015/09/09/SoftWidget/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  背景-background（背景包括背景图片、颜色、形状、边框等等）。
-那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  背景-background（背景包括背景图片、颜色、形状、边框等等）。 那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20151103211615749">
 <meta property="og:image" content="http://img.blog.csdn.net/20151103211244952">
 <meta property="og:image" content="http://img.blog.csdn.net/20151107151634177">
-<meta property="og:updated_time" content="2017-01-16T05:10:51.000Z">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.831Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android过度绘制深度优化---View提前绘制">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  背景-background（背景包括背景图片、颜色、形状、边框等等）。
-那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述上一篇文章对过度绘制和View优化做了大概的简介和介绍。我们知道，引起过度绘制的根本原因是  背景-background（背景包括背景图片、颜色、形状、边框等等）。 那么通常你在网络查找过度绘制优化策略，不外乎减少View的层叠、多余的控件、一个多余的背景设置等等。可如果你真的去审查代码，会发现你并没有多少可优化的地方。">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20151103211615749">
 
 
@@ -124,12 +120,12 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2015/09/09/SoftWidget/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2015/09/09/SoftWidget/">
 
   <title> Android过度绘制深度优化---View提前绘制 | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -160,12 +156,12 @@
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -192,7 +188,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -202,7 +198,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -212,7 +208,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -222,7 +218,7 @@
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -255,7 +251,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -353,7 +349,7 @@
 <p>也许在你看到View的提前绘制是有代价的，就决定不在进行优化，这是错误的。除非极其复杂的View，负责提前绘制带来收益是绝对大于那多出来的一丢丢绘制时间的。</p>
 <p>另外即使类似于登录界面这样的简单布局没有必要进行过度绘制优化，但依然有大量的优秀公司进行了优化。我认为有两个点：<br>1.登录界面是应用打开的第一个界面，也是整个应用最简单的界面之一，用它来试手肯定是第一选择。<br>2.这是一个态度和逼格的问题。打开过度绘制调试后，别人家的应用蓝蓝的，怎么你的应用就是红彤彤一片？</p>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>啊，好吧，废话说的有点多了，下面我们上代码。</p>
-<p>Github链接：<a href="https://github.com/lizhaoxuan/SoftWidgetDemo.git" target="_blank" rel="external">https://github.com/lizhaoxuan/SoftWidgetDemo.git</a></p>
+<p>Github链接：<a href="https://github.com/lizhaoxuan/SoftWidgetDemo.git" target="_blank" rel="noopener">https://github.com/lizhaoxuan/SoftWidgetDemo.git</a></p>
 <p>首先看目录结构：</p>
 <p><img src="http://img.blog.csdn.net/20151107151634177" width="180" height="230" alt="图片名称" align="center"></p>
 <p>有四个核心类：<br>DrawingCanvas.java 我们提前绘制就在这个类上画，然后交给onDraw，一气呵成。<br>PaintBox.java 里面包含了几个绘制方法，比如画背景颜色和形状</p>
@@ -797,7 +793,7 @@ public class SRoundRect_Button extends Button {
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -846,7 +842,7 @@ public class SRoundRect_Button extends Button {
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -856,10 +852,8 @@ public class SRoundRect_Button extends Button {
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -921,10 +915,10 @@ public class SRoundRect_Button extends Button {
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,45 +63,41 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="性能优化," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="性能优化,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。这其实是一个很粗的论调，会引起很多错误的理解。
-这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 前言一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。这其实是一个很粗的论调，会引起很多错误的理解。 这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我">
+<meta name="keywords" content="性能优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java内存管理的一些小疑问">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。这其实是一个很粗的论调，会引起很多错误的理解。
-这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。这其实是一个很粗的论调，会引起很多错误的理解。 这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/method_start.png">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/method_end.png">
-<meta property="og:updated_time" content="2017-05-08T10:31:00.000Z">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.828Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java内存管理的一些小疑问">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。这其实是一个很粗的论调，会引起很多错误的理解。
-这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言一直以来都在接受一个论调：在Java的内存管理中，基础类型变量保存在栈中，对象类型保存在堆中。这其实是一个很粗的论调，会引起很多错误的理解。 这篇博客的产出，仅是因为脑子里偶然间冒出来的一个问题：java栈内存的内存回收是怎么做的？因为这个问题，引发了一系列的小问题：所有的基础类型变量都保存在栈中吗？栈和堆上都在运行着我">
 <meta name="twitter:image" content="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/method_start.png">
 
 
@@ -123,12 +119,12 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2017/05/08/Java内存管理的一些小疑问/">
 
   <title> Java内存管理的一些小疑问 | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -159,12 +155,12 @@
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -191,7 +187,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -201,7 +197,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -211,7 +207,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -221,7 +217,7 @@
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -254,7 +250,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -332,7 +328,7 @@
 <p>那么确认这个大前提下，后面接二连三的问题就都冒出来了：<strong>栈内存是怎么进行内存回收的？所有的基础类型变量都保存在栈内存中吗？</strong> </p>
 <p>栈嘛，仅允许在线性表的一端进行插入和删除运算，所以分配内存就在栈顶插进去一块，回收，就从栈顶取出来。</p>
 <p>这种管理结构，从方法的角度其实很容易理解，我们看下面一段伪代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public void main()&#123;</div><div class="line">   	method1();</div><div class="line">   &#125;</div><div class="line"></div><div class="line">public void method1()&#123;</div><div class="line">   	...</div><div class="line">       method2();</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   public void method2()&#123;</div><div class="line">   	...</div><div class="line">       method3();</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   public void method3()&#123;</div><div class="line">   	...</div><div class="line">       //end</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public void main()&#123;</span><br><span class="line">   	method1();</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">public void method1()&#123;</span><br><span class="line">   	...</span><br><span class="line">       method2();</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   public void method2()&#123;</span><br><span class="line">   	...</span><br><span class="line">       method3();</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   public void method3()&#123;</span><br><span class="line">   	...</span><br><span class="line">       //end</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>代码很简单，main方法调用了method1,method2调用了method3，method3结束了。用图的形式更直观：</p>
 <p>从main方法开始执行，各方法依次入栈，每个方法执行的同时，都会创建一个栈帧，然后进入虚拟机栈。<br><img src="/2017/05/08/Java内存管理的一些小疑问/method_start.png" alt=""></p>
 <p>method3方法执行结束后，各方法（栈帧）依次出栈：</p>
@@ -421,7 +417,7 @@
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -470,7 +466,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -480,10 +476,8 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -545,10 +539,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

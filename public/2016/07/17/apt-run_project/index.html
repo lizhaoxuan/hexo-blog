@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,46 +63,42 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="APT," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="APT,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述因为编译时注解框架前期项目搭建部分需要较多的图文讲解，所以前一章《Android编译时注解框架-Run Demo》只是实现了最简单应用，或许注解信息，并没有生成代码。
-本章将以生成代码为重点进行一个案例讲解。">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 概述因为编译时注解框架前期项目搭建部分需要较多的图文讲解，所以前一章《Android编译时注解框架-Run Demo》只是实现了最简单应用，或许注解信息，并没有生成代码。 本章将以生成代码为重点进行一个案例讲解。">
+<meta name="keywords" content="APT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android编译时注解框架3-Run Project:OnceClick">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2016/07/17/apt-run_project/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述因为编译时注解框架前期项目搭建部分需要较多的图文讲解，所以前一章《Android编译时注解框架-Run Demo》只是实现了最简单应用，或许注解信息，并没有生成代码。
-本章将以生成代码为重点进行一个案例讲解。">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述因为编译时注解框架前期项目搭建部分需要较多的图文讲解，所以前一章《Android编译时注解框架-Run Demo》只是实现了最简单应用，或许注解信息，并没有生成代码。 本章将以生成代码为重点进行一个案例讲解。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img0.ph.126.net/vHtdAVys2C-kIyWETwdaOw==/6631583436652950849.jpeg">
 <meta property="og:image" content="http://img0.ph.126.net/fiUsxAgW_ezfR7CEntOavw==/6631599929327368401.jpeg">
 <meta property="og:image" content="http://img0.ph.126.net/Fjmfygapp7D_zJXmxjru3A==/6631569143001790392.jpeg">
-<meta property="og:updated_time" content="2017-01-16T05:12:58.000Z">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.834Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android编译时注解框架3-Run Project:OnceClick">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述因为编译时注解框架前期项目搭建部分需要较多的图文讲解，所以前一章《Android编译时注解框架-Run Demo》只是实现了最简单应用，或许注解信息，并没有生成代码。
-本章将以生成代码为重点进行一个案例讲解。">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述因为编译时注解框架前期项目搭建部分需要较多的图文讲解，所以前一章《Android编译时注解框架-Run Demo》只是实现了最简单应用，或许注解信息，并没有生成代码。 本章将以生成代码为重点进行一个案例讲解。">
 <meta name="twitter:image" content="http://img0.ph.126.net/vHtdAVys2C-kIyWETwdaOw==/6631583436652950849.jpeg">
 
 
@@ -124,12 +120,12 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-run_project/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-run_project/">
 
   <title> Android编译时注解框架3-Run Project:OnceClick | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -160,12 +156,12 @@
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -192,7 +188,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -202,7 +198,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -212,7 +208,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -222,7 +218,7 @@
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -255,7 +251,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -328,7 +324,7 @@
 <a id="more"></a>
 <h3 id="框架名称：OnceClick"><a href="#框架名称：OnceClick" class="headerlink" title="框架名称：OnceClick"></a>框架名称：OnceClick</h3><p><strong>框架功能：</strong>功能就是它的名字：在一定时间内，按钮点击事件只能执行一次。未到指定时间，不执行点击事件。</p>
 <p><strong>框架背景：</strong>从用户的角度，在使用应用的过程中，因为低端机性能原因、Web页面性能问题，导致点击按钮后程序卡顿，按钮事件延迟执行。造成的后果就是，卡顿后，继续多次点击非常容易导致事件多次执行，造成不可预知的Bug，且影响用户体验。</p>
-<p><strong>使用及项目引用地址：</strong><a href="https://github.com/lizhaoxuan/OnceClick" target="_blank" rel="external">https://github.com/lizhaoxuan/OnceClick</a></p>
+<p><strong>使用及项目引用地址：</strong><a href="https://github.com/lizhaoxuan/OnceClick" target="_blank" rel="noopener">https://github.com/lizhaoxuan/OnceClick</a></p>
 <p>OK，这是一个功能非常简单的小型类库。下面我们来实现它。</p>
 <h3 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h3><p>具体的项目搭建细节前一章已经有了介绍，这里不再讲述。</p>
 <p><strong>需要说明的是：</strong>我们的目的是写一个Android库，APT Moudle是java Library，不能使用Android API。所以还需要创建一个Android Library，负责框架主体部分. 然后由Android Library引用APT jar包。</p>
@@ -737,7 +733,7 @@ OnceInit.once(this,2000);
 <pre><code>@OnceClick(R.id.btn)
 </code></pre><p>如果有两个属性，就必须要带名字了 </p>
 <pre><code>@OnceClick(id = R.id.btn)
-</code></pre><p>最后在把源码地址再放一下 <a href="https://github.com/lizhaoxuan/OnceClick" target="_blank" rel="external">https://github.com/lizhaoxuan/OnceClick</a>。看着Demo学习会更快！</p>
+</code></pre><p>最后在把源码地址再放一下 <a href="https://github.com/lizhaoxuan/OnceClick" target="_blank" rel="noopener">https://github.com/lizhaoxuan/OnceClick</a>。看着Demo学习会更快！</p>
 <p><br></p>
 <hr>
 <p><a href="https://lizhaoxuan.github.io/2016/07/17/apt-wathapt/">《Android编译时注解框架-什么是编译时注解》</a></p>
@@ -815,7 +811,7 @@ OnceInit.once(this,2000);
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -864,7 +860,7 @@ OnceInit.once(this,2000);
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -874,10 +870,8 @@ OnceInit.once(this,2000);
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -939,10 +933,10 @@ OnceInit.once(this,2000);
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

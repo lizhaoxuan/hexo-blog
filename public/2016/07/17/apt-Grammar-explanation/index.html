@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,46 +63,42 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="APT," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="APT,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述本章内容主要对APT一些语法进行简单讲解。apt的学习资料真的太少了，我的学习方法基本上只能通过看开源库的源码猜、看源码注释猜、自己运行着猜……
-这里对猜对的结果进行一个总结，让后来者可以更快的上手。">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 概述本章内容主要对APT一些语法进行简单讲解。apt的学习资料真的太少了，我的学习方法基本上只能通过看开源库的源码猜、看源码注释猜、自己运行着猜…… 这里对猜对的结果进行一个总结，让后来者可以更快的上手。">
+<meta name="keywords" content="APT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android编译时注解框架5-语法讲解">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2016/07/17/apt-Grammar-explanation/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述本章内容主要对APT一些语法进行简单讲解。apt的学习资料真的太少了，我的学习方法基本上只能通过看开源库的源码猜、看源码注释猜、自己运行着猜……
-这里对猜对的结果进行一个总结，让后来者可以更快的上手。">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述本章内容主要对APT一些语法进行简单讲解。apt的学习资料真的太少了，我的学习方法基本上只能通过看开源库的源码猜、看源码注释猜、自己运行着猜…… 这里对猜对的结果进行一个总结，让后来者可以更快的上手。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img1.ph.126.net/nIF8CZgyLscGMXPO0UdCkA==/6631820931164553739.jpg">
 <meta property="og:image" content="http://img2.ph.126.net/Ypp8bT2ykMm35CSoPqO4Lw==/6631566943978535174.jpg">
 <meta property="og:image" content="http://img1.ph.126.net/bdMUDuJ_8US-yfB2JJjQpA==/6631580138118067912.jpg">
-<meta property="og:updated_time" content="2017-01-16T05:13:11.000Z">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.833Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android编译时注解框架5-语法讲解">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述本章内容主要对APT一些语法进行简单讲解。apt的学习资料真的太少了，我的学习方法基本上只能通过看开源库的源码猜、看源码注释猜、自己运行着猜……
-这里对猜对的结果进行一个总结，让后来者可以更快的上手。">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述本章内容主要对APT一些语法进行简单讲解。apt的学习资料真的太少了，我的学习方法基本上只能通过看开源库的源码猜、看源码注释猜、自己运行着猜…… 这里对猜对的结果进行一个总结，让后来者可以更快的上手。">
 <meta name="twitter:image" content="http://img1.ph.126.net/nIF8CZgyLscGMXPO0UdCkA==/6631820931164553739.jpg">
 
 
@@ -124,12 +120,12 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-Grammar-explanation/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-Grammar-explanation/">
 
   <title> Android编译时注解框架5-语法讲解 | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -160,12 +156,12 @@
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -192,7 +188,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -202,7 +198,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -212,7 +208,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -222,7 +218,7 @@
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -255,7 +251,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -730,7 +726,7 @@ for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) {
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -779,7 +775,7 @@ for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) {
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -789,10 +785,8 @@ for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) {
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -854,10 +848,10 @@ for (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) {
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

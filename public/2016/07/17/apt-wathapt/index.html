@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,39 +63,35 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="APT," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="APT,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述Android编译时注解框架从入门到项目实践。该系列将通过5篇博客一步步教你打造一个属于自己的编译时注解框架，并在之后开源出基于APT的编译时注解框架。
-提到注解，普遍都会有两种态度：黑科技、低性能。而使用注解往往可以实现用非常少的代码作出匪夷所思的事情，比如这些框架：ButterKnife、Retrofit。
-但一直被">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 概述Android编译时注解框架从入门到项目实践。该系列将通过5篇博客一步步教你打造一个属于自己的编译时注解框架，并在之后开源出基于APT的编译时注解框架。 提到注解，普遍都会有两种态度：黑科技、低性能。而使用注解往往可以实现用非常少的代码作出匪夷所思的事情，比如这些框架：ButterKnife、Retrofit。 但一直被">
+<meta name="keywords" content="APT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android编译时注解框架系列1-什么是编译时注解">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2016/07/17/apt-wathapt/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述Android编译时注解框架从入门到项目实践。该系列将通过5篇博客一步步教你打造一个属于自己的编译时注解框架，并在之后开源出基于APT的编译时注解框架。
-提到注解，普遍都会有两种态度：黑科技、低性能。而使用注解往往可以实现用非常少的代码作出匪夷所思的事情，比如这些框架：ButterKnife、Retrofit。
-但一直被">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述Android编译时注解框架从入门到项目实践。该系列将通过5篇博客一步步教你打造一个属于自己的编译时注解框架，并在之后开源出基于APT的编译时注解框架。 提到注解，普遍都会有两种态度：黑科技、低性能。而使用注解往往可以实现用非常少的代码作出匪夷所思的事情，比如这些框架：ButterKnife、Retrofit。 但一直被">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://7o4zmy.com1.z0.glb.clouddn.com/1.jpeg">
 <meta property="og:image" content="http://7o4zmy.com1.z0.glb.clouddn.com/2.jpeg">
 <meta property="og:image" content="http://7o4zmy.com1.z0.glb.clouddn.com/3.jpeg">
@@ -108,13 +104,10 @@
 <meta property="og:image" content="http://7o4zmy.com1.z0.glb.clouddn.com/11.jpeg">
 <meta property="og:image" content="http://7o4zmy.com1.z0.glb.clouddn.com/12.jpeg">
 <meta property="og:image" content="http://7o4zmy.com1.z0.glb.clouddn.com/13.jpeg">
-<meta property="og:updated_time" content="2017-01-16T05:12:52.000Z">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.834Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android编译时注解框架系列1-什么是编译时注解">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述Android编译时注解框架从入门到项目实践。该系列将通过5篇博客一步步教你打造一个属于自己的编译时注解框架，并在之后开源出基于APT的编译时注解框架。
-提到注解，普遍都会有两种态度：黑科技、低性能。而使用注解往往可以实现用非常少的代码作出匪夷所思的事情，比如这些框架：ButterKnife、Retrofit。
-但一直被">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述Android编译时注解框架从入门到项目实践。该系列将通过5篇博客一步步教你打造一个属于自己的编译时注解框架，并在之后开源出基于APT的编译时注解框架。 提到注解，普遍都会有两种态度：黑科技、低性能。而使用注解往往可以实现用非常少的代码作出匪夷所思的事情，比如这些框架：ButterKnife、Retrofit。 但一直被">
 <meta name="twitter:image" content="http://7o4zmy.com1.z0.glb.clouddn.com/1.jpeg">
 
 
@@ -136,12 +129,12 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-wathapt/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-wathapt/">
 
   <title> Android编译时注解框架系列1-什么是编译时注解 | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -172,12 +165,12 @@
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -204,7 +197,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -214,7 +207,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -224,7 +217,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -234,7 +227,7 @@
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -267,7 +260,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -646,7 +639,7 @@ public void bind(final Finder finder, final T target, Object source) {
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -695,7 +688,7 @@ public void bind(final Finder finder, final T target, Object source) {
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -705,10 +698,8 @@ public void bind(final Finder finder, final T target, Object source) {
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -770,10 +761,10 @@ public void bind(final Finder finder, final T target, Object source) {
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

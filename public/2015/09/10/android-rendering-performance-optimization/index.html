@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,43 +63,35 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="性能优化," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="性能优化,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言本文主要对过度绘制和图形渲染做一个概念性的描述。
-同时以案例方式列出一些简单适用的优化措施。
-如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章：
-优化Android过度绘制
-另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 前言本文主要对过度绘制和图形渲染做一个概念性的描述。 同时以案例方式列出一些简单适用的优化措施。 如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章： 优化Android过度绘制 另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的">
+<meta name="keywords" content="性能优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android之GPU过度绘制与图形渲染优化">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2015/09/10/android-rendering-performance-optimization/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言本文主要对过度绘制和图形渲染做一个概念性的描述。
-同时以案例方式列出一些简单适用的优化措施。
-如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章：
-优化Android过度绘制
-另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言本文主要对过度绘制和图形渲染做一个概念性的描述。 同时以案例方式列出一些简单适用的优化措施。 如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章： 优化Android过度绘制 另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img2.ph.126.net/HqqBm8xVjCUwd4EHSaQhgA==/6631820931164660027.jpeg">
 <meta property="og:image" content="http://img.blog.csdn.net/20151016211507297">
 <meta property="og:image" content="http://img.blog.csdn.net/20151103211615749">
@@ -109,15 +101,10 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151016211827892">
 <meta property="og:image" content="http://img.blog.csdn.net/20151016211844469">
 <meta property="og:image" content="http://img.blog.csdn.net/20151103211244952">
-<meta property="og:updated_time" content="2017-01-16T05:13:40.000Z">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.831Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android之GPU过度绘制与图形渲染优化">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言本文主要对过度绘制和图形渲染做一个概念性的描述。
-同时以案例方式列出一些简单适用的优化措施。
-如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章：
-优化Android过度绘制
-另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言本文主要对过度绘制和图形渲染做一个概念性的描述。 同时以案例方式列出一些简单适用的优化措施。 如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章： 优化Android过度绘制 另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的">
 <meta name="twitter:image" content="http://img2.ph.126.net/HqqBm8xVjCUwd4EHSaQhgA==/6631820931164660027.jpeg">
 
 
@@ -139,12 +126,12 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2015/09/10/android-rendering-performance-optimization/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2015/09/10/android-rendering-performance-optimization/">
 
   <title> Android之GPU过度绘制与图形渲染优化 | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -175,12 +162,12 @@
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -207,7 +194,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -217,7 +204,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -227,7 +214,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -237,7 +224,7 @@
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -270,7 +257,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -342,7 +329,7 @@
 <p>同时以案例方式列出一些简单适用的优化措施。</p>
 <p>如果你已对过度绘制有过一些了解，那么你应该明白，仅是简单的层级优化对过度绘制的改善是很小的。所以，这时候你可以参考这篇文章：</p>
 <p><a href="">优化Android过度绘制</a></p>
-<p>另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的 <a href="http://www.oschina.net/news/60157/android-performance-patterns" target="_blank" rel="external">Android 性能优化典范</a></p>
+<p>另外如果你还想知道更多关于View优化原理，可以参考 Google 发布的 <a href="http://www.oschina.net/news/60157/android-performance-patterns" target="_blank" rel="noopener">Android 性能优化典范</a></p>
 <a id="more"></a>
 <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="GPU过度绘制"><a href="#GPU过度绘制" class="headerlink" title="GPU过度绘制"></a>GPU过度绘制</h3><p>是指在一个像素点上绘制多次（超过一次）。举一个简单的例子：显示一个什么都没有做的activity界面算作画了1层，给activity加一个背景是第2层，在上面放了一个Text View（有背景的Text View）是第3层，Text View显示文本就是第4层 。</p>
 <p><strong>仅仅只是为了显示一个文本，却在同一个像素点绘制了四次,这是一定要优化的！</strong></p>
@@ -481,7 +468,7 @@
 &lt;/style&gt;
 </code></pre><h3 id="优化4"><a href="#优化4" class="headerlink" title="优化4"></a>优化4</h3><p><strong>重绘控件，提前为控件绘制背景或形状，在控件放到布局上时，就已经被绘制好。</strong></p>
 <p>这里代码量较大，我们放到另一篇文章中讲： </p>
-<p><a href="http://blog.csdn.net/u010255127/article/details/49702663" target="_blank" rel="external">http://blog.csdn.net/u010255127/article/details/49702663</a></p>
+<p><a href="http://blog.csdn.net/u010255127/article/details/49702663" target="_blank" rel="noopener">http://blog.csdn.net/u010255127/article/details/49702663</a></p>
 <h2 id="最终优化效果"><a href="#最终优化效果" class="headerlink" title="最终优化效果"></a>最终优化效果</h2><p>没有红色，最高是绿色<br>（替换了一些控件和实现方式，不对本文所讲述的内容有影响，我们只看过度绘制检测）</p>
 <p><img src="http://img.blog.csdn.net/20151103211244952" alt="这里写图片描述"></p>
 <h2 id="测试数据"><a href="#测试数据" class="headerlink" title="测试数据"></a>测试数据</h2><p>【时间计算】 单位 /ms （测算时间受手机性能影响，数据较为不稳定，需多次测量）<br>原始状况：</p>
@@ -574,7 +561,7 @@ onStart 到 onResume ：   3    3    2
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -623,7 +610,7 @@ onStart 到 onResume ：   3    3    2
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -633,10 +620,8 @@ onStart 到 onResume ：   3    3    2
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -698,10 +683,10 @@ onStart 到 onResume ：   3    3    2
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

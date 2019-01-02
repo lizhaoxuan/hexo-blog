@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,48 +63,44 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="RTFSC," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="RTFSC,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言提起AccessibilityService，你最容易联想到的肯定是微信抢红包插件！但这个服务的设计初衷，是为了帮助残障人士可以更好的使用App。
-一些“调皮”的开发者利用AccessibilityService可以监控与操作其他App的特性加上系统远超人类的反应速度，在某些竞争类场景开发出了作弊外挂，最常见的就是你所嫉">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 前言提起AccessibilityService，你最容易联想到的肯定是微信抢红包插件！但这个服务的设计初衷，是为了帮助残障人士可以更好的使用App。 一些“调皮”的开发者利用AccessibilityService可以监控与操作其他App的特性加上系统远超人类的反应速度，在某些竞争类场景开发出了作弊外挂，最常见的就是你所嫉">
+<meta name="keywords" content="RTFSC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AccessibilityService分析与防御">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2018/01/27/AccessibilityService分析与防御/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言提起AccessibilityService，你最容易联想到的肯定是微信抢红包插件！但这个服务的设计初衷，是为了帮助残障人士可以更好的使用App。
-一些“调皮”的开发者利用AccessibilityService可以监控与操作其他App的特性加上系统远超人类的反应速度，在某些竞争类场景开发出了作弊外挂，最常见的就是你所嫉">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言提起AccessibilityService，你最容易联想到的肯定是微信抢红包插件！但这个服务的设计初衷，是为了帮助残障人士可以更好的使用App。 一些“调皮”的开发者利用AccessibilityService可以监控与操作其他App的特性加上系统远超人类的反应速度，在某些竞争类场景开发出了作弊外挂，最常见的就是你所嫉">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2018/01/27/AccessibilityService分析与防御/外挂简史.png">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2018/01/27/AccessibilityService分析与防御/accessibility类图.png">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2018/01/27/AccessibilityService分析与防御/accessibility流程图.png">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2018/01/27/AccessibilityService分析与防御/accessibility整体流程.png">
 <meta property="og:image" content="http://lizhaoxuan.github.io/2018/01/27/AccessibilityService分析与防御/AccessibilityInteractionClient.png">
-<meta property="og:updated_time" content="2018-01-27T15:25:13.932Z">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.817Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AccessibilityService分析与防御">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-前言提起AccessibilityService，你最容易联想到的肯定是微信抢红包插件！但这个服务的设计初衷，是为了帮助残障人士可以更好的使用App。
-一些“调皮”的开发者利用AccessibilityService可以监控与操作其他App的特性加上系统远超人类的反应速度，在某些竞争类场景开发出了作弊外挂，最常见的就是你所嫉">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言提起AccessibilityService，你最容易联想到的肯定是微信抢红包插件！但这个服务的设计初衷，是为了帮助残障人士可以更好的使用App。 一些“调皮”的开发者利用AccessibilityService可以监控与操作其他App的特性加上系统远超人类的反应速度，在某些竞争类场景开发出了作弊外挂，最常见的就是你所嫉">
 <meta name="twitter:image" content="http://lizhaoxuan.github.io/2018/01/27/AccessibilityService分析与防御/外挂简史.png">
 
 
@@ -126,12 +122,12 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2018/01/27/AccessibilityService分析与防御/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2018/01/27/AccessibilityService分析与防御/">
 
   <title> AccessibilityService分析与防御 | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -162,12 +158,12 @@
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -194,7 +190,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -204,7 +200,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -214,7 +210,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -224,7 +220,7 @@
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -257,7 +253,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -356,7 +352,7 @@
 </ul>
 <p><strong>哎呀~真是活久见，两波从来没见过的人在互相进步啊这是！！！禁止外挂安装这种简单的防御措施已经挡不住这帮疯狂的人类了，我只能一头扎进了AccessibilityService的源码中，看这到底是个啥东西，然后去思考相应的防御方案。</strong></p>
 <h2 id="AccessibilityService运行原理"><a href="#AccessibilityService运行原理" class="headerlink" title="AccessibilityService运行原理"></a>AccessibilityService运行原理</h2><h3 id="AccessibilityService内部运行"><a href="#AccessibilityService内部运行" class="headerlink" title="AccessibilityService内部运行"></a>AccessibilityService内部运行</h3><p>这不是一篇AccessibilityService教程文章，没有AccessibilityService完整的使用示例代码和源码，但为了上下文不至于断档太大，我们这里还是会简单贴一些小段代码。同时需要说明的是，严谨的来说AccessibilityService只是一个Service，文本查找点击事件等操作对于一个Service来说是完全没法做到的。但为了行文方便，所以后面某些AccessibilityService代指辅助模式服务。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public class MyAccessibilityService extends AccessibilityService &#123;</div><div class="line"></div><div class="line">	...</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) &#123;</div><div class="line">        //获取eventType</div><div class="line">        int eventType = accessibilityEvent.getEventType();</div><div class="line">        if (eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) &#123;</div><div class="line">            AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();</div><div class="line">            if (nodeInfo != null) &#123;</div><div class="line">                //查询文案为BUTTON3的View</div><div class="line">                List&lt;AccessibilityNodeInfo&gt; button3 = nodeInfo.findAccessibilityNodeInfosByText(&quot;BUTTON3&quot;);</div><div class="line">                nodeInfo.recycle();</div><div class="line">                for (AccessibilityNodeInfo item : button3) &#123;</div><div class="line">                    //对这个View执行点击操作</div><div class="line">                    item.performAction(AccessibilityNodeInfo.ACTION_CLICK);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class MyAccessibilityService extends AccessibilityService &#123;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">    </span><br><span class="line">    @Override</span><br><span class="line">    public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) &#123;</span><br><span class="line">        //获取eventType</span><br><span class="line">        int eventType = accessibilityEvent.getEventType();</span><br><span class="line">        if (eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) &#123;</span><br><span class="line">            AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();</span><br><span class="line">            if (nodeInfo != null) &#123;</span><br><span class="line">                //查询文案为BUTTON3的View</span><br><span class="line">                List&lt;AccessibilityNodeInfo&gt; button3 = nodeInfo.findAccessibilityNodeInfosByText(&quot;BUTTON3&quot;);</span><br><span class="line">                nodeInfo.recycle();</span><br><span class="line">                for (AccessibilityNodeInfo item : button3) &#123;</span><br><span class="line">                    //对这个View执行点击操作</span><br><span class="line">                    item.performAction(AccessibilityNodeInfo.ACTION_CLICK);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>AccessibilityService真的很简单，只要写一个Service继承AccessibilityService，然后还有其他一些配置，之后每当你监控的应用界面有变动时就会回调到这个onAccessibilityEvent这个方法，你可以在里面取得此时变动的event类型是什么，还能拿到当前这个应用可视化的View树，然后取得其中的某个View来执行某些操作。</p>
 <p>那至于其原理，用屁股想想也知道是肯定是被监控的App发生界面改变时通知了系统，然后系统又通知给了我们注册的Service。嗯……屁股想的没错……那App怎么通知系统的？系统又怎么通知我们的呢？</p>
 <p>哎呀，屁股想不出来了，没关系，屁股决定脑袋，脑袋知道怎么办。这个时候我们就该钻到源码里来一探究竟了。Emmm~就先从我们继承的这个AccessibilityService为入口进行研究吧！</p>
@@ -366,20 +362,20 @@
 <p>乍一看好像乱糟糟的，没事，我慢慢给你絮叨，肯定比直接看源码来的直观有意思。</p>
 <p>1.AccessibilityService有两个抽象方法，<code>onAccessibilityEvent()</code>和<code>onInterrupt()</code>，就是我们要自己实现的那两个，重点记<code>onAccessibilityEvent()</code>，它会出现很多次，我们姑且先命名它为<code>AS-onAccessibilityEvent()</code>.<code>onAccessibilityEvent()</code>的参数类型是<code>AccessibilityEvent</code>,这个类简而意之就是当系统中发生某些事件时，会发送这个类的对象来告知监控方，通过这个对象可以知道是什么类型的事件、什么控件发出来等等。</p>
 <p>2.另外<code>AccessibilityService</code>继承了<code>Service</code>，但它仅复写了<code>onBind</code>方法。在<code>onBind</code>方法中return了一个<code>IAccessibilityServiceClientWrapper</code>对象。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public final IBinder onBind(Intent intent) &#123;</div><div class="line">        return new IAccessibilityServiceClientWrapper(this, getMainLooper(), new Callbacks() &#123;</div><div class="line">        ...</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public void onAccessibilityEvent(AccessibilityEvent event) &#123;</div><div class="line">            AccessibilityService.this.onAccessibilityEvent(event);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">		...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public final IBinder onBind(Intent intent) &#123;</span><br><span class="line">        return new IAccessibilityServiceClientWrapper(this, getMainLooper(), new Callbacks() &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void onAccessibilityEvent(AccessibilityEvent event) &#123;</span><br><span class="line">            AccessibilityService.this.onAccessibilityEvent(event);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>3.<code>IAccessibilityServiceClientWrapper</code>继承了<code>IAccessibilityServiceClient.Stub</code>，嗯~看到这你应该就明白一大块了，<code>AccessibilityService</code>是一个跨进程通信Service。<code>IAccessibilityServiceClientWrapper</code>是这个类的重点关注对象了，那他作为一个AIDL的一个server端，他有哪些对外提供的方法呢？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">interface IAccessibilityServiceClient &#123;</div><div class="line">    void init(in IAccessibilityServiceConnection connection, int connectionId, IBinder windowToken);</div><div class="line">    void onAccessibilityEvent(in AccessibilityEvent event);</div><div class="line">    void onInterrupt();</div><div class="line">    void onGesture(int gesture);</div><div class="line">    void clearAccessibilityCache();</div><div class="line">    void onKeyEvent(in KeyEvent event, int sequence);</div><div class="line">    void onMagnificationChanged(in Region region, float scale, float centerX, float centerY);</div><div class="line">    void onSoftKeyboardShowModeChanged(int showMode);</div><div class="line">    void onPerformGestureResult(int sequence, boolean completedSuccessfully);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">interface IAccessibilityServiceClient &#123;</span><br><span class="line">    void init(in IAccessibilityServiceConnection connection, int connectionId, IBinder windowToken);</span><br><span class="line">    void onAccessibilityEvent(in AccessibilityEvent event);</span><br><span class="line">    void onInterrupt();</span><br><span class="line">    void onGesture(int gesture);</span><br><span class="line">    void clearAccessibilityCache();</span><br><span class="line">    void onKeyEvent(in KeyEvent event, int sequence);</span><br><span class="line">    void onMagnificationChanged(in Region region, float scale, float centerX, float centerY);</span><br><span class="line">    void onSoftKeyboardShowModeChanged(int showMode);</span><br><span class="line">    void onPerformGestureResult(int sequence, boolean completedSuccessfully);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里你又看到了<code>onAccessibilityEvent()</code>,我们姑且叫他<code>IASC-onAccessibilityEvent()</code>.</p>
 <p>4.然后我们在回头看看<code>IAccessibilityServiceClientWrapper</code>的构造方法中的三个参数，<code>Context、 Looper 、Callbacks</code>。<code>Context</code>不说了，<code>Looper</code>是一个<code>MainLooper</code>,<br>他们两个的作用是创建一个HandlerCaller对象,HandlerCaller你可以很粗狂的就把它当做Handler，想了解细节可以自己看一下源码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public IAccessibilityServiceClientWrapper(Context context, Looper looper,Callbacks callback) &#123;</div><div class="line">            mCallback = callback;</div><div class="line">            mCaller = new HandlerCaller(context, looper, this, true /*asyncHandler*/);</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public IAccessibilityServiceClientWrapper(Context context, Looper looper,Callbacks callback) &#123;</span><br><span class="line">            mCallback = callback;</span><br><span class="line">            mCaller = new HandlerCaller(context, looper, this, true /*asyncHandler*/);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 <p>5.然后我们来看看<code>Callbacks</code>是个啥：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public interface Callbacks &#123;</div><div class="line">        void onAccessibilityEvent(AccessibilityEvent event);</div><div class="line">        void onInterrupt();</div><div class="line">        void onServiceConnected();</div><div class="line">        void init(int connectionId, IBinder windowToken);</div><div class="line">        boolean onGesture(int gestureId);</div><div class="line">        boolean onKeyEvent(KeyEvent event);</div><div class="line">        void onMagnificationChanged(@NonNull Region region,</div><div class="line">                float scale, float centerX, float centerY);</div><div class="line">        void onSoftKeyboardShowModeChanged(int showMode);</div><div class="line">        void onPerformGestureResult(int sequence, boolean completedSuccessfully);</div><div class="line">        void onFingerprintCapturingGesturesChanged(boolean active);</div><div class="line">        void onFingerprintGesture(int gesture);</div><div class="line">        void onAccessibilityButtonClicked();</div><div class="line">        void onAccessibilityButtonAvailabilityChanged(boolean available);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public interface Callbacks &#123;</span><br><span class="line">        void onAccessibilityEvent(AccessibilityEvent event);</span><br><span class="line">        void onInterrupt();</span><br><span class="line">        void onServiceConnected();</span><br><span class="line">        void init(int connectionId, IBinder windowToken);</span><br><span class="line">        boolean onGesture(int gestureId);</span><br><span class="line">        boolean onKeyEvent(KeyEvent event);</span><br><span class="line">        void onMagnificationChanged(@NonNull Region region,</span><br><span class="line">                float scale, float centerX, float centerY);</span><br><span class="line">        void onSoftKeyboardShowModeChanged(int showMode);</span><br><span class="line">        void onPerformGestureResult(int sequence, boolean completedSuccessfully);</span><br><span class="line">        void onFingerprintCapturingGesturesChanged(boolean active);</span><br><span class="line">        void onFingerprintGesture(int gesture);</span><br><span class="line">        void onAccessibilityButtonClicked();</span><br><span class="line">        void onAccessibilityButtonAvailabilityChanged(boolean available);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>这和刚才那个<code>IAccessibilityServiceClient</code>不是一样嘛？没错，是这样的，而且这里面也有一个<code>onAccessibilityEvent</code>,我们叫它<code>Callbacks-onAccessibilityEvent</code>。</p>
 <p>上面你应该看到<code>Callbacks</code>是一个匿名内部类，他实现的<code>Callbacks-onAccessibilityEvent</code>方法的就是一句：<code>AccessibilityService.this.onAccessibilityEvent(event);</code>直接调用了<code>AS-onAccessibilityEvent()</code>，先记下来哈。</p>
 <p>6.哦对，<code>IAccessibilityServiceClientWrapper</code>还实现了一个<code>HandlerCaller.Callback</code>接口:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface Callback &#123;</div><div class="line">    public void executeMessage(Message msg);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface Callback &#123;</span><br><span class="line">    public void executeMessage(Message msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>7.最后我们看一下<code>IAccessibilityServiceClientWrapper</code>对两个接口<code>IAccessibilityServiceClient</code>和<code>HandlerCaller.Callback</code>的实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">public void onAccessibilityEvent(AccessibilityEvent event, boolean serviceWantsEvent) &#123;</div><div class="line">    Message message = mCaller.obtainMessageBO(</div><div class="line">            DO_ON_ACCESSIBILITY_EVENT, serviceWantsEvent, event);</div><div class="line">    mCaller.sendMessage(message);</div><div class="line">&#125;</div><div class="line">...</div><div class="line">@Override</div><div class="line">public void executeMessage(Message message) &#123;</div><div class="line">    switch (message.what) &#123;</div><div class="line">        case DO_ON_ACCESSIBILITY_EVENT: &#123;</div><div class="line">            ...</div><div class="line">            	mCallback.onAccessibilityEvent(event);</div><div class="line">            ...</div><div class="line">            &#125;</div><div class="line">        &#125; return;</div><div class="line">        ...</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">...</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">public void onAccessibilityEvent(AccessibilityEvent event, boolean serviceWantsEvent) &#123;</span><br><span class="line">    Message message = mCaller.obtainMessageBO(</span><br><span class="line">            DO_ON_ACCESSIBILITY_EVENT, serviceWantsEvent, event);</span><br><span class="line">    mCaller.sendMessage(message);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">@Override</span><br><span class="line">public void executeMessage(Message message) &#123;</span><br><span class="line">    switch (message.what) &#123;</span><br><span class="line">        case DO_ON_ACCESSIBILITY_EVENT: &#123;</span><br><span class="line">            ...</span><br><span class="line">            	mCallback.onAccessibilityEvent(event);</span><br><span class="line">            ...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; return;</span><br><span class="line">        ...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>我只保留了最关键的代码，我们以<code>onAccessibilityEvent</code>为线索方法捋一遍哈。当AIDL的Client端调用了<code>IASC-onAccessibilityEvent</code>时，会通过Handler发送一个message给自己，接收到以后会调用<code>Callbacks-onAccessibilityEvent</code>，<code>Callbacks-onAccessibilityEvent</code>我们刚才看过啦，会调用<code>AS-onAccessibilityEvent()</code>,这是个抽象方法，也就是我们自己实现的MyAccessibilityService中的自定义代码。</p>
 <p>有点懵？？不明白到底在干啥？没关系，我还画了个搓搓的流程图：</p>
 <p><img src="/2018/01/27/AccessibilityService分析与防御/accessibility流程图.png" alt=""></p>
@@ -404,11 +400,11 @@
 <h2 id="AccessibilityService防御"><a href="#AccessibilityService防御" class="headerlink" title="AccessibilityService防御"></a>AccessibilityService防御</h2><h3 id="1-检测-or-禁止相关外挂的辅助模式开启"><a href="#1-检测-or-禁止相关外挂的辅助模式开启" class="headerlink" title="1.检测 or 禁止相关外挂的辅助模式开启"></a>1.检测 or 禁止相关外挂的辅助模式开启</h3><p>之前在外挂防御上，一直困扰我的一个问题是：AccessibilityService类似一个解耦很开的观察者模式，作为被观察者无法察觉到观察者究竟有哪些，这导致我们非常的被动。</p>
 <p>不过研究过AccessibilityService源码之后，我们知道，每个AccessibilityService在都是由AccessibilityManagerService注册的，那岂不是说我们可以通过AccessibilityManagerService取得所有以安装或以启动的辅助模式应用？那么AccessibilityManagerService有提供相关方法吗？<br>有的：</p>
 <p>AccessibilityManagerService.java</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public class AccessibilityManagerService extends IAccessibilityManager.Stub &#123;</div><div class="line">	...</div><div class="line"> 	@Override</div><div class="line">    public List&lt;AccessibilityServiceInfo&gt; getInstalledAccessibilityServiceList(int userId) &#123;...&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class AccessibilityManagerService extends IAccessibilityManager.Stub &#123;</span><br><span class="line">	...</span><br><span class="line"> 	@Override</span><br><span class="line">    public List&lt;AccessibilityServiceInfo&gt; getInstalledAccessibilityServiceList(int userId) &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>值得注意的是，这个方法帮我们筛去了UiAutomationService。返回值AccessibilityServiceInfo是AccessibilityService的一些配置信息，其中包含我们最关心的packageNames(AccessibilityService 监控哪些package发出的Event)</p>
 <p>这里有一个小问题，AccessibilityManagerService是com.android.server.accessibility包下的类，我们没有办法直接使用。不过没关系，你可以通过AccessibilityManager来间接的操作AccessibilityManagerService，其内部利用Binder间接的调用了AccessibilityManagerService，得到List<accessibilityserviceinfo>之后，你可以通过遍历了解到自己的应用正在被那些辅助模式监控或“辅助”。</accessibilityserviceinfo></p>
 <p>具体方法如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line"> * 取得正在监控目标包名的AccessibilityService</div><div class="line"> */</div><div class="line">private List&lt;AccessibilityServiceInfo&gt; getInstalledAccessibilityServiceList(String targetPackage) &#123;</div><div class="line">    List&lt;AccessibilityServiceInfo&gt; result = new ArrayList&lt;&gt;();</div><div class="line">    AccessibilityManager accessibilityManager = (AccessibilityManager) getApplicationContext().getSystemService(Context.ACCESSIBILITY_SERVICE);</div><div class="line">    if (accessibilityManager == null) &#123;</div><div class="line">        return result;</div><div class="line">    &#125;</div><div class="line">    List&lt;AccessibilityServiceInfo&gt; infoList = accessibilityManager.getInstalledAccessibilityServiceList();</div><div class="line">    if (infoList == null || infoList.size() == 0) &#123;</div><div class="line">        return result;</div><div class="line">    &#125;</div><div class="line">    for (AccessibilityServiceInfo info : infoList) &#123;</div><div class="line">        if (info.packageNames == null) &#123;</div><div class="line">            result.add(info);</div><div class="line">        &#125; else &#123;</div><div class="line">            for (String packageName : info.packageNames) &#123;</div><div class="line">                if (targetPackage.equals(packageName)) &#123;</div><div class="line">                    result.add(info);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 取得正在监控目标包名的AccessibilityService</span><br><span class="line"> */</span><br><span class="line">private List&lt;AccessibilityServiceInfo&gt; getInstalledAccessibilityServiceList(String targetPackage) &#123;</span><br><span class="line">    List&lt;AccessibilityServiceInfo&gt; result = new ArrayList&lt;&gt;();</span><br><span class="line">    AccessibilityManager accessibilityManager = (AccessibilityManager) getApplicationContext().getSystemService(Context.ACCESSIBILITY_SERVICE);</span><br><span class="line">    if (accessibilityManager == null) &#123;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">    List&lt;AccessibilityServiceInfo&gt; infoList = accessibilityManager.getInstalledAccessibilityServiceList();</span><br><span class="line">    if (infoList == null || infoList.size() == 0) &#123;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">    for (AccessibilityServiceInfo info : infoList) &#123;</span><br><span class="line">        if (info.packageNames == null) &#123;</span><br><span class="line">            result.add(info);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            for (String packageName : info.packageNames) &#123;</span><br><span class="line">                if (targetPackage.equals(packageName)) &#123;</span><br><span class="line">                    result.add(info);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>需要特别说明的是：</strong>当info.packageNames为null时，表示监控所有包名。外挂有可能蒙混其中，但如果一刀切，也有可能误杀正常软件。</li>
 <li>getInstalledAccessibilityServiceList获取所有已安装的AccessibilityService,AccessibilityManager还有一个方法getEnabledAccessibilityServiceList,取得所有已经开启的AccessibilityService，用法同上。但要注意的是。检测外挂肯定是在某个节点进行，比如我们的App初次启动，那么用户可以在启动App后再启动外挂，这将是一个漏洞。</li>
@@ -416,13 +412,13 @@
 <h3 id="2-Event干扰"><a href="#2-Event干扰" class="headerlink" title="2.Event干扰"></a>2.Event干扰</h3><p>我们一直知道AccessibilityServices在监控目标app发出的AccessibilityEvent，从而对应的作出某些操作。</p>
 <p>例如某些微信红包插件会监控Notification的弹出，那么我们是否可以随意发送这样的Event出来，从而混干扰外挂插件的运行逻辑？</p>
 <p>没错，可以这样做的，具体方式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">textView.sendAccessibilityEvent(AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">textView.sendAccessibilityEvent(AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED);</span><br></pre></td></tr></table></figure>
 <p>但这个方案的缺陷是，大部分的外挂插件对特定类型的事件并不是特别感兴趣，他们仅在收到Event后检查页面上是否有某些特定的元素，从而决定是否进行下一步操作。</p>
 <p>大部分情况下是一个比较鸡肋的措施，但也许会在某些场景起到意想不到的作用！</p>
 <h3 id="3-屏蔽AccessibilityServices文案检查"><a href="#3-屏蔽AccessibilityServices文案检查" class="headerlink" title="3.屏蔽AccessibilityServices文案检查"></a>3.屏蔽AccessibilityServices文案检查</h3><p>在没有探究AccessibilityServices源码之前，不了解AccessibilityServices检索文本信息原理的我们可能唯一能想到的应对措施就是将关键问题替换为图片。</p>
 <p>这可以解决问题，但是问题替换为图片不但会有性能上的损耗，而且会丢失大部分原本TextView的兼容特性。</p>
 <p>不过在了解AccessibilityServices源码之后，我们知道其内部核心原理就是调用TextView的findViewsWithText方法，不再需要费劲心思将文本转为图片，你需要做的仅仅是复写这个方法就够了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class DefensiveTextView extends android.support.v7.widget.AppCompatTextView &#123;</div><div class="line">    ...</div><div class="line">    @Override</div><div class="line">    public void findViewsWithText(ArrayList&lt;View&gt; outViews, CharSequence searched, int flags) &#123;</div><div class="line">        outViews.remove(this);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class DefensiveTextView extends android.support.v7.widget.AppCompatTextView &#123;</span><br><span class="line">    ...</span><br><span class="line">    @Override</span><br><span class="line">    public void findViewsWithText(ArrayList&lt;View&gt; outViews, CharSequence searched, int flags) &#123;</span><br><span class="line">        outViews.remove(this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这样AccessibilityServices文案检查将会在这个View上失效。</p>
 <h3 id="4-屏蔽AccessibilityServices点击事件"><a href="#4-屏蔽AccessibilityServices点击事件" class="headerlink" title="4.屏蔽AccessibilityServices点击事件"></a>4.屏蔽AccessibilityServices点击事件</h3><p>像上面一样，通过源码了解原理之后，我们知道AccessibilityServices执行点击事件最终在调用View的mOnClickListener。</p>
 <p>那我们只需要在这上面做文章就好了，最快捷的办法是利用onTouch代替onClick。</p>
@@ -505,7 +501,7 @@
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -554,7 +550,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -564,10 +560,8 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -629,10 +623,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

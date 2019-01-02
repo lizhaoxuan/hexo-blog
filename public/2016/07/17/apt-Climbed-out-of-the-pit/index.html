@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,45 +63,41 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="APT," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="APT,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述因为有关APT的资料过少，又因为是Java Moudle +Android Moudle的使用方式，在项目编写过程中，会有一些匪夷所思的奇怪问题~入门阶段真的是步履维艰。
-这篇博客就是编写《Android编译时注解框架》系列中，将所遇到的一些坑列举出来，并给出一些绕过坑的方法。（注意哦~是绕过，坑还在，没有填~因为不知道">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 概述因为有关APT的资料过少，又因为是Java Moudle +Android Moudle的使用方式，在项目编写过程中，会有一些匪夷所思的奇怪问题~入门阶段真的是步履维艰。 这篇博客就是编写《Android编译时注解框架》系列中，将所遇到的一些坑列举出来，并给出一些绕过坑的方法。（注意哦~是绕过，坑还在，没有填~因为不知道">
+<meta name="keywords" content="APT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android编译时注解框架4-爬坑">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2016/07/17/apt-Climbed-out-of-the-pit/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述因为有关APT的资料过少，又因为是Java Moudle +Android Moudle的使用方式，在项目编写过程中，会有一些匪夷所思的奇怪问题~入门阶段真的是步履维艰。
-这篇博客就是编写《Android编译时注解框架》系列中，将所遇到的一些坑列举出来，并给出一些绕过坑的方法。（注意哦~是绕过，坑还在，没有填~因为不知道">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述因为有关APT的资料过少，又因为是Java Moudle +Android Moudle的使用方式，在项目编写过程中，会有一些匪夷所思的奇怪问题~入门阶段真的是步履维艰。 这篇博客就是编写《Android编译时注解框架》系列中，将所遇到的一些坑列举出来，并给出一些绕过坑的方法。（注意哦~是绕过，坑还在，没有填~因为不知道">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img1.ph.126.net/31LiF8uDczvrBRXGdUS3sA==/6631518565466913139.jpeg">
 <meta property="og:image" content="http://img0.ph.126.net/wKyp9tTXrwzlx7JyoMhu-g==/6631819831652925888.jpg">
-<meta property="og:updated_time" content="2017-01-16T05:13:19.000Z">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.832Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android编译时注解框架4-爬坑">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述因为有关APT的资料过少，又因为是Java Moudle +Android Moudle的使用方式，在项目编写过程中，会有一些匪夷所思的奇怪问题~入门阶段真的是步履维艰。
-这篇博客就是编写《Android编译时注解框架》系列中，将所遇到的一些坑列举出来，并给出一些绕过坑的方法。（注意哦~是绕过，坑还在，没有填~因为不知道">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述因为有关APT的资料过少，又因为是Java Moudle +Android Moudle的使用方式，在项目编写过程中，会有一些匪夷所思的奇怪问题~入门阶段真的是步履维艰。 这篇博客就是编写《Android编译时注解框架》系列中，将所遇到的一些坑列举出来，并给出一些绕过坑的方法。（注意哦~是绕过，坑还在，没有填~因为不知道">
 <meta name="twitter:image" content="http://img1.ph.126.net/31LiF8uDczvrBRXGdUS3sA==/6631518565466913139.jpeg">
 
 
@@ -123,12 +119,12 @@
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-Climbed-out-of-the-pit/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/07/17/apt-Climbed-out-of-the-pit/">
 
   <title> Android编译时注解框架4-爬坑 | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -159,12 +155,12 @@
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -191,7 +187,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -201,7 +197,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -211,7 +207,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -221,7 +217,7 @@
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -254,7 +250,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -429,7 +425,7 @@
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -478,7 +474,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -488,10 +484,8 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -553,10 +547,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

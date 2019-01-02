@@ -6,15 +6,15 @@
 
 
 <html class="theme-next pisces use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,46 +63,39 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="APT," />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="APT,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
 
 
 
 
 
 
-<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述如果你已经读完了前面的5章博客，相信你已经对APT整体已经比较熟悉了，所以，APT真的很简单对嘛？
-但就像我前面提到过的，APT是一套非常强大的机制，它唯一的限制在于你天马行空的设计！ 
-APT有着非常简单的技术实现，但其应用场景却着实有点尴尬。我一直期望可以探索出ButterKnife和EventBus以外的应用场景，">
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 概述如果你已经读完了前面的5章博客，相信你已经对APT整体已经比较熟悉了，所以，APT真的很简单对嘛？ 但就像我前面提到过的，APT是一套非常强大的机制，它唯一的限制在于你天马行空的设计！  APT有着非常简单的技术实现，但其应用场景却着实有点尴尬。我一直期望可以探索出ButterKnife和EventBus以外的应用场景，">
+<meta name="keywords" content="APT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android编译时注解框架6-APT的优缺点与应用">
 <meta property="og:url" content="http://lizhaoxuan.github.io/2016/08/26/apt_usage_scenario/index.html">
 <meta property="og:site_name" content="暴打小女孩-Blog">
-<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述如果你已经读完了前面的5章博客，相信你已经对APT整体已经比较熟悉了，所以，APT真的很简单对嘛？
-但就像我前面提到过的，APT是一套非常强大的机制，它唯一的限制在于你天马行空的设计！ 
-APT有着非常简单的技术实现，但其应用场景却着实有点尴尬。我一直期望可以探索出ButterKnife和EventBus以外的应用场景，">
-<meta property="og:updated_time" content="2017-01-16T05:13:24.000Z">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述如果你已经读完了前面的5章博客，相信你已经对APT整体已经比较熟悉了，所以，APT真的很简单对嘛？ 但就像我前面提到过的，APT是一套非常强大的机制，它唯一的限制在于你天马行空的设计！  APT有着非常简单的技术实现，但其应用场景却着实有点尴尬。我一直期望可以探索出ButterKnife和EventBus以外的应用场景，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-02T02:09:31.835Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android编译时注解框架6-APT的优缺点与应用">
-<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io
-概述如果你已经读完了前面的5章博客，相信你已经对APT整体已经比较熟悉了，所以，APT真的很简单对嘛？
-但就像我前面提到过的，APT是一套非常强大的机制，它唯一的限制在于你天马行空的设计！ 
-APT有着非常简单的技术实现，但其应用场景却着实有点尴尬。我一直期望可以探索出ButterKnife和EventBus以外的应用场景，">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 概述如果你已经读完了前面的5章博客，相信你已经对APT整体已经比较熟悉了，所以，APT真的很简单对嘛？ 但就像我前面提到过的，APT是一套非常强大的机制，它唯一的限制在于你天马行空的设计！  APT有着非常简单的技术实现，但其应用场景却着实有点尴尬。我一直期望可以探索出ButterKnife和EventBus以外的应用场景，">
 
 
 
@@ -123,12 +116,12 @@ APT有着非常简单的技术实现，但其应用场景却着实有点尴尬�
 
 
 
-  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/08/26/apt_usage_scenario/"/>
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2016/08/26/apt_usage_scenario/">
 
   <title> Android编译时注解框架6-APT的优缺点与应用 | 暴打小女孩-Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -159,12 +152,12 @@ APT有着非常简单的技术实现，但其应用场景却着实有点尴尬�
   <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暴打小女孩-Blog</span>
       <span class="logo-line-after"><i></i></span>
@@ -191,7 +184,7 @@ APT有着非常简单的技术实现，但其应用场景却着实有点尴尬�
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -201,7 +194,7 @@ APT有着非常简单的技术实现，但其应用场景却着实有点尴尬�
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -211,7 +204,7 @@ APT有着非常简单的技术实现，但其应用场景却着实有点尴尬�
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -221,7 +214,7 @@ APT有着非常简单的技术实现，但其应用场景却着实有点尴尬�
         <li class="menu-item menu-item-github">
           <a href="https://github.com/lizhaoxuan" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
             
             Github
           </a>
@@ -254,7 +247,7 @@ APT有着非常简单的技术实现，但其应用场景却着实有点尴尬�
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -422,7 +415,7 @@ public void bind(final Finder finder, final T target, Object source) {
 <h3 id="应用场景-代理执行-or-“代码插入”"><a href="#应用场景-代理执行-or-“代码插入”" class="headerlink" title="应用场景-代理执行 or “代码插入”"></a>应用场景-代理执行 or “代码插入”</h3><p>虽然前面有说过APT并不能像Aspectj一样实现代码插入，但是可以使用某种变种方式实现，就是使用上怪怪的。</p>
 <p>####代理执行</p>
 <p>用注解修饰一系列方法，由APT来代理执行。</p>
-<p>此部分参考<a href="https://github.com/lizhaoxuan/CakeRun" target="_blank" rel="external">CakeRun</a></p>
+<p>此部分参考<a href="https://github.com/lizhaoxuan/CakeRun" target="_blank" rel="noopener">CakeRun</a></p>
 <pre><code>public class CrashApplication extends Application {
 
     @Override
@@ -513,7 +506,7 @@ protected void startHomeActivity() {
 <p>而作为数据库操作速度最快的GreenDao，它的原理是通过java工程替我们在项目中写了一套代码，一套返璞归真的数据库操作代码。没有反射的影响，采用最普通的方式操作数据库，它的速度是最快的！</p>
 <p>但缺点是GreenDao的使用太奇葩了……导致初学GreenDao很痛苦。这是一个很致命的缺点。</p>
 <p><strong>那么通过APT，则是一个很好的技术方案：CakeDao</strong></p>
-<p><a href="https://github.com/lizhaoxuan/CakeDao" target="_blank" rel="external">https://github.com/lizhaoxuan/CakeDao</a></p>
+<p><a href="https://github.com/lizhaoxuan/CakeDao" target="_blank" rel="noopener">https://github.com/lizhaoxuan/CakeDao</a></p>
 <p>与GreenDao同理，自动生成最普通的数据库操作代码，从而提高数据库操作效率。但因为APT是在编译时自动进行的，所以他的学习成本是非常小的。</p>
 
       
@@ -585,7 +578,7 @@ protected void startHomeActivity() {
   <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
   <a class="jiathis_counter_style"></a>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
   var jiathis_config={
     hideMore:false
   }
@@ -634,7 +627,7 @@ protected void startHomeActivity() {
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -644,10 +637,8 @@ protected void startHomeActivity() {
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpeg"
-               alt="lizhaoxuan" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
           <p class="site-author-name" itemprop="name">lizhaoxuan</p>
           <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
         </div>
@@ -709,10 +700,10 @@ protected void startHomeActivity() {
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
