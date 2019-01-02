@@ -1,0 +1,837 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Flutter,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="转载请注明出处：https://lizhaoxuan.github.io 前言对于万物皆Widget的Fultter，同样的事情一般都有多种控件可以实现，太多的选择总是会让人陷入或多或少的选择纠结症和对性能的忧虑上。 初次接触Flutter，首先必然要面对的两座大山：StatelessWidget &amp;amp; StatefulWidget。 而在这两个控件的选择上，大部分人给出的解释就是：“就像他">
+<meta name="keywords" content="Flutter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter-你还在滥用StatefulWidget吗">
+<meta property="og:url" content="http://lizhaoxuan.github.io/2019/01/02/Flutter-你还在滥用StatefulWidget吗/index.html">
+<meta property="og:site_name" content="暴打小女孩-Blog">
+<meta property="og:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言对于万物皆Widget的Fultter，同样的事情一般都有多种控件可以实现，太多的选择总是会让人陷入或多或少的选择纠结症和对性能的忧虑上。 初次接触Flutter，首先必然要面对的两座大山：StatelessWidget &amp;amp; StatefulWidget。 而在这两个控件的选择上，大部分人给出的解释就是：“就像他">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://lizhaoxuan.github.io/2019/01/02/Flutter-你还在滥用StatefulWidget吗/old.png">
+<meta property="og:image" content="http://lizhaoxuan.github.io/2019/01/02/Flutter-你还在滥用StatefulWidget吗/opt.png">
+<meta property="og:image" content="http://lizhaoxuan.github.io/2019/01/02/Flutter-你还在滥用StatefulWidget吗/old_demo.png">
+<meta property="og:updated_time" content="2019-01-02T06:51:10.418Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flutter-你还在滥用StatefulWidget吗">
+<meta name="twitter:description" content="转载请注明出处：https://lizhaoxuan.github.io 前言对于万物皆Widget的Fultter，同样的事情一般都有多种控件可以实现，太多的选择总是会让人陷入或多或少的选择纠结症和对性能的忧虑上。 初次接触Flutter，首先必然要面对的两座大山：StatelessWidget &amp;amp; StatefulWidget。 而在这两个控件的选择上，大部分人给出的解释就是：“就像他">
+<meta name="twitter:image" content="http://lizhaoxuan.github.io/2019/01/02/Flutter-你还在滥用StatefulWidget吗/old.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://lizhaoxuan.github.io/2019/01/02/Flutter-你还在滥用StatefulWidget吗/">
+
+  <title> Flutter-你还在滥用StatefulWidget吗 | 暴打小女孩-Blog </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?56e0f8da7e01da926bfb931472e9a26d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暴打小女孩-Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/lizhaoxuan" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br>
+            
+            Github
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Flutter-你还在滥用StatefulWidget吗
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-01-02T16:20:58+08:00" content="2019-01-02">
+              2019-01-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2019/01/02/Flutter-你还在滥用StatefulWidget吗/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/02/Flutter-你还在滥用StatefulWidget吗/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2019/01/02/Flutter-你还在滥用StatefulWidget吗/" class="leancloud_visitors" data-flag-title="Flutter-你还在滥用StatefulWidget吗">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转载请注明出处：<a href="https://lizhaoxuan.github.io">https://lizhaoxuan.github.io</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对于万物皆Widget的Fultter，同样的事情一般都有多种控件可以实现，太多的选择总是会让人陷入或多或少的选择纠结症和对性能的忧虑上。</p>
+<p>初次接触Flutter，首先必然要面对的两座大山：StatelessWidget &amp; StatefulWidget。 而在这两个控件的选择上，大部分人给出的解释就是：<em>“就像他们的名字一样，无状态静态的视图展示使用StatelessWidget，而有交互,需要动态变化的使用StatefulWidget.”</em></p>
+<p>这样的解释正确，但过于模糊，似乎StatelessWidget出现的地方均可以用StatefulWidget来代替，于是为了后期可能的变化、为了coding简便，StatefulWidget被滥用变成了很容易发生的事情。</p>
+<p>所以今天我们就详细聊一下StatefulWidget和StatelessWidget的区别和使用。</p>
+<a id="more"></a>
+<h2 id="StatefulWidget与StatelessWidget区别"><a href="#StatefulWidget与StatelessWidget区别" class="headerlink" title="StatefulWidget与StatelessWidget区别"></a>StatefulWidget与StatelessWidget区别</h2><p>对于普遍存在的模糊解释，想吐槽又不能说它是错的，但它确实产生了一些无解。</p>
+<p>我个人对StatefulWidget与StatelessWidget理解：</p>
+<p>StatelessWidget初始化之后就无法改变，如果想改变，那便需要重新创建，new另一个StatelessWidget进行替换。但StatelessWidget因为是静态的，他没有办法重新创建自己。所以StatefulWidget便提供了这样的机制，通过调用<code>setState((){})</code>标记自身为dirty状态，以等待下一次系统的重绘检查。</p>
+<h2 id="StatefulWidget-动态化代价"><a href="#StatefulWidget-动态化代价" class="headerlink" title="StatefulWidget 动态化代价"></a>StatefulWidget 动态化代价</h2><p>通过定义，StatefulWidget怎么看都是一个万金油的存在，但是，我期望你能对StatefulWidget动态化所付出的代价有所了解：</p>
+<p><strong>在State类中的调用<code>setState((){})</code>更新视图，将会触发State.build！</strong> 也将间接的触发其每个子Widget的构造方法以及build方法。</p>
+<p>这意味这什么呢？ 如果你的根布局是一个StatefulWidget，那么每在根State中调用一次<code>setState((){})</code>，都将是一次<strong>整页所有Widget的rebuild！！！</strong> 举个栗子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">class MyStatefulWidget extends StatefulWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  State&lt;StatefulWidget&gt; createState() &#123;</span><br><span class="line">    // TODO: implement createState</span><br><span class="line">    return null;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CustomerState extends State&lt;MyStatefulWidget&gt; &#123;</span><br><span class="line">  int _num = 0;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    // TODO: implement build</span><br><span class="line">    return Row(children: &lt;Widget&gt;[</span><br><span class="line">      GestureDetector(</span><br><span class="line">        onTap: () &#123;</span><br><span class="line">          setState(() &#123;</span><br><span class="line">            _num++;</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;,</span><br><span class="line">        child: Text(&quot;Click My&quot;),</span><br><span class="line">      ),</span><br><span class="line">      Text(&quot;1:AAAAA&quot;),</span><br><span class="line">      Text(&quot;2:BBBBB&quot;),</span><br><span class="line">      Text(&quot;3:C:&quot; + _num.toString()),</span><br><span class="line">      CustomerContainer()</span><br><span class="line">    ]);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CustomerContainer extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">  	for (int i = 0; i &lt; 1000000; i++) &#123;</span><br><span class="line">  		print(&quot;我是一个耗时操作 for:&quot; + i.toString());</span><br><span class="line">  	&#125;</span><br><span class="line">    return Container(</span><br><span class="line">      child: Text(&quot;4:DDDD&quot;),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于上面的代码，每一次点击 ”My Click“，CustomerState build方法，以及Row、Text、CustomerContainer等子Widget都将重建，暂时还不太确定在绘制上Flutter是否会有缓存优化，但大量的对象创建与方法执行是跑不了的。如果某个子Widget的构造或build进行了较为耗时的操作，那更是灾难！！！</p>
+<p>所以，你也应该能理解新建一个Flutter工程根布局为什么是一个StatelessWidget了。</p>
+<h2 id="StatefulWidget是如何实现界面更新的？"><a href="#StatefulWidget是如何实现界面更新的？" class="headerlink" title="StatefulWidget是如何实现界面更新的？"></a>StatefulWidget是如何实现界面更新的？</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setState(() &#123;</span><br><span class="line">	_num++;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在接触一门新的技术时，旧技术所带来的惯性思维是很可怕的。</p>
+<p>初次接触像上面这样<code>setState</code>的方法时，想当然的认为<code>State.setState((){})</code>实现原理应该类似于 Android 的 DataBinding 或者 Vue 的数据劫持，实现观察者模式并做定向更新，只局部更新绑定了 <code>_num</code> 的 Widget。</p>
+<p>也正是因为抱着这样的想法，对于大量使用StatefulWidget并没有什么心理负担。</p>
+<p>但上面的case已经很直白的告诉我们，事实并不是这样！！！</p>
+<p>我们先看一下<code>State.setState((){})</code>源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@protected</span><br><span class="line">  void setState(VoidCallback fn) &#123;</span><br><span class="line">  	...</span><br><span class="line">  	_element.markNeedsBuild();</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>省略了所有的assert效验，实际有意义的只有这一句，标记 element 为需要 build 状态。再往下看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void markNeedsBuild() &#123;</span><br><span class="line">	...</span><br><span class="line">    if (dirty)</span><br><span class="line">      return;</span><br><span class="line">    _dirty = true;</span><br><span class="line">    owner.scheduleBuildFor(this);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>标记 element 为 dirty 状态，并执行 owner 的 scheduleBuildFor 方法。owner 是 BuildOwner，看名字就知道是负责build的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void scheduleBuildFor(Element element) &#123;</span><br><span class="line">	...</span><br><span class="line">	if (!_scheduledFlushDirtyElements &amp;&amp; onBuildScheduled != null) &#123;</span><br><span class="line">      _scheduledFlushDirtyElements = true;</span><br><span class="line">      onBuildScheduled();</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <code>onBuildScheduled()</code> 中又调用了 <code>ensureVisualUpdate()</code> 然后 <code>scheduleFrame()</code>,直接看下 <code>scheduleFrame</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void scheduleFrame() &#123;</span><br><span class="line">    if (_hasScheduledFrame || !_framesEnabled)</span><br><span class="line">      return;</span><br><span class="line">	ui.window.scheduleFrame();</span><br><span class="line">    _hasScheduledFrame = true;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>调用了Window类的<code>scheduleFrame()</code>方法，<code>scheduleFrame()</code>是一个native方法，实现真正的界面绘制，到这里我们就基本清楚我们要知道的东西了。</p>
+<p>Flutter并没有实现数据双向绑定，你在<code>State.setState((){})</code>中写什么代码都不重要，它仅用来标记这个State对象需要重新Build，重新build后根据已变更的数据来创建新的Widget。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setState(() &#123;</span><br><span class="line">	_num++;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_num++;</span><br><span class="line">setState(() &#123;&#125;);</span><br></pre></td></tr></table></figure>
+<p>所以这两种写法都可以实现依赖<code>_num</code>的Widget更新。</p>
+<h2 id="开发中如何选择StatefulWidget和StatelessWidget？"><a href="#开发中如何选择StatefulWidget和StatelessWidget？" class="headerlink" title="开发中如何选择StatefulWidget和StatelessWidget？"></a>开发中如何选择StatefulWidget和StatelessWidget？</h2><p>通过上面三个小结，你应该大致了解了StatefulWidget的视图更新是如何简单粗暴、且代价较高。</p>
+<p>对比Vue（Vue通过双向数据绑定实现局部DOM更新以提高效率），Flutter将原本由框架负责的一些性能优化转嫁在了开发者身上。有一点类似于C++和java的内存回收。</p>
+<p>既然反抗不了，就躺下来享受“自由”的快感吧。下面我们聊聊如何在开发中选择StatefulWidget和StatelessWidget来提高视图更新性能。</p>
+<p>先列一些决策点：</p>
+<ul>
+<li>优先使用 StatelessWidget</li>
+<li>含有大量子 Widget（如根布局、次根布局）慎用 StatefulWidget</li>
+<li>尽量在叶子节点使用 StatefulWidget</li>
+<li>将会调用到<code>setState((){})</code> 的代码尽可能的和要更新的视图封装在一个尽可能小的模块里。</li>
+<li>如果一个Widget需要reBuild，那么它的子节点、兄弟节点、兄弟节点的子节点应该尽可能少</li>
+</ul>
+<p>另外其他需要注意的点</p>
+<ul>
+<li>相较Android的View，Flutter Widget的构造方法可能被会执行很多次，做的事情应该尽可能的少</li>
+<li>Flutter Widget build方法可能会执行多次，做的事情应该尽可能的少</li>
+</ul>
+<p><img src="/2019/01/02/Flutter-你还在滥用StatefulWidget吗/old.png" alt=""></p>
+<p>假设你有如上一个Widget树，红色表示的是一个将会被改变的Widget。如果按照这样的布局结构，那么每一次红色的 leaf 节点发生变化并重建，它的四个兄弟节点也会重新创建，对于这样的结构，你应该做这样的优化：</p>
+<p><img src="/2019/01/02/Flutter-你还在滥用StatefulWidget吗/opt.png" alt=""></p>
+<p>将变化的节点下放封装到一个更小的分支当中，使得它的兄弟节点尽可能的少。</p>
+<p>我们用简单的demo来说明：BBB是静态文案、每点击一次Click My, AAA后面的数字都会加1</p>
+<p><img src="/2019/01/02/Flutter-你还在滥用StatefulWidget吗/old_demo.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">class CustomerStatefulWidget extends StatefulWidget &#123;</span><br><span class="line">  final String _name;</span><br><span class="line"></span><br><span class="line">  CustomerStatefulWidget(this._name);</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  State&lt;StatefulWidget&gt; createState() &#123;</span><br><span class="line">    print(&quot;TAG, CustomerStatefulWidget:&quot; + _name + &quot;  build&quot;);</span><br><span class="line">    return CustomerState(&quot;CustomerStateA&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CustomerState extends State&lt;CustomerStatefulWidget&gt; &#123;</span><br><span class="line">  String _name;</span><br><span class="line"></span><br><span class="line">  CustomerState(this._name) &#123;</span><br><span class="line">    print(&quot;TAG, CustomerState:&quot; + _name + &quot;  构造&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  int _customerStatelessText = 0;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    print(&quot;TAG, &quot; + _name + &quot;  build&quot;);</span><br><span class="line">    return Container(</span><br><span class="line">      margin: EdgeInsets.only(top: 100),</span><br><span class="line">      color: Colors.yellow,</span><br><span class="line">      child: Column(</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          CustomerStatelessWidget(&quot;BBB&quot;, &quot;BBB&quot;),</span><br><span class="line">          CustomerStatelessWidget(</span><br><span class="line">              &quot;AAA&quot;, &quot;AAA:&quot; + _customerStatelessText.toString()),</span><br><span class="line">          GestureDetector(</span><br><span class="line">            onTap: () &#123;</span><br><span class="line">              print(&quot;Click My&quot;);</span><br><span class="line">              setState(() &#123;</span><br><span class="line">                _customerStatelessText++;</span><br><span class="line">              &#125;);</span><br><span class="line">            &#125;,</span><br><span class="line">            child: Text(&quot;Click My&quot;),</span><br><span class="line">          )</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CustomerStatelessWidget extends StatelessWidget &#123;</span><br><span class="line">  final String _text;</span><br><span class="line">  final String _name;</span><br><span class="line"></span><br><span class="line">  CustomerStatelessWidget(this._name, this._text) &#123;</span><br><span class="line">    print(&quot;TAG, CustomerStatelessWidget:&quot; + _name + &quot;  构造&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    print(&quot;TAG, CustomerStatelessWidget:&quot; + _name + &quot;  build&quot;);</span><br><span class="line">    if (_name == &quot;BBB&quot;) &#123;</span><br><span class="line">//      for (int i = 0; i &lt; 10000000; i++) &#123;</span><br><span class="line">//        print(&quot;for:&quot; + i.toString());</span><br><span class="line">//      &#125;</span><br><span class="line">      print(&quot;我是一个耗时方法，耗时2s&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return Text(_text);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在我们点击Click My之后，看一下日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">I/flutter (31310): Click My</span><br><span class="line">I/flutter (31310): TAG, CustomerStateA  build</span><br><span class="line">I/flutter (31310): TAG, CustomerStatelessWidget:BBB  构造</span><br><span class="line">I/flutter (31310): TAG, CustomerStatelessWidget:AAA  构造</span><br><span class="line">I/flutter (31310): TAG, CustomerStatelessWidget:BBB  build</span><br><span class="line">I/flutter (31310): 我是一个耗时方法，耗时2s</span><br><span class="line">I/flutter (31310): TAG, CustomerStatelessWidget:AAA  build</span><br></pre></td></tr></table></figure>
+<p>原本静态无需Rebuild的BBB，因为和AAA属于兄弟节点，在AAA发生改变时被动重绘，更糟糕的是BBB还有一个非常耗时的build方法。那么如何优化呢？</p>
+<p>将ClickMy与AAA控件封装在一个更小的StatefulWidget当中，BBB上提至StatelessWidget</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">class WrapStatelessWidget extends StatelessWidget &#123;</span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    print(&quot;TAG, WrapStatelessWidget: build&quot;);</span><br><span class="line">    return Container(</span><br><span class="line">      margin: EdgeInsets.only(top: 100),</span><br><span class="line">      color: Colors.yellow,</span><br><span class="line">      child: Column(</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          CustomerStatelessWidget(&quot;BBB&quot;, &quot;BBB&quot;),</span><br><span class="line">          CustomerStatefulWidget(&quot;AAA&quot;)</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CustomerStatefulWidget extends StatefulWidget &#123;</span><br><span class="line">  final String _name;</span><br><span class="line"></span><br><span class="line">  CustomerStatefulWidget(this._name);</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  State&lt;StatefulWidget&gt; createState() &#123;</span><br><span class="line">    print(&quot;TAG, CustomerStatefulWidget:&quot; + _name + &quot;  build&quot;);</span><br><span class="line">    return CustomerState(&quot;CustomerStateA&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CustomerState extends State&lt;CustomerStatefulWidget&gt; &#123;</span><br><span class="line">  String _name;</span><br><span class="line"></span><br><span class="line">  CustomerState(this._name) &#123;</span><br><span class="line">    print(&quot;TAG, &quot; + _name + &quot;  构造&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  int _customerStatelessText = 0;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    print(&quot;TAG, CustomerState:&quot; + _name + &quot;  build&quot;);</span><br><span class="line">    return Container(</span><br><span class="line">      child: Column(</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          CustomerStatelessWidget(</span><br><span class="line">              &quot;AAA&quot;, &quot;AAA:&quot; + _customerStatelessText.toString()),</span><br><span class="line">          GestureDetector(</span><br><span class="line">            onTap: () &#123;</span><br><span class="line">              print(&quot;Click My&quot;);</span><br><span class="line">              _customerStatelessText++;</span><br><span class="line">              setState(() &#123;&#125;);</span><br><span class="line">            &#125;,</span><br><span class="line">            child: Text(&quot;Click My&quot;),</span><br><span class="line">          )</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CustomerStatelessWidget extends StatelessWidget &#123;</span><br><span class="line">  final String _text;</span><br><span class="line">  final String _name;</span><br><span class="line"></span><br><span class="line">  CustomerStatelessWidget(this._name, this._text) &#123;</span><br><span class="line">    print(&quot;TAG, CustomerStatelessWidget:&quot; + _name + &quot;  构造&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    print(&quot;TAG, CustomerStatelessWidget:&quot; + _name + &quot;  build&quot;);</span><br><span class="line">    if (_name == &quot;BBB&quot;) &#123;</span><br><span class="line">//      for (int i = 0; i &lt; 1000000; i++) &#123;</span><br><span class="line">//        print(&quot;for:&quot; + i.toString());</span><br><span class="line">//      &#125;</span><br><span class="line">      print(&quot;我是一个耗时方法，耗时2s&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return Text(_text);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>我们再点一下ClickMy看下日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">I/flutter (31310): Click My</span><br><span class="line">I/flutter (31310): TAG,CustomerStateA  build</span><br><span class="line">I/flutter (31310): TAG, CustomerStatelessWidget:AAA  构造</span><br><span class="line">I/flutter (31310): TAG, CustomerStatelessWidget:AAA  build</span><br></pre></td></tr></table></figure>
+<p> AAA的重绘不会再使得BBB被迫重绘！</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>重申一下StatefulWidget使用的决策点：</p>
+<ul>
+<li>优先使用 StatelessWidget</li>
+<li>含有大量子 Widget（如根布局、次根布局）慎用 StatefulWidget</li>
+<li>尽量在叶子节点使用 StatefulWidget</li>
+<li>将会调用到<code>setState((){})</code> 的代码尽可能的和要更新的视图封装在一个尽可能小的模块里。</li>
+<li>如果一个Widget需要reBuild，那么它的子节点、兄弟节点、兄弟节点的子节点应该尽可能少</li>
+</ul>
+<p>另外其他需要注意的点</p>
+<ul>
+<li>相较Android的View，Flutter Widget的构造方法可能被会执行很多次，做的事情应该尽可能的少</li>
+<li>Flutter Widget build方法可能会执行多次，做的事情应该尽可能的少</li>
+</ul>
+<p>如果你的代码存在大量的StatefulWidget，快去重构啦~</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flutter/" rel="tag">#Flutter</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/27/AccessibilityService分析与防御/" rel="next" title="AccessibilityService分析与防御">
+                <i class="fa fa-chevron-left"></i> AccessibilityService分析与防御
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="lizhaoxuan">
+          <p class="site-author-name" itemprop="name">lizhaoxuan</p>
+          <p class="site-description motion-element" itemprop="description">From toy to tool!</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StatefulWidget与StatelessWidget区别"><span class="nav-number">2.</span> <span class="nav-text">StatefulWidget与StatelessWidget区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StatefulWidget-动态化代价"><span class="nav-number">3.</span> <span class="nav-text">StatefulWidget 动态化代价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StatefulWidget是如何实现界面更新的？"><span class="nav-number">4.</span> <span class="nav-text">StatefulWidget是如何实现界面更新的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发中如何选择StatefulWidget和StatelessWidget？"><span class="nav-number">5.</span> <span class="nav-text">开发中如何选择StatefulWidget和StatelessWidget？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">6.</span> <span class="nav-text">结论</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lizhaoxuan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'lizhaoxuan';
+      var disqus_identifier = '2019/01/02/Flutter-你还在滥用StatefulWidget吗/';
+      var disqus_title = "Flutter-你还在滥用StatefulWidget吗";
+      var disqus_url = 'http://lizhaoxuan.github.io/2019/01/02/Flutter-你还在滥用StatefulWidget吗/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Lb3BBgF3jv5bwrRc8KBz1cuP-gzGzoHsz", "kaPIOk4dBLRc4wfrlc2Tffrm");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
